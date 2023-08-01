@@ -1,2 +1,3 @@
 # rakija
-Game engine written in C
+
+Game engine written in C/C++
