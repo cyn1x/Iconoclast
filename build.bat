@@ -1,6 +1,6 @@
 @echo off
 
-call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
+call "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
 if not exist etc mkdir etc
 if not exist obj mkdir obj
 if not exist bin mkdir bin
