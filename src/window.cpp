@@ -25,7 +25,7 @@ static void Win32CopyBufferToWindow(win32_offscreen_buffer *buffer, HDC hdc, int
 
 static void Win32ResizeDIBSection(win32_offscreen_buffer *buffer, int width, int height)
 {
-    if(buffer->memory) {
+    if (buffer->memory) {
         VirtualFree(buffer->memory, 0, MEM_RELEASE);
     }
     
@@ -91,11 +91,11 @@ int Run(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int nCmdSh
     HDC hdc = GetDC(hwnd);
 
     Running = true;
-    while(Running) {
+    while (Running) {
         MSG msg = {0};
         
-        while(PeekMessage(&msg, 0, 0, 0, PM_REMOVE)) {    
-            if(msg.message == WM_QUIT) {
+        while (PeekMessage(&msg, 0, 0, 0, PM_REMOVE)) {    
+            if (msg.message == WM_QUIT) {
                 Running = false;
             }
             
@@ -124,7 +124,8 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
             PostQuitMessage(0);
             return 0;
 
-        case WM_PAINT: {
+        case WM_PAINT:
+            {
                 PAINTSTRUCT ps;
                 HDC hdc = BeginPaint(hwnd, &ps);
 
