@@ -82,9 +82,10 @@ void HandleKeyInput(WPARAM wParam, LPARAM lParam)
     uint32_t VKCode = wParam;
     bool wasDown = ((lParam & (1 << 30)) != 0);
     bool isDown = ((lParam & (1 << 31)) == 0);
+    int altKeyWasDown = (lParam & (1 << 29));
 
-    if(wasDown != isDown) {
-        switch(VKCode) {
+    if (wasDown != isDown) {
+        switch (VKCode) {
             case 'W':
                 OutputDebugStringA("W\n");
                 break;
@@ -110,17 +111,25 @@ void HandleKeyInput(WPARAM wParam, LPARAM lParam)
             case VK_RIGHT:
                 break;
             case VK_ESCAPE:
-                OutputDebugStringA("ESCAPE: ");
-                if(isDown) {
-                    OutputDebugStringA("IsDown ");
+                {
+                    OutputDebugStringA("ESCAPE: ");
+                    if (isDown) {
+                        OutputDebugStringA("IsDown ");
+                    }
+                    if (wasDown) {
+                        OutputDebugStringA("WasDown");
+                    }
+                    OutputDebugStringA("\n");
+                    break;
                 }
-                if(wasDown) {
-                    OutputDebugStringA("WasDown");
-                }
-                OutputDebugStringA("\n");
-                break;
             case VK_SPACE:
                 break;
+
+            case VK_F4:
+                if (altKeyWasDown) {
+                    Running = false;
+                }
+            break;
         }
     }
 }
