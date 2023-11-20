@@ -15,6 +15,7 @@ typedef X_INPUT_GET_STATE(x_input_get_state);
 typedef X_INPUT_SET_STATE(x_input_set_state);
 
 void Win32LoadXInput(void);
-void HandleInput(void);
+void HandleXInput(void);
+void HandleKeyInput(WPARAM wParam, LPARAM lParam);
 
 #endif //INPUT_H

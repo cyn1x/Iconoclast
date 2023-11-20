@@ -32,7 +32,7 @@ void Win32LoadXInput(void)
     }
 }
 
-void HandleInput()
+void HandleXInput()
 {
     DWORD dwResult;
 
@@ -67,6 +67,54 @@ void HandleInput()
             int16_t stick_y = pad->sThumbLY;
         } else {
             // Controller is not connected
+        }
+    }
+}
+
+void HandleKeyInput(WPARAM wParam, LPARAM lParam)
+{
+    uint32_t VKCode = wParam;
+    bool wasDown = ((lParam & (1 << 30)) != 0);
+    bool isDown = ((lParam & (1 << 31)) == 0);
+
+    if(wasDown != isDown) {
+        switch(VKCode) {
+            case 'W':
+                OutputDebugStringA("W\n");
+                break;
+            case 'A':
+                OutputDebugStringA("A\n");
+                break;
+            case 'S':
+                OutputDebugStringA("S\n");
+                break;
+            case 'D':
+                OutputDebugStringA("D\n");
+                break;
+            case 'Q':
+                break;
+            case 'E':
+                break;
+            case VK_UP:
+                break;
+            case VK_DOWN:
+                break;
+            case VK_LEFT:
+                break;
+            case VK_RIGHT:
+                break;
+            case VK_ESCAPE:
+                OutputDebugStringA("ESCAPE: ");
+                if(isDown) {
+                    OutputDebugStringA("IsDown ");
+                }
+                if(wasDown) {
+                    OutputDebugStringA("WasDown");
+                }
+                OutputDebugStringA("\n");
+                break;
+            case VK_SPACE:
+                break;
         }
     }
 }

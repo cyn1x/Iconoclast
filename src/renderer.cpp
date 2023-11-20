@@ -1,0 +1,25 @@
+#include "renderer.h"
+
+void Render(win32_offscreen_buffer *buffer)
+{
+    uint8_t *row = (uint8_t *)buffer->memory;
+    for(int y = 0; y < buffer->height; ++y) {
+
+        uint8_t *pixel = (uint8_t *)row;
+        for (int x = 0; x < buffer->width; ++x) {
+            *pixel = ((double)rand() / 255) * (255 - 0) + 0;
+            ++pixel;
+            
+            *pixel = ((double)rand() / 255) * (255 - 0) + 0;
+            ++pixel;
+            
+            *pixel = ((double)rand() / 255) * (255 - 0) + 0;
+            ++pixel;
+            
+            *pixel = 0;
+            ++pixel;
+        }
+        
+        row += buffer->pitch;
+    }
+}
