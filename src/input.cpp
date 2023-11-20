@@ -1,13 +1,15 @@
 #include "input.h"
+#include "window.h"
+#include <stdint.h>
 
 X_INPUT_GET_STATE(XInputGetStateStub)
 {
-    return 0;
+    return ERROR_DEVICE_NOT_CONNECTED;
 }
 
 X_INPUT_SET_STATE(XInputSetStateStub)
 {
-    return 0;
+    return ERROR_DEVICE_NOT_CONNECTED;
 }
 
 static x_input_get_state *XInputGetState_ = XInputGetStateStub;
@@ -18,7 +20,11 @@ static x_input_set_state *XInputSetState_ = XInputSetStateStub;
 
 void Win32LoadXInput(void)
 {
-    HMODULE XInputLibrary = LoadLibraryA("xinput1_3.dll");
+    HMODULE XInputLibrary = LoadLibraryA("xinput1_4.dll");
+    if (!XInputLibrary) {
+        XInputLibrary = LoadLibraryA("xinput1_3.dll");
+    }
+
     if (XInputLibrary) {
         XInputGetState = (x_input_get_state *)GetProcAddress(XInputLibrary, "XInputGetState");
         if (!XInputGetState) {
