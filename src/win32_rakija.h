@@ -1,7 +1,7 @@
-/* date = August 30th 2023 3:24 pm */
-
 #ifndef WIN32_RAKIJA_H
 #define WIN32_RAKIJA_H
+
+#include "core.h"
 
 struct win32_offscreen_buffer
 {

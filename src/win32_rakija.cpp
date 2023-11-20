@@ -2,11 +2,8 @@
 #define UNICODE
 #endif
 
-#include <windows.h>
-#include <stdint.h>
-#include <stdio.h>
-
 #include "win32_rakija.h"
+#include "input.h"
 
 static bool Running;
 static win32_offscreen_buffer Backbuffer;
@@ -47,23 +44,23 @@ static void Win32ResizeDIBSection(win32_offscreen_buffer *buffer, int width, int
     buffer->pitch = width * bytesPerPixel;
 }
 
-static void Win32CopyBufferToWindow(HDC hdc, int windowWidth, int windowHeight, win32_offscreen_buffer buffer)
+static void Win32CopyBufferToWindow(win32_offscreen_buffer *buffer, HDC hdc, int windowWidth, int windowHeight)
 {
     StretchDIBits(hdc,
                   0, 0, windowWidth, windowHeight,
-                  0, 0, buffer.width, buffer.height,
-                  buffer.memory,
-                  &buffer.info,
+                  0, 0, buffer->width, buffer->height,
+                  buffer->memory,
+                  &buffer->info,
                   DIB_RGB_COLORS, SRCCOPY);
 }
 
-static void Render(win32_offscreen_buffer buffer)
+static void Render(win32_offscreen_buffer *buffer)
 {
-    uint8_t *row = (uint8_t *)buffer.memory;
-    for(int y = 0; y < buffer.height; ++y)
+    uint8_t *row = (uint8_t *)buffer->memory;
+    for(int y = 0; y < buffer->height; ++y)
     {
         uint8_t *pixel = (uint8_t *)row;
-        for (int x = 0; x < buffer.width; ++x)
+        for (int x = 0; x < buffer->width; ++x)
         {
             *pixel = ((double)rand() / 255) * (255 - 0) + 0;
             ++pixel;
@@ -78,15 +75,17 @@ static void Render(win32_offscreen_buffer buffer)
             ++pixel;
         }
         
-        row += buffer.pitch;
+        row += buffer->pitch;
     }
 }
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int nCmdShow)
 {
-    const wchar_t CLASS_NAME[]  = L"Rakija Engine Window Class";
+    Win32LoadXInput();
+
+    const char CLASS_NAME[]  = "Rakija Engine Window Class";
     
-    WNDCLASS wc = {0};
+    WNDCLASSA wc = {0};
     
     Win32ResizeDIBSection(&Backbuffer, 1280, 720);
     
@@ -95,12 +94,12 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine
     wc.hInstance     = hInstance;
     wc.lpszClassName = CLASS_NAME;
     
-    RegisterClass(&wc);
+    RegisterClassA(&wc);
     
-    HWND hwnd = CreateWindowEx(
+    HWND hwnd = CreateWindowExA(
                                0,
                                CLASS_NAME,
-                               L"Rakija Engine",
+                               "Rakija Engine",
                                WS_OVERLAPPEDWINDOW,
                                
                                CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,
@@ -134,11 +133,13 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine
             TranslateMessage(&msg);
             DispatchMessageA(&msg);
         }
-        
-        Render(Backbuffer);
+
+        HandleInput(); 
+
+        Render(&Backbuffer);
         
         win32_window_dimensions dimensions = GetWindowDimensions(hwnd);
-        Win32CopyBufferToWindow(hdc, dimensions.width, dimensions.height, Backbuffer);
+        Win32CopyBufferToWindow(&Backbuffer, hdc, dimensions.width, dimensions.height);
     }
     
     return 0;
@@ -149,32 +150,96 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     switch (uMsg)
     {
         case WM_SIZE:
-        {
-            
-        } break;
-        
+            {
+            } break;
+
         case WM_DESTROY:
-        PostQuitMessage(0);
-        return 0;
-        
+            PostQuitMessage(0);
+            return 0;
+
         case WM_PAINT:
-        {
-            PAINTSTRUCT ps;
-            HDC hdc = BeginPaint(hwnd, &ps);
-            
-            int x = ps.rcPaint.left;
-            int y = ps.rcPaint.top;
-            int w = ps.rcPaint.right - ps.rcPaint.left;
-            int h = ps.rcPaint.bottom - ps.rcPaint.top;
-            
-            win32_window_dimensions dimensions = GetWindowDimensions(hwnd);
-            Win32CopyBufferToWindow(hdc, dimensions.width, dimensions.height, Backbuffer);
-            
-            EndPaint(hwnd, &ps);
-        }
-        return 0;
-        
+            {
+                PAINTSTRUCT ps;
+                HDC hdc = BeginPaint(hwnd, &ps);
+
+                int x = ps.rcPaint.left;
+                int y = ps.rcPaint.top;
+                int w = ps.rcPaint.right - ps.rcPaint.left;
+                int h = ps.rcPaint.bottom - ps.rcPaint.top;
+
+                win32_window_dimensions dimensions = GetWindowDimensions(hwnd);
+                Win32CopyBufferToWindow(&Backbuffer, hdc, dimensions.width, dimensions.height);
+
+                EndPaint(hwnd, &ps);
+            }
+            return 0;
+
+        case WM_SYSKEYUP:
+        case WM_SYSKEYDOWN:
+        case WM_KEYDOWN:
+        case WM_KEYUP:
+            {
+                uint32_t VKCode = wParam;
+                bool wasDown = ((lParam & (1 << 30)) != 0);
+                bool isDown = ((lParam & (1 << 31)) == 0);
+
+                if(wasDown != isDown)
+                {
+                    switch(VKCode) {
+                        case 'W': 
+                            {
+                                OutputDebugStringA("W\n");
+                            } break;
+                        case 'A':
+                            {
+                                OutputDebugStringA("A\n");
+                            } break;
+                        case 'S':
+                            {
+                                OutputDebugStringA("S\n");
+                            } break;
+                        case 'D':
+                            {
+                                OutputDebugStringA("D\n");
+                            } break;
+                        case 'Q':
+                            {
+                            } break;
+                        case 'E':
+                            {
+                            } break;
+                        case VK_UP:
+                            {
+                            } break;
+                        case VK_DOWN:
+                            {
+                            } break;
+                        case VK_LEFT:
+                            {
+                            } break;
+                        case VK_RIGHT:
+                            {
+                            } break;
+                        case VK_ESCAPE:
+                            {
+                                OutputDebugStringA("ESCAPE: ");
+                                if(isDown)
+                                {
+                                    OutputDebugStringA("IsDown ");
+                                }
+                                if(wasDown)
+                                {
+                                    OutputDebugStringA("WasDown");
+                                }
+                                OutputDebugStringA("\n");
+                            } break;
+                        case VK_SPACE:
+                            {
+                            } break;
+                    }
+                }
+            } break;
     }
-    
+
     return DefWindowProc(hwnd, uMsg, wParam, lParam);
 }
