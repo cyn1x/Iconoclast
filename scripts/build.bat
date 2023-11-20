@@ -1,6 +1,8 @@
 @echo off
 
-call "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
+if not defined DevEnvDir (
+    call "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
+)
 
 popd
 
@@ -8,10 +10,12 @@ if not exist etc mkdir etc
 if not exist obj mkdir obj
 if not exist bin mkdir bin
 
+del /S /Q bin\*.* > nul
+
 pushd obj
 
 for /r ..\src %%f in (*.cpp) do (
-     call set "srcs=%%srcs%% ..\src\%%~nxf"
+    call set "srcs=%%srcs%% ..\src\%%~nxf"
 )
 
 cl /c -Zi %srcs:~1%

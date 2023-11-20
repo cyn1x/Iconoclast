@@ -7,4 +7,3 @@ if not defined DevEnvDir (
 )
 
 start nvim-qt .
-
