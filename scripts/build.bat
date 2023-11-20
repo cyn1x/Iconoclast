@@ -10,6 +10,7 @@ if not exist etc mkdir etc
 if not exist obj mkdir obj
 if not exist bin mkdir bin
 
+del /S /Q obj\*.* > nul
 del /S /Q bin\*.* > nul
 
 pushd obj
