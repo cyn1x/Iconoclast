@@ -1,3 +1,3 @@
 [submodule "lib/turbo"]
-	path = lib/turbo
+	path = lib/turbocc
 	url = git@github.com:cyn1x/turbo.git
