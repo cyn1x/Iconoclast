@@ -4,9 +4,9 @@ CFLAGS=-g -Wall -Wextra -Werror -pedantic -pedantic-errors -std=c17
 SRCDIR=src
 OBJDIR=obj
 BINDIR=bin
-SRCS=$(wildcard $(SRCDIR)/*.c)
+SRCS=$(shell find $(SRCDIR) -type f -name '*.c')
 OBJS=$(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(SRCS))
-BIN=$(BINDIR)/rakija.exe
+BIN=$(BINDIR)/rakija
 ZIP=$(BINDIR)/rakija.tar.gz
 
 all: $(BIN)
@@ -16,10 +16,10 @@ release: clean
 release: $(BIN)
 
 $(BIN): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $@
+	$(CC) $(CFLAGS) $(addprefix $(OBJDIR)/, $(notdir $(OBJS))) -o $@
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $(OBJDIR)/$(notdir $@)
 
 clean:
 	$(RM) $(BINDIR)/* $(OBJDIR)/*
