@@ -1,7 +1,8 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
-#include "core.h"
+#include <windows.h>
+
 #include "input.h"
 #include "renderer.h"
 
@@ -11,9 +12,10 @@ struct win32_window_dimensions
     int height;
 };
 
-static bool Running;
+static bool      Running;
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
-int Run(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int nCmdShow);
+int Run(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine,
+        int nCmdShow);
 
 #endif // WINDOW_H

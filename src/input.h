@@ -1,12 +1,15 @@
 #ifndef INPUT_H
 #define INPUT_H
 
-#include "core.h"
-
+// clang-format off
+#include <windows.h>
 #include <Xinput.h>
+// clang-format on
 
-#define X_INPUT_GET_STATE(name) DWORD WINAPI name(DWORD dwUserIndex, XINPUT_STATE *pState)
-#define X_INPUT_SET_STATE(name) DWORD WINAPI name(DWORD dwUserIndex, XINPUT_VIBRATION *pVibration)
+#define X_INPUT_GET_STATE(name)                                                \
+    DWORD WINAPI name(DWORD dwUserIndex, XINPUT_STATE *pState)
+#define X_INPUT_SET_STATE(name)                                                \
+    DWORD WINAPI name(DWORD dwUserIndex, XINPUT_VIBRATION *pVibration)
 
 #define XInputGetState XInputGetState_
 #define XInputSetState XInputSetState_
@@ -18,4 +21,4 @@ void Win32LoadXInput(void);
 void HandleXInput(void);
 void HandleKeyInput(WPARAM wParam, LPARAM lParam);
 
-#endif //INPUT_H
+#endif // INPUT_H
