@@ -1,4 +1,5 @@
 #include "window.h"
+#include "sound.h"
 
 static win32_window_dimensions GetWindowDimensions(HWND hwnd)
 {
@@ -82,6 +83,8 @@ int Run(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine,
 
     ShowWindow(hwnd, nCmdShow);
     HDC hdc = GetDC(hwnd);
+
+    Win32InitDSound(hwnd, 48000, 48000 * sizeof(int16_t) * 2);
 
     Running = true;
     while (Running) {

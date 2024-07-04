@@ -5,6 +5,7 @@
 
 #include "input.h"
 #include "renderer.h"
+#include "sound.h"
 
 struct win32_window_dimensions
 {
@@ -12,6 +13,7 @@ struct win32_window_dimensions
     int height;
 };
 
+// FIX: Restrict applicable callers
 static bool      Running;
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
