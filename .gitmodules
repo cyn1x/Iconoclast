@@ -1,3 +1,3 @@
-[submodule "lib/turboc"]
-	path = lib/turboc
-	url = git@github.com:cyn1x/turboc.git
+[submodule "lib/libcspd"]
+	path = lib/libcspd
+	url = git@github.com:cyn1x/libcspd.git
