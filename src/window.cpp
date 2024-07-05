@@ -84,7 +84,8 @@ int Run(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine,
     ShowWindow(hwnd, nCmdShow);
     HDC hdc = GetDC(hwnd);
 
-    Win32InitDSound(hwnd, 48000, 48000 * sizeof(int16_t) * 2);
+    Win32InitDSound(hwnd);
+    SecondaryBuffer->Play(0, 0, DSBPLAY_LOOPING);
 
     Running = true;
     while (Running) {
@@ -102,6 +103,7 @@ int Run(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine,
         HandleXInput();
 
         Render(&Backbuffer);
+        Win32PlaySound();
 
         win32_window_dimensions dimensions = GetWindowDimensions(hwnd);
         Win32CopyBufferToWindow(&Backbuffer, hdc, dimensions.width,
