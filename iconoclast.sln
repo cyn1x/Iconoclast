@@ -1,14 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.4.33403.182
+VisualStudioVersion = 17.8.34322.80
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{911E67C6-3D85-4FCE-B560-20A9C3E3FF48}") = "rakija", "bin\rakija.exe", "{00DBC384-E94C-49DB-BAC6-CA0B1E955925}"
+Project("{911E67C6-3D85-4FCE-B560-20A9C3E3FF48}") = "iconoclast", "bin\iconoclast.exe", "{31C7334B-FBE4-48DA-8944-D76BDCBB5C7B}"
 	ProjectSection(DebuggerProjectSystem) = preProject
 		PortSupplier = 00000000-0000-0000-0000-000000000000
-		Executable = D:\Dev\GitHub\rakija\bin\rakija.exe
-		RemoteMachine = MANDALORE
-		StartingDirectory = D:\Dev\GitHub\rakija\data
+		Executable = bin\iconoclast.exe
+		RemoteMachine = 
+		StartingDirectory = bin
 		Environment = Default
 		LaunchingEngine = 00000000-0000-0000-0000-000000000000
 		UseLegacyDebugEngines = No
@@ -22,12 +22,12 @@ Global
 		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{00DBC384-E94C-49DB-BAC6-CA0B1E955925}.Release|x64.ActiveCfg = Release|x64
+		{31C7334B-FBE4-48DA-8944-D76BDCBB5C7B}.Release|x64.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {DB4EC90D-866B-4615-AC9A-0A3322DCE206}
+		SolutionGuid = {33545321-C585-44F6-B92B-0F68DC8C938D}
 	EndGlobalSection
 EndGlobal

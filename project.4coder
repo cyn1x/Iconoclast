@@ -1,5 +1,5 @@
 version(2);
-project_name = "rakija";
+project_name = "iconoclast";
 patterns = {
 "*.c",
 "*.cpp",
@@ -26,9 +26,9 @@ commands = {
    .linux = "./scripts/build.sh",
    .mac = "./scripts/build.sh", },
  .run = { .out = "*run*", .footer_panel = true, .save_dirty_files = false,
-   .win = "bin\rakija.exe",
-   .linux = "bin/rakija",
-   .mac = "bin/rakija", },
+   .win = "bin\iconoclast.exe",
+   .linux = "bin/iconoclast",
+   .mac = "bin/iconoclast", },
 };
 fkey_command = {
 .F1 = "build",

@@ -30,6 +30,6 @@ for /r ..\obj %%f in (*.obj) do (
     call set "objs=%%objs%% ..\obj\%%~nxf"
 )
 
-LINK /DEBUG %objs:~1% /OUT:rakija.exe user32.lib gdi32.lib
+LINK /DEBUG %objs:~1% /OUT:iconoclast.exe user32.lib gdi32.lib
 
 popd

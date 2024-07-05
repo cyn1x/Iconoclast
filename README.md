@@ -1,6 +1,6 @@
-# rakija
+# Overview
 
-Rakija is a game engine written in C/C++.
+Iconoclast is a game engine written in C/C++.
 
 ## Installation
 
@@ -18,7 +18,7 @@ Add `devenv` to the PATH to debug via the command-line interface.
 ### Debugging
 
 ```cmd
-devenv bin/rakija.exe
+devenv bin/iconoclast.exe
 ```
 
 Press `F11` to **Step Into** the program entry point, which shows the code being executed for debugging purposes.
