@@ -48,7 +48,7 @@ static void Win32ResizeDIBSection(win32_offscreen_buffer *buffer, int width,
 
 static HWND Win32CreateWindow(HINSTANCE hInstance)
 {
-    const char CLASS_NAME[] = "Rakija Engine Window Class";
+    const char CLASS_NAME[] = "Iconoclast Engine Window Class";
 
     WNDCLASSA  wc           = {0};
 
@@ -62,7 +62,7 @@ static HWND Win32CreateWindow(HINSTANCE hInstance)
     RegisterClassA(&wc);
 
     HWND hwnd = CreateWindowExA(
-        0, CLASS_NAME, "Rakija Engine", WS_OVERLAPPEDWINDOW,
+        0, CLASS_NAME, "Iconoclast Engine", WS_OVERLAPPEDWINDOW,
 
         CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,
 
