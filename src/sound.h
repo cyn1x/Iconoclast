@@ -10,9 +10,7 @@
 
 typedef DIRECT_SOUND_CREATE(direct_sound_create);
 
-static LPDIRECTSOUNDBUFFER SecondaryBuffer;
-
-void                       Win32InitDSound(HWND window);
-void                       Win32PlaySound(void);
+void Win32InitDSound(HWND window);
+void Win32PlaySound(void);
 
 #endif // SOUND_H
