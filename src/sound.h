@@ -1,7 +1,9 @@
 #ifndef SOUND_H
 #define SOUND_H
+#define _USE_MATH_DEFINES
 
 #include <dsound.h>
+#include <math.h>
 #include <stdint.h>
 
 #define DIRECT_SOUND_CREATE(name)                                              \

@@ -1,23 +1,75 @@
 #include "sound.h"
 
-LPDIRECTSOUNDBUFFER soundBuffer;
-
-uint32_t            sampleIndex         = 0;
-uint32_t            runningSampleIndex  = 0;
-
-int32_t             samplesPerSecond    = 48000;
-int16_t             toneHz              = 256;
-int16_t             toneVolume          = 3000;
-
-int                 squareWavePeriod    = samplesPerSecond / toneHz;
-int                 halfSquareWave      = squareWavePeriod / 2;
-int                 bytesPerSample      = sizeof(int16_t) * 2;
-int                 secondaryBufferSize = samplesPerSecond * bytesPerSample;
-
-void                Win32WriteSoundBuffer(int16_t *region, DWORD regionSize);
-
-void                Win32InitDSound(HWND window)
+struct win32_sound_output
 {
+    int      samplesPerSecond;
+    int      toneHz;
+    int16_t  toneVolume;
+    uint32_t runningSampleIndex;
+    int      bytesPerSample;
+    int      secondaryBufferSize;
+    int      latencySampleCount;
+};
+
+struct square_wave
+{
+    int squareWavePeriod;
+    int halfSquareWave;
+};
+
+struct sine_wave
+{
+    float tSine;
+    int   wavePeriod;
+};
+
+// TODO: Create Triangle Wave
+struct triangle_wave
+{
+};
+
+// TODO: Create Sawtooth Wave
+struct sawtooth_wave
+{
+};
+
+win32_sound_output  SoundOutput  = {};
+
+square_wave         SquareWave   = {};
+sine_wave           SineWave     = {};
+triangle_wave       TriangleWave = {};
+sawtooth_wave       Sawtoothave  = {};
+
+LPDIRECTSOUNDBUFFER SoundBuffer;
+
+void                Win32FillSoundBuffer(int16_t *region, DWORD regionSize);
+int16_t             CalculateSineWave();
+int16_t             CalculateSquareWave();
+int16_t             CalculateTriangleWave();
+int16_t             CalculateSawtoothWave();
+
+void                InitializeSoundOutput()
+{
+    SoundOutput.samplesPerSecond = 48000, SoundOutput.toneHz = 256;
+    SoundOutput.toneVolume         = 3000;
+    SoundOutput.runningSampleIndex = 0;
+    SoundOutput.bytesPerSample     = sizeof(int16_t) * 2;
+    SoundOutput.secondaryBufferSize =
+        SoundOutput.samplesPerSecond * SoundOutput.bytesPerSample;
+    SoundOutput.latencySampleCount = SoundOutput.samplesPerSecond / 15;
+
+    SquareWave.squareWavePeriod =
+        SoundOutput.samplesPerSecond / SoundOutput.toneHz;
+    SquareWave.halfSquareWave = SquareWave.squareWavePeriod / 2;
+
+    SineWave.tSine            = 0;
+    SineWave.wavePeriod = SoundOutput.samplesPerSecond / SoundOutput.toneHz;
+}
+
+void Win32InitDSound(HWND window)
+{
+    InitializeSoundOutput();
+
     HMODULE dSoundLibrary = LoadLibraryA("dsound.dll");
     if (!dSoundLibrary) {
         // Unable to load dsound.dll
@@ -40,7 +92,7 @@ void                Win32InitDSound(HWND window)
     WAVEFORMATEX waveFormat   = {};
     waveFormat.wFormatTag     = WAVE_FORMAT_PCM;
     waveFormat.nChannels      = 2;
-    waveFormat.nSamplesPerSec = samplesPerSecond;
+    waveFormat.nSamplesPerSec = SoundOutput.samplesPerSecond;
     waveFormat.wBitsPerSample = 16;
     waveFormat.nBlockAlign =
         (waveFormat.nChannels * waveFormat.wBitsPerSample) / 8;
@@ -81,20 +133,22 @@ void                Win32InitDSound(HWND window)
     bufferDescription               = {};
     bufferDescription.dwSize        = sizeof(bufferDescription);
     bufferDescription.dwFlags       = 0;
-    bufferDescription.dwBufferBytes = secondaryBufferSize;
+    bufferDescription.dwBufferBytes = SoundOutput.secondaryBufferSize;
     bufferDescription.lpwfxFormat   = &waveFormat;
 
     HRESULT createSecondaryBuffer =
-        directSound->CreateSoundBuffer(&bufferDescription, &soundBuffer, 0);
+        directSound->CreateSoundBuffer(&bufferDescription, &SoundBuffer, 0);
     if (FAILED(createSecondaryBuffer)) {
         // Error creating secondary DirectSoundBuffer
         // TODO: Add logging
     }
+
+    SoundBuffer->Play(0, 0, DSBPLAY_LOOPING);
 }
 
 void Win32PlaySound()
 {
-    if (!soundBuffer) {
+    if (!SoundBuffer) {
         // SoundBuffer is null
         // TODO: Add logging
         return;
@@ -103,30 +157,32 @@ void Win32PlaySound()
     DWORD   playCursor;
     DWORD   writeCursor;
     HRESULT getCurrentPosition =
-        soundBuffer->GetCurrentPosition(&playCursor, &writeCursor);
+        SoundBuffer->GetCurrentPosition(&playCursor, &writeCursor);
     if (FAILED(getCurrentPosition)) {
         // Failed to get the current position in the SoundBuffer
         // TODO: Add logging
         return;
     }
 
-    DWORD byteToLock =
-        runningSampleIndex * bytesPerSample % secondaryBufferSize;
+    DWORD byteToLock = SoundOutput.runningSampleIndex *
+                       SoundOutput.bytesPerSample %
+                       SoundOutput.secondaryBufferSize;
+    DWORD targetCursor = ((playCursor + (SoundOutput.latencySampleCount *
+                                         SoundOutput.bytesPerSample)) %
+                          SoundOutput.secondaryBufferSize);
     DWORD bytesToWrite;
-    if (byteToLock == playCursor) {
-        bytesToWrite = secondaryBufferSize;
-    } else if (byteToLock > playCursor) {
-        bytesToWrite = secondaryBufferSize - byteToLock;
-        bytesToWrite += playCursor;
+    if (byteToLock > targetCursor) {
+        bytesToWrite = SoundOutput.secondaryBufferSize - byteToLock;
+        bytesToWrite += targetCursor;
     } else {
-        bytesToWrite = playCursor - byteToLock;
+        bytesToWrite = targetCursor - byteToLock;
     }
 
     VOID *regionOne;
     DWORD regionOneSize;
     VOID *regionTwo;
     DWORD regionTwoSize;
-    if (FAILED(soundBuffer->Lock(byteToLock, bytesToWrite, &regionOne,
+    if (FAILED(SoundBuffer->Lock(byteToLock, bytesToWrite, &regionOne,
                                  &regionOneSize, &regionTwo, &regionTwoSize,
                                  0))) {
         // Error locking SoundBuffer
@@ -134,27 +190,44 @@ void Win32PlaySound()
         return;
     }
 
-    Win32WriteSoundBuffer((int16_t *)regionOne, regionOneSize);
-    Win32WriteSoundBuffer((int16_t *)regionTwo, regionTwoSize);
+    Win32FillSoundBuffer((int16_t *)regionOne, regionOneSize);
+    Win32FillSoundBuffer((int16_t *)regionTwo, regionTwoSize);
 
-    soundBuffer->Unlock(regionOne, regionOneSize, regionTwo, regionTwoSize);
-    soundBuffer->Play(0, 0, DSBPLAY_LOOPING);
+    SoundBuffer->Unlock(regionOne, regionOneSize, regionTwo, regionTwoSize);
 }
 
-void Win32WriteSoundBuffer(int16_t *region, DWORD regionSize)
+void Win32FillSoundBuffer(int16_t *region, DWORD regionSize)
 {
-    DWORD    regionSampleCount = regionSize / bytesPerSample;
+    DWORD    regionSampleCount = regionSize / SoundOutput.bytesPerSample;
     int16_t *sampleOut         = region;
-
-    sampleOut                  = region;
 
     for (DWORD sampleIndex = 0; sampleIndex < regionSampleCount;
          ++sampleIndex) {
 
-        int16_t sampleValue = ((runningSampleIndex++ / halfSquareWave) % 2)
-                                  ? toneVolume
-                                  : -toneVolume;
-        *sampleOut++        = sampleValue;
-        *sampleOut++        = sampleValue;
+        float sampleValue = CalculateSineWave();
+
+        *sampleOut++      = sampleValue;
+        *sampleOut++      = sampleValue;
+
+        SoundOutput.runningSampleIndex++;
     }
+}
+
+int16_t CalculateSineWave()
+{
+    float   sineValue   = sinf(SineWave.tSine);
+    int16_t sampleValue = (int16_t)(sineValue * SoundOutput.toneVolume);
+    SineWave.tSine += 2.0f * M_PI * 1.0f / (float)SineWave.wavePeriod;
+
+    return sampleValue;
+}
+
+int16_t CalculateSquareWave()
+{
+    int16_t sampleValue =
+        ((SoundOutput.runningSampleIndex++ / SquareWave.halfSquareWave) % 2)
+            ? SoundOutput.toneVolume
+            : -SoundOutput.toneVolume;
+
+    return sampleValue;
 }
