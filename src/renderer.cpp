@@ -7,19 +7,19 @@ void Render(win32_offscreen_buffer *buffer)
 
         uint8_t *pixel = (uint8_t *)row;
         for (int x = 0; x < buffer->width; ++x) {
-            *pixel = ((double)rand() / 255) * (255 - 0) + 0;
+            *pixel = 255;
             ++pixel;
-            
-            *pixel = ((double)rand() / 255) * (255 - 0) + 0;
+
+            *pixel = 255;
             ++pixel;
-            
-            *pixel = ((double)rand() / 255) * (255 - 0) + 0;
+
+            *pixel = 255;
             ++pixel;
-            
+
             *pixel = 0;
             ++pixel;
         }
-        
+
         row += buffer->pitch;
     }
 }
