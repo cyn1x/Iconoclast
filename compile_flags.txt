@@ -1,0 +1,6 @@
+-I
+./lib/libcspd/include/
+-I
+./lib/libcspd/include/dsa/vector/
+-I
+./lib/libcspd/include/util/
