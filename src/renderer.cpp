@@ -1,4 +1,5 @@
 #include "renderer.h"
+#include <stdint.h>
 
 void Render(win32_offscreen_buffer *buffer)
 {

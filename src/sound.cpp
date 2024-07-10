@@ -1,4 +1,6 @@
 #include "sound.h"
+#include <math.h>
+#include <stdint.h>
 
 struct win32_sound_output
 {

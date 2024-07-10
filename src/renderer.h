@@ -1,7 +1,6 @@
 #ifndef RENDERER_H
 #define RENDERER_H
 
-#include <stdint.h>
 #include <windows.h>
 
 struct win32_offscreen_buffer
@@ -13,8 +12,8 @@ struct win32_offscreen_buffer
     int        pitch;
 };
 
-static win32_offscreen_buffer Backbuffer;
+static struct win32_offscreen_buffer Backbuffer;
 
-void                          Render(win32_offscreen_buffer *buffer);
+void Render(struct win32_offscreen_buffer *buffer);
 
 #endif // RENDERER_H

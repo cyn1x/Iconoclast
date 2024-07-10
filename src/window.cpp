@@ -1,4 +1,6 @@
 #include "window.h"
+#include "input.h"
+#include "renderer.h"
 #include "sound.h"
 
 static win32_window_dimensions GetWindowDimensions(HWND hwnd)

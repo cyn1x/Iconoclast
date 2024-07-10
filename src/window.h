@@ -1,11 +1,8 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
+#include <stdbool.h>
 #include <windows.h>
-
-#include "input.h"
-#include "renderer.h"
-#include "sound.h"
 
 struct win32_window_dimensions
 {
