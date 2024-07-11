@@ -1,12 +1,12 @@
 #include "renderer.h"
-#include <stdint.h>
+#include "types.h"
 
 void Render(win32_offscreen_buffer *buffer)
 {
-    uint8_t *row = (uint8_t *)buffer->memory;
+    uint8 *row = (uint8 *)buffer->memory;
     for (int y = 0; y < buffer->height; ++y) {
 
-        uint8_t *pixel = (uint8_t *)row;
+        uint8 *pixel = (uint8 *)row;
         for (int x = 0; x < buffer->width; ++x) {
             *pixel = 255;
             ++pixel;

@@ -1,16 +1,16 @@
 #include "sound.h"
+#include "types.h"
 #include <math.h>
-#include <stdint.h>
 
 struct win32_sound_output
 {
-    int      samplesPerSecond;
-    int      toneHz;
-    int16_t  toneVolume;
-    uint32_t runningSampleIndex;
-    int      bytesPerSample;
-    int      secondaryBufferSize;
-    int      latencySampleCount;
+    int    samplesPerSecond;
+    int    toneHz;
+    int16  toneVolume;
+    uint32 runningSampleIndex;
+    int    bytesPerSample;
+    int    secondaryBufferSize;
+    int    latencySampleCount;
 };
 
 struct square_wave
@@ -45,17 +45,17 @@ sawtooth_wave       Sawtoothave  = {};
 LPDIRECTSOUNDBUFFER SoundBuffer;
 
 void                Win32FillSoundBuffer(int16_t *region, DWORD regionSize);
-int16_t             CalculateSineWave();
-int16_t             CalculateSquareWave();
-int16_t             CalculateTriangleWave();
-int16_t             CalculateSawtoothWave();
+int16               CalculateSineWave();
+int16               CalculateSquareWave();
+int16               CalculateTriangleWave();
+int16               CalculateSawtoothWave();
 
 void                InitializeSoundOutput()
 {
     SoundOutput.samplesPerSecond = 48000, SoundOutput.toneHz = 256;
     SoundOutput.toneVolume         = 3000;
     SoundOutput.runningSampleIndex = 0;
-    SoundOutput.bytesPerSample     = sizeof(int16_t) * 2;
+    SoundOutput.bytesPerSample     = sizeof(int16) * 2;
     SoundOutput.secondaryBufferSize =
         SoundOutput.samplesPerSecond * SoundOutput.bytesPerSample;
     SoundOutput.latencySampleCount = SoundOutput.samplesPerSecond / 15;
@@ -192,16 +192,16 @@ void Win32PlaySound()
         return;
     }
 
-    Win32FillSoundBuffer((int16_t *)regionOne, regionOneSize);
-    Win32FillSoundBuffer((int16_t *)regionTwo, regionTwoSize);
+    Win32FillSoundBuffer((int16 *)regionOne, regionOneSize);
+    Win32FillSoundBuffer((int16 *)regionTwo, regionTwoSize);
 
     SoundBuffer->Unlock(regionOne, regionOneSize, regionTwo, regionTwoSize);
 }
 
 void Win32FillSoundBuffer(int16_t *region, DWORD regionSize)
 {
-    DWORD    regionSampleCount = regionSize / SoundOutput.bytesPerSample;
-    int16_t *sampleOut         = region;
+    DWORD  regionSampleCount = regionSize / SoundOutput.bytesPerSample;
+    int16 *sampleOut         = region;
 
     for (DWORD sampleIndex = 0; sampleIndex < regionSampleCount;
          ++sampleIndex) {
@@ -217,8 +217,8 @@ void Win32FillSoundBuffer(int16_t *region, DWORD regionSize)
 
 int16_t CalculateSineWave()
 {
-    float   sineValue   = sinf(SineWave.tSine);
-    int16_t sampleValue = (int16_t)(sineValue * SoundOutput.toneVolume);
+    float sineValue   = sinf(SineWave.tSine);
+    int16 sampleValue = (int16)(sineValue * SoundOutput.toneVolume);
     SineWave.tSine += 2.0f * M_PI * 1.0f / (float)SineWave.wavePeriod;
 
     return sampleValue;
@@ -226,7 +226,7 @@ int16_t CalculateSineWave()
 
 int16_t CalculateSquareWave()
 {
-    int16_t sampleValue =
+    int16 sampleValue =
         ((SoundOutput.runningSampleIndex++ / SquareWave.halfSquareWave) % 2)
             ? SoundOutput.toneVolume
             : -SoundOutput.toneVolume;

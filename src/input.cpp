@@ -1,6 +1,6 @@
 #include "input.h"
+#include "types.h"
 #include "window.h"
-#include <stdint.h>
 
 X_INPUT_GET_STATE(XInputGetStateStub) { return ERROR_DEVICE_NOT_CONNECTED; }
 
@@ -63,13 +63,13 @@ void HandleXInput()
             bool leftShoulder = (pad->wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER);
             bool rightShoulder =
                 (pad->wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER);
-            bool    gamepadA = (pad->wButtons & XINPUT_GAMEPAD_A);
-            bool    gamepadB = (pad->wButtons & XINPUT_GAMEPAD_B);
-            bool    gamepadC = (pad->wButtons & XINPUT_GAMEPAD_X);
-            bool    gamepadD = (pad->wButtons & XINPUT_GAMEPAD_Y);
+            bool  gamepadA = (pad->wButtons & XINPUT_GAMEPAD_A);
+            bool  gamepadB = (pad->wButtons & XINPUT_GAMEPAD_B);
+            bool  gamepadC = (pad->wButtons & XINPUT_GAMEPAD_X);
+            bool  gamepadD = (pad->wButtons & XINPUT_GAMEPAD_Y);
 
-            int16_t stick_x  = pad->sThumbLX;
-            int16_t stick_y  = pad->sThumbLY;
+            int16 stick_x  = pad->sThumbLX;
+            int16 stick_y  = pad->sThumbLY;
         } else {
             // Controller is not connected
             // TODO: Add logging
@@ -79,10 +79,10 @@ void HandleXInput()
 
 void HandleKeyInput(WPARAM wParam, LPARAM lParam)
 {
-    uint32_t VKCode        = wParam;
-    bool     wasDown       = ((lParam & (1 << 30)) != 0);
-    bool     isDown        = ((lParam & (1 << 31)) == 0);
-    int      altKeyWasDown = (lParam & (1 << 29));
+    uint32 VKCode        = wParam;
+    bool   wasDown       = ((lParam & (1 << 30)) != 0);
+    bool   isDown        = ((lParam & (1 << 31)) == 0);
+    int    altKeyWasDown = (lParam & (1 << 29));
 
     if (wasDown != isDown) {
         switch (VKCode) {
