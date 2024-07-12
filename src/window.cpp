@@ -1,5 +1,6 @@
 #include "window.h"
 #include "input.h"
+#include "profiler.h"
 #include "renderer.h"
 #include "sound.h"
 
@@ -88,7 +89,10 @@ int Run(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine,
 
     Win32InitDSound(hwnd);
 
-    Running = true;
+    Running       = true;
+
+    profiler prof = {};
+    Win32StartProfiler(&prof);
     while (Running) {
         MSG msg = {0};
 
@@ -108,6 +112,8 @@ int Run(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine,
         win32_window_dimensions dimensions = GetWindowDimensions(hwnd);
         Win32CopyBufferToWindow(&Backbuffer, hdc, dimensions.width,
                                 dimensions.height);
+
+        Win32UpdateProfiler(&prof);
     }
 
     return 0;
