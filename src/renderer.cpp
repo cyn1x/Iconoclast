@@ -1,7 +1,7 @@
 #include "renderer.h"
 #include "types.h"
 
-void Render(win32_offscreen_buffer *buffer)
+void Render(offscreen_buffer *buffer)
 {
     uint8 *row = (uint8 *)buffer->memory;
     for (int y = 0; y < buffer->height; ++y) {

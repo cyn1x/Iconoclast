@@ -4,7 +4,18 @@
 #include "renderer.h"
 #include "sound.h"
 
-static win32_window_dimensions GetWindowDimensions(HWND hwnd)
+struct win32_offscreen_buffer
+{
+    BITMAPINFO info;
+    void      *memory;
+    int        width;
+    int        height;
+    int        pitch;
+};
+
+static struct win32_offscreen_buffer Win32Backbuffer;
+
+static win32_window_dimensions       GetWindowDimensions(HWND hwnd)
 {
     win32_window_dimensions result;
 
@@ -55,7 +66,7 @@ static HWND Win32CreateWindow(HINSTANCE hInstance)
 
     WNDCLASSA  wc           = {0};
 
-    Win32ResizeDIBSection(&Backbuffer, 1280, 720);
+    Win32ResizeDIBSection(&Win32Backbuffer, 1280, 720);
 
     wc.style         = CS_HREDRAW | CS_VREDRAW;
     wc.lpfnWndProc   = WindowProc;
@@ -105,12 +116,18 @@ int Run(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine,
             DispatchMessageA(&msg);
         }
 
+        offscreen_buffer backbuffer = {};
+        backbuffer.memory           = Win32Backbuffer.memory;
+        backbuffer.width            = Win32Backbuffer.width;
+        backbuffer.height           = Win32Backbuffer.height;
+        backbuffer.pitch            = Win32Backbuffer.pitch;
+
         HandleXInput();
-        Render(&Backbuffer);
+        Render(&backbuffer);
         Win32PlaySound();
 
         win32_window_dimensions dimensions = GetWindowDimensions(hwnd);
-        Win32CopyBufferToWindow(&Backbuffer, hdc, dimensions.width,
+        Win32CopyBufferToWindow(&Win32Backbuffer, hdc, dimensions.width,
                                 dimensions.height);
 
         Win32UpdateProfiler(&prof);
@@ -140,7 +157,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         int                     h          = ps.rcPaint.bottom - ps.rcPaint.top;
 
         win32_window_dimensions dimensions = GetWindowDimensions(hwnd);
-        Win32CopyBufferToWindow(&Backbuffer, hdc, dimensions.width,
+        Win32CopyBufferToWindow(&Win32Backbuffer, hdc, dimensions.width,
                                 dimensions.height);
 
         EndPaint(hwnd, &ps);
