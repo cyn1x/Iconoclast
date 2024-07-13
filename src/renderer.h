@@ -11,4 +11,4 @@ struct offscreen_buffer
 
 void Render(struct offscreen_buffer *buffer);
 
-#endif // RENDERER_H
+#endif // !RENDERER_H

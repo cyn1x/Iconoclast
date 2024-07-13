@@ -78,8 +78,14 @@ goto :eof
 
 pushd obj
 
-for /r ..\src %%F in (*.cpp) do (
+rem Reference platform agnostic source files
+for %%F in (..\src\*.cpp) do (
     call set "srcs=%%srcs%% ..\src\%%~nxF"
+)
+
+rem Reference win32 specific source files
+for /r ..\src\win32 %%F in (*.cpp) do (
+    call set "srcs=%%srcs%% ..\src\win32\%%~nxF"
 )
 
 cl /c -Zi %srcs:~1% %incs%

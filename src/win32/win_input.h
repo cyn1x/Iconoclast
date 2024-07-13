@@ -1,5 +1,5 @@
-#ifndef INPUT_H
-#define INPUT_H
+#ifndef WIN_INPUT_H
+#define WIN_INPUT_H
 
 // clang-format off
 #include <windows.h>
@@ -21,4 +21,4 @@ void Win32LoadXInput(void);
 void HandleXInput(void);
 void HandleKeyInput(WPARAM wParam, LPARAM lParam);
 
-#endif // INPUT_H
+#endif // !WIN_INPUT_H

@@ -2,11 +2,12 @@
 #define UNICODE
 #endif
 
-#include "input.h"
-#include "profiler.h"
-#include "renderer.h"
-#include "sound.h"
-#include "window.h"
+#include "../app.h"
+#include "../renderer.h"
+#include "win_input.h"
+#include "win_profiler.h"
+#include "win_sound.h"
+#include "win_window.h"
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
                     PWSTR pCmdLine, int nCmdShow)
@@ -40,7 +41,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
         backbuffer.pitch            = Win32Backbuffer.pitch;
 
         HandleXInput();
-        Render(&backbuffer);
+        Update(&backbuffer);
         Win32PlaySound();
         Win32UpdateWindow(hwnd, hdc);
         Win32UpdateProfiler(&prof);

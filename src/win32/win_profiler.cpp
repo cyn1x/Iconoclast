@@ -1,4 +1,4 @@
-#include "profiler.h"
+#include "win_profiler.h"
 #include <stdio.h>
 
 void Win32StartProfiler(profiler *prof)

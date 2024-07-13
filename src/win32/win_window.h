@@ -1,5 +1,5 @@
-#ifndef WINDOW_H
-#define WINDOW_H
+#ifndef WIN_WINDOW_H
+#define WIN_WINDOW_H
 
 #include <stdbool.h>
 #include <windows.h>
@@ -29,4 +29,4 @@ HWND        Win32InitWindow(HINSTANCE hInstance, HINSTANCE hPrevInstance,
                             PWSTR pCmdLine, int nCmdShow);
 void        Win32UpdateWindow(HWND hwnd, HDC hdc);
 
-#endif // WINDOW_H
+#endif // !WIN_WINDOW_H

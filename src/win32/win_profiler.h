@@ -1,5 +1,5 @@
-#ifndef PROFILER_H
-#define PROFILER_H
+#ifndef WIN_PROFILER_H
+#define WIN_PROFILER_H
 
 #include <windows.h>
 
@@ -15,4 +15,4 @@ void Win32StartProfiler(profiler *prof);
 void Win32UpdateProfiler(profiler *prof);
 void Win32EndProfiler(profiler *prof);
 
-#endif // PROFILER_H
+#endif // !WIN_PROFILER_H

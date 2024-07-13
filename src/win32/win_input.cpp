@@ -1,6 +1,6 @@
-#include "input.h"
+#include "win_input.h"
 #include "types.h"
-#include "window.h"
+#include "win_window.h"
 
 X_INPUT_GET_STATE(XInputGetStateStub) { return ERROR_DEVICE_NOT_CONNECTED; }
 

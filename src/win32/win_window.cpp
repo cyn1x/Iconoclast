@@ -1,5 +1,5 @@
-#include "window.h"
-#include "input.h"
+#include "win_window.h"
+#include "win_input.h"
 
 struct win32_offscreen_buffer Win32Backbuffer = {};
 
