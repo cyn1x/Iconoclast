@@ -4,17 +4,29 @@
 #include <stdbool.h>
 #include <windows.h>
 
+struct win32_offscreen_buffer
+{
+    BITMAPINFO info;
+    void      *memory;
+    int        width;
+    int        height;
+    int        pitch;
+};
+
 struct win32_window_dimensions
 {
     int width;
     int height;
 };
 
-// FIX: Restrict applicable callers
-static bool      Running;
+extern struct win32_offscreen_buffer  Win32Backbuffer;
+static struct win32_window_dimensions Win32GetWindowDimensions(HWND hwnd);
 
-LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
-int Run(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine,
-        int nCmdShow);
+// FIX: Restrict applicable callers
+static bool Running;
+
+HWND        Win32InitWindow(HINSTANCE hInstance, HINSTANCE hPrevInstance,
+                            PWSTR pCmdLine, int nCmdShow);
+void        Win32UpdateWindow(HWND hwnd, HDC hdc);
 
 #endif // WINDOW_H

@@ -1,21 +1,11 @@
 #include "window.h"
 #include "input.h"
-#include "profiler.h"
-#include "renderer.h"
-#include "sound.h"
 
-struct win32_offscreen_buffer
-{
-    BITMAPINFO info;
-    void      *memory;
-    int        width;
-    int        height;
-    int        pitch;
-};
+struct win32_offscreen_buffer Win32Backbuffer = {};
 
-static struct win32_offscreen_buffer Win32Backbuffer;
+LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
-static win32_window_dimensions       GetWindowDimensions(HWND hwnd)
+static win32_window_dimensions Win32GetWindowDimensions(HWND hwnd)
 {
     win32_window_dimensions result;
 
@@ -85,55 +75,24 @@ static HWND Win32CreateWindow(HINSTANCE hInstance)
     return hwnd;
 }
 
-int Run(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine,
-        int nCmdShow)
+HWND Win32InitWindow(HINSTANCE hInstance, HINSTANCE hPrevInstance,
+                     PWSTR pCmdLine, int nCmdShow)
 {
-    Win32LoadXInput();
-
     HWND hwnd = Win32CreateWindow(hInstance);
     if (hwnd == NULL) {
         return 0;
     }
 
     ShowWindow(hwnd, nCmdShow);
-    HDC hdc = GetDC(hwnd);
 
-    Win32InitDSound(hwnd);
+    return hwnd;
+}
 
-    Running       = true;
-
-    profiler prof = {};
-    Win32StartProfiler(&prof);
-    while (Running) {
-        MSG msg = {0};
-
-        while (PeekMessage(&msg, 0, 0, 0, PM_REMOVE)) {
-            if (msg.message == WM_QUIT) {
-                Running = false;
-            }
-
-            TranslateMessage(&msg);
-            DispatchMessageA(&msg);
-        }
-
-        offscreen_buffer backbuffer = {};
-        backbuffer.memory           = Win32Backbuffer.memory;
-        backbuffer.width            = Win32Backbuffer.width;
-        backbuffer.height           = Win32Backbuffer.height;
-        backbuffer.pitch            = Win32Backbuffer.pitch;
-
-        HandleXInput();
-        Render(&backbuffer);
-        Win32PlaySound();
-
-        win32_window_dimensions dimensions = GetWindowDimensions(hwnd);
-        Win32CopyBufferToWindow(&Win32Backbuffer, hdc, dimensions.width,
-                                dimensions.height);
-
-        Win32UpdateProfiler(&prof);
-    }
-
-    return 0;
+void Win32UpdateWindow(HWND hwnd, HDC hdc)
+{
+    win32_window_dimensions dimensions = Win32GetWindowDimensions(hwnd);
+    Win32CopyBufferToWindow(&Win32Backbuffer, hdc, dimensions.width,
+                            dimensions.height);
 }
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -156,7 +115,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         int                     w          = ps.rcPaint.right - ps.rcPaint.left;
         int                     h          = ps.rcPaint.bottom - ps.rcPaint.top;
 
-        win32_window_dimensions dimensions = GetWindowDimensions(hwnd);
+        win32_window_dimensions dimensions = Win32GetWindowDimensions(hwnd);
         Win32CopyBufferToWindow(&Win32Backbuffer, hdc, dimensions.width,
                                 dimensions.height);
 
