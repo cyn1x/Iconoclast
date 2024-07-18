@@ -1,8 +1,10 @@
 #ifndef APP_H
 #define APP_H
 
+#include "audio.h"
 #include "renderer.h"
 
-void Update(struct offscreen_buffer *buffer);
+void GameUpdate(struct output_graphics_buffer *graphicsBuffer,
+                struct output_sound_buffer    *soundBuffer);
 
 #endif // !APP_H

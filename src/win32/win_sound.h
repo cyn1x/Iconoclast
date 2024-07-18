@@ -1,7 +1,7 @@
 #ifndef WIN_SOUND_H
 #define WIN_SOUND_H
-#define _USE_MATH_DEFINES
 
+#include "../audio.h"
 #include <dsound.h>
 
 #define DIRECT_SOUND_CREATE(name)                                              \
@@ -11,6 +11,8 @@
 typedef DIRECT_SOUND_CREATE(direct_sound_create);
 
 void Win32InitDSound(HWND window);
-void Win32PlaySound(void);
+void Win32SetPlatformData(struct output_sound_buffer *buffer);
+void Win32UpdateSound(struct output_sound_buffer *buffer);
+void Win32WriteSoundBuffer(struct output_sound_buffer *buffer);
 
 #endif // !WIN_SOUND_H

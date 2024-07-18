@@ -3,6 +3,7 @@
 #endif
 
 #include "../app.h"
+#include "../audio.h"
 #include "../renderer.h"
 #include "win_input.h"
 #include "win_profiler.h"
@@ -16,8 +17,11 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
     HWND hwnd = Win32InitWindow(hInstance, hPrevInstance, pCmdLine, nCmdShow);
     HDC  hdc  = GetDC(hwnd);
+    output_sound_buffer soundbuffer = {};
 
     Win32InitDSound(hwnd);
+    Win32SetPlatformData(&soundbuffer);
+    PlatformInitAudio(&soundbuffer);
 
     Running       = true;
     profiler prof = {};
@@ -34,15 +38,16 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
             DispatchMessageA(&msg);
         }
 
-        offscreen_buffer backbuffer = {};
-        backbuffer.memory           = Win32Backbuffer.memory;
-        backbuffer.width            = Win32Backbuffer.width;
-        backbuffer.height           = Win32Backbuffer.height;
-        backbuffer.pitch            = Win32Backbuffer.pitch;
+        output_graphics_buffer backbuffer = {};
+        backbuffer.memory                 = Win32Backbuffer.memory;
+        backbuffer.width                  = Win32Backbuffer.width;
+        backbuffer.height                 = Win32Backbuffer.height;
+        backbuffer.pitch                  = Win32Backbuffer.pitch;
 
         HandleXInput();
-        Update(&backbuffer);
-        Win32PlaySound();
+        Win32UpdateSound(&soundbuffer);
+        GameUpdate(&backbuffer, &soundbuffer);
+        Win32WriteSoundBuffer(&soundbuffer);
         Win32UpdateWindow(hwnd, hdc);
         Win32UpdateProfiler(&prof);
     }
