@@ -17,14 +17,15 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
     HWND hwnd = Win32InitWindow(hInstance, hPrevInstance, pCmdLine, nCmdShow);
     HDC  hdc  = GetDC(hwnd);
-    output_sound_buffer soundbuffer = {};
 
-    Win32InitDSound(hwnd);
-    Win32SetPlatformData(&soundbuffer);
-    PlatformInitAudio(&soundbuffer);
+    platform_graphics_buffer graphicsBuffer = {};
+    platform_sound_buffer    soundBuffer    = {};
 
-    Running       = true;
-    profiler prof = {};
+    Win32InitDSound(hwnd, &soundBuffer);
+    PlatformInitAudio(&soundBuffer);
+
+    Running             = true;
+    win32_profiler prof = {};
     Win32StartProfiler(&prof);
     while (Running) {
         MSG msg = {0};
@@ -38,16 +39,11 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
             DispatchMessageA(&msg);
         }
 
-        output_graphics_buffer backbuffer = {};
-        backbuffer.memory                 = Win32Backbuffer.memory;
-        backbuffer.width                  = Win32Backbuffer.width;
-        backbuffer.height                 = Win32Backbuffer.height;
-        backbuffer.pitch                  = Win32Backbuffer.pitch;
-
         HandleXInput();
-        Win32UpdateSound(&soundbuffer);
-        GameUpdate(&backbuffer, &soundbuffer);
-        Win32WriteSoundBuffer(&soundbuffer);
+        Win32UpdateAudio(&soundBuffer);
+        Win32UpdateGraphics(&graphicsBuffer);
+        GameUpdate(&graphicsBuffer, &soundBuffer);
+        Win32UpdateSound(&soundBuffer);
         Win32UpdateWindow(hwnd, hdc);
         Win32UpdateProfiler(&prof);
     }

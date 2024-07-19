@@ -10,9 +10,8 @@
 
 typedef DIRECT_SOUND_CREATE(direct_sound_create);
 
-void Win32InitDSound(HWND window);
-void Win32SetPlatformData(struct output_sound_buffer *buffer);
-void Win32UpdateSound(struct output_sound_buffer *buffer);
-void Win32WriteSoundBuffer(struct output_sound_buffer *buffer);
+void Win32InitDSound(HWND window, struct platform_sound_buffer *platformBuffer);
+void Win32UpdateAudio(struct platform_sound_buffer *platformBuffer);
+void Win32UpdateSound(struct platform_sound_buffer *platformBuffer);
 
 #endif // !WIN_SOUND_H

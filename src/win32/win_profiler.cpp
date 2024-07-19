@@ -1,14 +1,14 @@
 #include "win_profiler.h"
 #include <stdio.h>
 
-void Win32StartProfiler(profiler *prof)
+void Win32StartProfiler(win32_profiler *prof)
 {
     QueryPerformanceFrequency(&prof->Frequency);
     QueryPerformanceCounter(&prof->StartingTime);
     prof->LastCycleCount = __rdtsc();
 }
 
-void Win32UpdateProfiler(profiler *prof)
+void Win32UpdateProfiler(win32_profiler *prof)
 {
     // Calculates the elapsed miliseconds per frame, the frames per second and
     // the megacycles per frame.

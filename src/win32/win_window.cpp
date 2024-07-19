@@ -95,6 +95,14 @@ void Win32UpdateWindow(HWND hwnd, HDC hdc)
                             dimensions.height);
 }
 
+void Win32UpdateGraphics(struct platform_graphics_buffer *platformBuffer)
+{
+    platformBuffer->memory = Win32Backbuffer.memory;
+    platformBuffer->width  = Win32Backbuffer.width;
+    platformBuffer->height = Win32Backbuffer.height;
+    platformBuffer->pitch  = Win32Backbuffer.pitch;
+}
+
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     switch (uMsg) {

@@ -28,12 +28,12 @@ sine_wave     SineWave     = {};
 triangle_wave TriangleWave = {};
 sawtooth_wave Sawtoothave  = {};
 
-static int16  CalculateSineWave(output_sound_buffer *buffer);
-static int16  CalculateSquareWave(output_sound_buffer *buffer);
-static int16  CalculateTriangleWave(output_sound_buffer *buffer);
-static int16  CalculateSawtoothWave(output_sound_buffer *buffer);
+static int16  CalculateSineWave(platform_sound_buffer *buffer);
+static int16  CalculateSquareWave(platform_sound_buffer *buffer);
+static int16  CalculateTriangleWave(platform_sound_buffer *buffer);
+static int16  CalculateSawtoothWave(platform_sound_buffer *buffer);
 
-void          PlatformInitAudio(output_sound_buffer *buffer)
+void          PlatformInitAudio(platform_sound_buffer *buffer)
 {
     SquareWave.squareWavePeriod = buffer->samplesPerSec / buffer->toneHz;
     SquareWave.halfSquareWave   = SquareWave.squareWavePeriod / 2;
@@ -42,7 +42,7 @@ void          PlatformInitAudio(output_sound_buffer *buffer)
     SineWave.wavePeriod         = buffer->samplesPerSec / buffer->toneHz;
 }
 
-void OutputSound(output_sound_buffer *buffer)
+void OutputSound(platform_sound_buffer *buffer)
 {
     int16 *sampleOut = buffer->samples;
 
@@ -58,7 +58,7 @@ void OutputSound(output_sound_buffer *buffer)
     }
 }
 
-int16_t CalculateSineWave(output_sound_buffer *buffer)
+int16_t CalculateSineWave(platform_sound_buffer *buffer)
 {
     float sineValue   = sinf(SineWave.tSine);
     int16 sampleValue = (int16)(sineValue * buffer->toneVolume);
@@ -67,7 +67,7 @@ int16_t CalculateSineWave(output_sound_buffer *buffer)
     return sampleValue;
 }
 
-int16_t CalculateSquareWave(output_sound_buffer *buffer)
+int16_t CalculateSquareWave(platform_sound_buffer *buffer)
 {
     int   squareWavePeriod = buffer->samplesPerSec / buffer->toneHz;
     int   halfSquareWave   = squareWavePeriod / 2;

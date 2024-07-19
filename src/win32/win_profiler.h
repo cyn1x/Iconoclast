@@ -3,16 +3,16 @@
 
 #include <windows.h>
 
-typedef struct profiler
+typedef struct win32_profiler
 {
     LARGE_INTEGER    StartingTime, EndingTime;
     LARGE_INTEGER    ElapsedMicroseconds, ElapsedCycles;
     LARGE_INTEGER    Frequency;
     unsigned __int64 LastCycleCount, EndCycleCount;
-} profiler;
+} win32_profiler;
 
-void Win32StartProfiler(profiler *prof);
-void Win32UpdateProfiler(profiler *prof);
-void Win32EndProfiler(profiler *prof);
+void Win32StartProfiler(win32_profiler *prof);
+void Win32UpdateProfiler(win32_profiler *prof);
+void Win32EndProfiler(win32_profiler *prof);
 
 #endif // !WIN_PROFILER_H

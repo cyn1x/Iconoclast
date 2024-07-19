@@ -4,7 +4,7 @@
 
 #include "types.h"
 
-struct output_sound_buffer
+struct platform_sound_buffer
 {
     int    samplesPerSec;
     int    sampleCount;
@@ -15,7 +15,7 @@ struct output_sound_buffer
     uint32 runningSampleIndex;
 };
 
-void OutputSound(struct output_sound_buffer *buffer);
-void PlatformInitAudio(struct output_sound_buffer *buffer);
+void OutputSound(struct platform_sound_buffer *buffer);
+void PlatformInitAudio(struct platform_sound_buffer *buffer);
 
 #endif // !AUDIO_H

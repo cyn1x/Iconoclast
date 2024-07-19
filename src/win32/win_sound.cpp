@@ -14,7 +14,7 @@ struct win32_sound_output
     DWORD  bytesToWrite;
 };
 
-win32_sound_output  SoundOutput = {};
+win32_sound_output  Win32SoundOutput = {};
 
 LPDIRECTSOUNDBUFFER SoundBuffer;
 
@@ -22,30 +22,30 @@ void                Win32ClearSoundBuffer();
 
 void                Win32InitSoundData()
 {
-    SoundOutput.samplesPerSec      = 48000;
-    SoundOutput.toneHz             = 256;
-    SoundOutput.toneVolume         = 3000;
-    SoundOutput.runningSampleIndex = 0;
-    SoundOutput.bytesPerSample     = sizeof(int16) * 2;
-    SoundOutput.secondaryBufferSize =
-        SoundOutput.samplesPerSec * SoundOutput.bytesPerSample;
+    Win32SoundOutput.samplesPerSec      = 48000;
+    Win32SoundOutput.toneHz             = 256;
+    Win32SoundOutput.toneVolume         = 3000;
+    Win32SoundOutput.runningSampleIndex = 0;
+    Win32SoundOutput.bytesPerSample     = sizeof(int16) * 2;
+    Win32SoundOutput.secondaryBufferSize =
+        Win32SoundOutput.samplesPerSec * Win32SoundOutput.bytesPerSample;
     // FIX: Dynamically determine latency to avoid any output skipping
-    SoundOutput.latencySampleCount = SoundOutput.samplesPerSec / 15;
+    Win32SoundOutput.latencySampleCount = Win32SoundOutput.samplesPerSec / 15;
 }
 
-void Win32SetPlatformData(output_sound_buffer *buffer)
+void Win32InitPlatformSound(platform_sound_buffer *platformBuffer)
 {
     int16 samples[48000 * sizeof(int16) * 2];
 
-    buffer->samples            = samples;
-    buffer->samplesPerSec      = SoundOutput.samplesPerSec;
-    buffer->toneHz             = SoundOutput.toneHz;
-    buffer->toneVolume         = SoundOutput.toneVolume;
-    buffer->runningSampleIndex = SoundOutput.runningSampleIndex;
-    buffer->bytesPerSample     = SoundOutput.bytesPerSample;
+    platformBuffer->samples            = samples;
+    platformBuffer->samplesPerSec      = Win32SoundOutput.samplesPerSec;
+    platformBuffer->toneHz             = Win32SoundOutput.toneHz;
+    platformBuffer->toneVolume         = Win32SoundOutput.toneVolume;
+    platformBuffer->runningSampleIndex = Win32SoundOutput.runningSampleIndex;
+    platformBuffer->bytesPerSample     = Win32SoundOutput.bytesPerSample;
 }
 
-void Win32InitDSound(HWND window)
+void Win32InitDSound(HWND window, platform_sound_buffer *platformBuffer)
 {
     Win32InitSoundData();
 
@@ -71,7 +71,7 @@ void Win32InitDSound(HWND window)
     WAVEFORMATEX waveFormat   = {};
     waveFormat.wFormatTag     = WAVE_FORMAT_PCM;
     waveFormat.nChannels      = 2;
-    waveFormat.nSamplesPerSec = SoundOutput.samplesPerSec;
+    waveFormat.nSamplesPerSec = Win32SoundOutput.samplesPerSec;
     waveFormat.wBitsPerSample = 16;
     waveFormat.nBlockAlign =
         (waveFormat.nChannels * waveFormat.wBitsPerSample) / 8;
@@ -104,7 +104,7 @@ void Win32InitDSound(HWND window)
 
     HRESULT setFormat = primaryBuffer->SetFormat(&waveFormat);
     if (FAILED(setFormat)) {
-        // Error setting the format of the primary buffer
+        // Error setting the format of the primary platformBuffer
         // TODO: Add logging
         return;
     }
@@ -112,7 +112,7 @@ void Win32InitDSound(HWND window)
     bufferDescription               = {};
     bufferDescription.dwSize        = sizeof(bufferDescription);
     bufferDescription.dwFlags       = 0;
-    bufferDescription.dwBufferBytes = SoundOutput.secondaryBufferSize;
+    bufferDescription.dwBufferBytes = Win32SoundOutput.secondaryBufferSize;
     bufferDescription.lpwfxFormat   = &waveFormat;
 
     HRESULT createSecondaryBuffer =
@@ -123,11 +123,12 @@ void Win32InitDSound(HWND window)
     }
 
     Win32ClearSoundBuffer();
+    Win32InitPlatformSound(platformBuffer);
 
     SoundBuffer->Play(0, 0, DSBPLAY_LOOPING);
 }
 
-void Win32UpdateSound(output_sound_buffer *buffer)
+void Win32UpdateAudio(platform_sound_buffer *platformBuffer)
 {
     if (!SoundBuffer) {
         // SoundBuffer is null
@@ -135,8 +136,8 @@ void Win32UpdateSound(output_sound_buffer *buffer)
         return;
     }
 
-    DWORD   playCursor;
-    DWORD   writeCursor;
+    DWORD   playCursor  = 0;
+    DWORD   writeCursor = 0;
     HRESULT getCurrentPosition =
         SoundBuffer->GetCurrentPosition(&playCursor, &writeCursor);
     if (FAILED(getCurrentPosition)) {
@@ -145,62 +146,63 @@ void Win32UpdateSound(output_sound_buffer *buffer)
         return;
     }
 
-    DWORD byteToLock = SoundOutput.runningSampleIndex *
-                       SoundOutput.bytesPerSample %
-                       SoundOutput.secondaryBufferSize;
-    DWORD targetCursor = ((playCursor + (SoundOutput.latencySampleCount *
-                                         SoundOutput.bytesPerSample)) %
-                          SoundOutput.secondaryBufferSize);
-    DWORD bytesToWrite;
+    DWORD byteToLock = Win32SoundOutput.runningSampleIndex *
+                       Win32SoundOutput.bytesPerSample %
+                       Win32SoundOutput.secondaryBufferSize;
+    DWORD targetCursor = ((playCursor + (Win32SoundOutput.latencySampleCount *
+                                         Win32SoundOutput.bytesPerSample)) %
+                          Win32SoundOutput.secondaryBufferSize);
+    DWORD bytesToWrite = 0;
     if (byteToLock > targetCursor) {
-        bytesToWrite = SoundOutput.secondaryBufferSize - byteToLock;
+        bytesToWrite = Win32SoundOutput.secondaryBufferSize - byteToLock;
         bytesToWrite += targetCursor;
     } else {
         bytesToWrite = targetCursor - byteToLock;
     }
 
-    buffer->sampleCount      = bytesToWrite / SoundOutput.bytesPerSample;
+    platformBuffer->sampleCount =
+        bytesToWrite / Win32SoundOutput.bytesPerSample;
 
-    SoundOutput.byteToLock   = byteToLock;
-    SoundOutput.bytesToWrite = bytesToWrite;
+    Win32SoundOutput.byteToLock   = byteToLock;
+    Win32SoundOutput.bytesToWrite = bytesToWrite;
 }
 
-void Win32WriteSoundBuffer(output_sound_buffer *buffer)
+void Win32UpdateSound(platform_sound_buffer *platformBuffer)
 {
     VOID *regionOne;
     DWORD regionOneSize;
     VOID *regionTwo;
     DWORD regionTwoSize;
     if (FAILED(SoundBuffer->Lock(
-            SoundOutput.byteToLock, SoundOutput.bytesToWrite, &regionOne,
-            &regionOneSize, &regionTwo, &regionTwoSize, 0))) {
+            Win32SoundOutput.byteToLock, Win32SoundOutput.bytesToWrite,
+            &regionOne, &regionOneSize, &regionTwo, &regionTwoSize, 0))) {
         // Error locking SoundBuffer
         // TODO: Add logging
         return;
     }
 
-    int16 *sampleIn = buffer->samples;
+    int16 *sampleIn = platformBuffer->samples;
 
     // TODO: Abstract these loops into a single loop inside a
     // separate function once the latency sample count is dynamic
-    DWORD  regionCount = regionOneSize / SoundOutput.bytesPerSample;
+    DWORD  regionCount = regionOneSize / Win32SoundOutput.bytesPerSample;
     int16 *regionOut   = (int16 *)regionOne;
     for (DWORD sampleIndex = 0; sampleIndex < regionCount; ++sampleIndex) {
 
         *regionOut++ = *sampleIn++;
         *regionOut++ = *sampleIn++;
 
-        ++SoundOutput.runningSampleIndex;
+        ++Win32SoundOutput.runningSampleIndex;
     }
 
-    regionCount = regionTwoSize / SoundOutput.bytesPerSample;
+    regionCount = regionTwoSize / Win32SoundOutput.bytesPerSample;
     regionOut   = (int16 *)regionTwo;
     for (DWORD sampleIndex = 0; sampleIndex < regionCount; ++sampleIndex) {
 
         *regionOut++ = *sampleIn++;
         *regionOut++ = *sampleIn++;
 
-        ++SoundOutput.runningSampleIndex;
+        ++Win32SoundOutput.runningSampleIndex;
     }
 
     SoundBuffer->Unlock(regionOne, regionOneSize, regionTwo, regionTwoSize);
@@ -212,21 +214,21 @@ void Win32ClearSoundBuffer()
     DWORD regionOneSize;
     VOID *regionTwo;
     DWORD regionTwoSize;
-    if (FAILED(SoundBuffer->Lock(0, SoundOutput.secondaryBufferSize, &regionOne,
-                                 &regionOneSize, &regionTwo, &regionTwoSize,
-                                 0))) {
+    if (FAILED(SoundBuffer->Lock(0, Win32SoundOutput.secondaryBufferSize,
+                                 &regionOne, &regionOneSize, &regionTwo,
+                                 &regionTwoSize, 0))) {
         // Error locking SoundBuffer
         // TODO: Add logging
         return;
     }
 
-    DWORD regionCount = regionOneSize / SoundOutput.bytesPerSample;
+    DWORD regionCount = regionOneSize / Win32SoundOutput.bytesPerSample;
     int8 *regionOut   = (int8 *)regionOne;
     for (DWORD sampleIndex = 0; sampleIndex < regionCount; ++sampleIndex) {
         *regionOut++ = 0;
     }
 
-    regionCount = regionTwoSize / SoundOutput.bytesPerSample;
+    regionCount = regionTwoSize / Win32SoundOutput.bytesPerSample;
     regionOut   = (int8 *)regionTwo;
     for (DWORD sampleIndex = 0; sampleIndex < regionCount; ++sampleIndex) {
         *regionOut++ = 0;
