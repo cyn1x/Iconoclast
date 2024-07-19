@@ -29,6 +29,7 @@ void                Win32InitSoundData()
     SoundOutput.bytesPerSample     = sizeof(int16) * 2;
     SoundOutput.secondaryBufferSize =
         SoundOutput.samplesPerSec * SoundOutput.bytesPerSample;
+    // FIX: Dynamically determine latency to avoid any output skipping
     SoundOutput.latencySampleCount = SoundOutput.samplesPerSec / 15;
 }
 
@@ -180,8 +181,8 @@ void Win32WriteSoundBuffer(output_sound_buffer *buffer)
 
     int16 *sampleIn = buffer->samples;
 
-    // FIX: Find out why abstracting these loops into a single loop inside a
-    // separate function causes the sound to skip
+    // TODO: Abstract these loops into a single loop inside a
+    // separate function once the latency sample count is dynamic
     DWORD  regionCount = regionOneSize / SoundOutput.bytesPerSample;
     int16 *regionOut   = (int16 *)regionOne;
     for (DWORD sampleIndex = 0; sampleIndex < regionCount; ++sampleIndex) {
