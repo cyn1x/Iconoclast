@@ -45,9 +45,9 @@ static void Win32ResizeDIBSection(win32_offscreen_buffer *buffer, int width,
     buffer->info.bmiHeader.biCompression = BI_RGB;
 
     int bitmapMemorySize = (buffer->width * buffer->height) * bytesPerPixel;
-    buffer->memory =
-        VirtualAlloc(0, bitmapMemorySize, MEM_COMMIT, PAGE_READWRITE);
-    buffer->pitch = width * bytesPerPixel;
+    buffer->memory = VirtualAlloc(0, bitmapMemorySize, MEM_RESERVE | MEM_COMMIT,
+                                  PAGE_READWRITE);
+    buffer->pitch  = width * bytesPerPixel;
 }
 
 static HWND Win32CreateWindow(HINSTANCE hInstance)
