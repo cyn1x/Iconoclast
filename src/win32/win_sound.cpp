@@ -1,5 +1,5 @@
 #include "win_sound.h"
-#include "types.h"
+#include "../types.h"
 
 struct win32_sound_output
 {

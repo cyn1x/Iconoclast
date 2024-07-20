@@ -1,3 +1,0 @@
-[submodule "lib/libcspd"]
-	path = lib/libcspd
-	url = git@github.com:cyn1x/libcspd.git
