@@ -1,8 +1,6 @@
 #ifndef INPUT_H
 #define INPUT_H
 
-#include <stdbool.h>
-
 struct platform_button_state
 {
     int  halfTransitionCount;

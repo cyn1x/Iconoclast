@@ -5,7 +5,7 @@
 #pragma warning(disable : 5045)
 #endif // _WIN32
 
-#include <stdint.h>
+#include <cstdint>
 
 typedef int8_t   int8;
 typedef int16_t  int16;

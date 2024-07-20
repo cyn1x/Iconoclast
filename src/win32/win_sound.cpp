@@ -4,8 +4,6 @@
 struct win32_sound_output
 {
     int    samplesPerSec;
-    int    toneHz;
-    int16  toneVolume;
     uint32 runningSampleIndex;
     int    bytesPerSample;
     int    secondaryBufferSize;
@@ -23,8 +21,6 @@ void                Win32ClearSoundBuffer();
 void                Win32InitSoundData()
 {
     Win32SoundOutput.samplesPerSec      = 48000;
-    Win32SoundOutput.toneHz             = 256;
-    Win32SoundOutput.toneVolume         = 3000;
     Win32SoundOutput.runningSampleIndex = 0;
     Win32SoundOutput.bytesPerSample     = sizeof(int16) * 2;
     Win32SoundOutput.secondaryBufferSize =
@@ -35,12 +31,16 @@ void                Win32InitSoundData()
 
 void Win32InitPlatformSound(platform_sound_buffer *platformBuffer)
 {
-    int16 samples[48000 * sizeof(int16) * 2];
+    int16 *samples =
+        (int16 *)VirtualAlloc(0, Win32SoundOutput.secondaryBufferSize,
+                              MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE);
 
+    // TODO: Handle memory allocation failure
+
+    platformBuffer->toneHz             = 256;
+    platformBuffer->toneVolume         = 3000;
     platformBuffer->samples            = samples;
     platformBuffer->samplesPerSec      = Win32SoundOutput.samplesPerSec;
-    platformBuffer->toneHz             = Win32SoundOutput.toneHz;
-    platformBuffer->toneVolume         = Win32SoundOutput.toneVolume;
     platformBuffer->runningSampleIndex = Win32SoundOutput.runningSampleIndex;
     platformBuffer->bytesPerSample     = Win32SoundOutput.bytesPerSample;
 }

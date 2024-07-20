@@ -2,7 +2,6 @@
 #define WIN_WINDOW_H
 
 #include "../renderer.h"
-#include <stdbool.h>
 #include <windows.h>
 
 struct win32_offscreen_buffer
