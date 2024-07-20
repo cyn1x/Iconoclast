@@ -4,6 +4,7 @@
 // clang-format off
 #include <windows.h>
 #include <Xinput.h>
+#include "../input.h"
 // clang-format on
 
 #define X_INPUT_GET_STATE(name)                                                \
@@ -18,7 +19,7 @@ typedef X_INPUT_GET_STATE(x_input_get_state);
 typedef X_INPUT_SET_STATE(x_input_set_state);
 
 void Win32LoadXInput(void);
-void HandleXInput(void);
-void HandleKeyInput(WPARAM wParam, LPARAM lParam);
+void Win32UpdateInput(struct platform_input *Input);
+void Win32HandleKeyInput(WPARAM wParam, LPARAM lParam);
 
 #endif // !WIN_INPUT_H

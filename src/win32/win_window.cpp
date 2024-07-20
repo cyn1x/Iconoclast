@@ -135,7 +135,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     case WM_SYSKEYDOWN:
     case WM_KEYDOWN:
     case WM_KEYUP:
-        HandleKeyInput(wParam, lParam);
+        Win32HandleKeyInput(wParam, lParam);
         break;
     }
 

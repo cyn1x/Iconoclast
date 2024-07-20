@@ -18,15 +18,16 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     HWND hwnd = Win32InitWindow(hInstance, hPrevInstance, pCmdLine, nCmdShow);
     HDC  hdc  = GetDC(hwnd);
 
-    platform_graphics_buffer graphicsBuffer = {};
-    platform_sound_buffer    soundBuffer    = {};
+    platform_graphics_buffer graphicsBuffer  = {};
+    platform_sound_buffer    soundBuffer     = {};
+    platform_input           controllerInput = {};
 
     Win32InitDSound(hwnd, &soundBuffer);
     PlatformInitAudio(&soundBuffer);
 
-    Running             = true;
-    win32_profiler prof = {};
-    Win32StartProfiler(&prof);
+    Running                 = true;
+    win32_profiler profiler = {};
+    Win32StartProfiler(&profiler);
     while (Running) {
         MSG msg = {0};
 
@@ -39,12 +40,12 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
             DispatchMessageA(&msg);
         }
 
-        HandleXInput();
+        Win32UpdateInput(&controllerInput);
         Win32UpdateAudio(&soundBuffer);
         Win32UpdateGraphics(&graphicsBuffer);
-        GameUpdate(&graphicsBuffer, &soundBuffer);
+        PlatformUpdate(&graphicsBuffer, &soundBuffer, &controllerInput);
         Win32UpdateSound(&soundBuffer);
         Win32UpdateWindow(hwnd, hdc);
-        Win32UpdateProfiler(&prof);
+        Win32UpdateProfiler(&profiler);
     }
 }
