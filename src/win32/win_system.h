@@ -4,7 +4,7 @@
 #include "../audio.h"
 #include "../mem.h"
 
-void AllocateStorage(platform_memory *memory, platform_audio *sound);
-void DeallocateStorage(platform_memory *memory, platform_audio *sound);
+void Win32AllocateStorage(platform_memory *memory, platform_audio *sound);
+void Win32DeallocateStorage(platform_memory *memory, platform_audio *sound);
 
 #endif // !WIN32_SYS_H

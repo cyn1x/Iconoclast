@@ -5,7 +5,6 @@ void PlatformInitMemory(platform_memory *memory)
 {
     memory->permanentStorageSize = Megabytes(64);
     memory->transientStorageSize = Gigabytes((uint64)4);
-    memory->isInitialized        = true;
 }
 
 void PlatformSetMemory(platform_memory *memory, void *permanentStorage,

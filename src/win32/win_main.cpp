@@ -9,9 +9,6 @@
 #include "win_system.h"
 #include "win_window.h"
 
-void       AllocateStorage(platform_memory *memory, platform_audio *sound);
-void       DeallocateStorage(platform_memory *memory, platform_audio *sound);
-
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
                     PWSTR pCmdLine, int nCmdShow)
 {
@@ -29,7 +26,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     PlatformInitMemory(&memory);
     PlatformInitAudio(&sound);
 
-    AllocateStorage(&memory, &sound);
+    Win32AllocateStorage(&memory, &sound);
 
     Running                 = true;
     win32_profiler profiler = {};
@@ -40,7 +37,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
         while (PeekMessage(&msg, 0, 0, 0, PM_REMOVE)) {
             if (msg.message == WM_QUIT) {
                 Running = false;
-                DeallocateStorage(&memory, &sound);
+                Win32DeallocateStorage(&memory, &sound);
 
                 ExitProcess(0);
             }

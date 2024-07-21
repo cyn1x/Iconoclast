@@ -4,7 +4,6 @@
 // clang-format off
 #include <windows.h>
 #include <Xinput.h>
-#include "../input.h"
 // clang-format on
 
 #define X_INPUT_GET_STATE(name)                                                \

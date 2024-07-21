@@ -1,4 +1,5 @@
 #include "win_input.h"
+#include "../input.h"
 #include "../types.h"
 #include "win_window.h"
 
