@@ -6,6 +6,7 @@
 
 struct platform_audio
 {
+    int    bufferSize;
     int    samplesPerSec;
     int    sampleCount;
     int    bytesPerSample;

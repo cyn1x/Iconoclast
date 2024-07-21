@@ -31,15 +31,9 @@ void                Win32InitSoundData()
 
 void Win32InitPlatformSound(platform_audio *platformAudio)
 {
-    int16 *samples =
-        (int16 *)VirtualAlloc(0, Win32SoundOutput.secondaryBufferSize,
-                              MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE);
-
-    // TODO: Handle memory allocation failure
-
+    platformAudio->bufferSize         = Win32SoundOutput.secondaryBufferSize;
     platformAudio->toneHz             = 256;
     platformAudio->toneVolume         = 3000;
-    platformAudio->samples            = samples;
     platformAudio->samplesPerSec      = Win32SoundOutput.samplesPerSec;
     platformAudio->runningSampleIndex = Win32SoundOutput.runningSampleIndex;
     platformAudio->bytesPerSample     = Win32SoundOutput.bytesPerSample;

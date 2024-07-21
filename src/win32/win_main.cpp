@@ -3,12 +3,14 @@
 #endif
 
 #include "../app.h"
-#include "../audio.h"
-#include "../renderer.h"
 #include "win_input.h"
 #include "win_profiler.h"
 #include "win_sound.h"
+#include "win_system.h"
 #include "win_window.h"
+
+void       AllocateStorage(platform_memory *memory, platform_audio *sound);
+void       DeallocateStorage(platform_memory *memory, platform_audio *sound);
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
                     PWSTR pCmdLine, int nCmdShow)
@@ -18,12 +20,16 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     HWND hwnd = Win32InitWindow(hInstance, hPrevInstance, pCmdLine, nCmdShow);
     HDC  hdc  = GetDC(hwnd);
 
+    platform_memory   memory   = {};
     platform_graphics graphics = {};
     platform_audio    sound    = {};
     platform_input    input    = {};
 
     Win32InitDSound(hwnd, &sound);
+    PlatformInitMemory(&memory);
     PlatformInitAudio(&sound);
+
+    AllocateStorage(&memory, &sound);
 
     Running                 = true;
     win32_profiler profiler = {};
@@ -34,6 +40,9 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
         while (PeekMessage(&msg, 0, 0, 0, PM_REMOVE)) {
             if (msg.message == WM_QUIT) {
                 Running = false;
+                DeallocateStorage(&memory, &sound);
+
+                ExitProcess(0);
             }
 
             TranslateMessage(&msg);
