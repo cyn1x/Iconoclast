@@ -5,8 +5,7 @@
 #include "input.h"
 #include "renderer.h"
 
-void PlatformUpdate(struct platform_graphics_buffer *graphicsBuffer,
-                    struct platform_sound_buffer    *soundBuffer,
-                    struct platform_input           *controllerInput);
+void PlatformUpdate(struct platform_graphics *graphics,
+                    struct platform_audio *sound, struct platform_input *input);
 
 #endif // !APP_H

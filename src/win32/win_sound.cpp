@@ -29,7 +29,7 @@ void                Win32InitSoundData()
     Win32SoundOutput.latencySampleCount = Win32SoundOutput.samplesPerSec / 15;
 }
 
-void Win32InitPlatformSound(platform_sound_buffer *platformBuffer)
+void Win32InitPlatformSound(platform_audio *platformAudio)
 {
     int16 *samples =
         (int16 *)VirtualAlloc(0, Win32SoundOutput.secondaryBufferSize,
@@ -37,15 +37,15 @@ void Win32InitPlatformSound(platform_sound_buffer *platformBuffer)
 
     // TODO: Handle memory allocation failure
 
-    platformBuffer->toneHz             = 256;
-    platformBuffer->toneVolume         = 3000;
-    platformBuffer->samples            = samples;
-    platformBuffer->samplesPerSec      = Win32SoundOutput.samplesPerSec;
-    platformBuffer->runningSampleIndex = Win32SoundOutput.runningSampleIndex;
-    platformBuffer->bytesPerSample     = Win32SoundOutput.bytesPerSample;
+    platformAudio->toneHz             = 256;
+    platformAudio->toneVolume         = 3000;
+    platformAudio->samples            = samples;
+    platformAudio->samplesPerSec      = Win32SoundOutput.samplesPerSec;
+    platformAudio->runningSampleIndex = Win32SoundOutput.runningSampleIndex;
+    platformAudio->bytesPerSample     = Win32SoundOutput.bytesPerSample;
 }
 
-void Win32InitDSound(HWND window, platform_sound_buffer *platformBuffer)
+void Win32InitDSound(HWND window, platform_audio *platformAudio)
 {
     Win32InitSoundData();
 
@@ -104,7 +104,7 @@ void Win32InitDSound(HWND window, platform_sound_buffer *platformBuffer)
 
     HRESULT setFormat = primaryBuffer->SetFormat(&waveFormat);
     if (FAILED(setFormat)) {
-        // Error setting the format of the primary platformBuffer
+        // Error setting the format of the primary platformAudio
         // TODO: Add logging
         return;
     }
@@ -123,12 +123,12 @@ void Win32InitDSound(HWND window, platform_sound_buffer *platformBuffer)
     }
 
     Win32ClearSoundBuffer();
-    Win32InitPlatformSound(platformBuffer);
+    Win32InitPlatformSound(platformAudio);
 
     SoundBuffer->Play(0, 0, DSBPLAY_LOOPING);
 }
 
-void Win32UpdateAudio(platform_sound_buffer *platformBuffer)
+void Win32UpdateAudio(platform_audio *platformAudio)
 {
     if (!SoundBuffer) {
         // SoundBuffer is null
@@ -160,14 +160,13 @@ void Win32UpdateAudio(platform_sound_buffer *platformBuffer)
         bytesToWrite = targetCursor - byteToLock;
     }
 
-    platformBuffer->sampleCount =
-        bytesToWrite / Win32SoundOutput.bytesPerSample;
+    platformAudio->sampleCount = bytesToWrite / Win32SoundOutput.bytesPerSample;
 
     Win32SoundOutput.byteToLock   = byteToLock;
     Win32SoundOutput.bytesToWrite = bytesToWrite;
 }
 
-void Win32UpdateSound(platform_sound_buffer *platformBuffer)
+void Win32UpdateSound(platform_audio *platformAudio)
 {
     VOID *regionOne;
     DWORD regionOneSize;
@@ -181,7 +180,7 @@ void Win32UpdateSound(platform_sound_buffer *platformBuffer)
         return;
     }
 
-    int16 *sampleIn = platformBuffer->samples;
+    int16 *sampleIn = platformAudio->samples;
 
     // TODO: Abstract these loops into a single loop inside a
     // separate function once the latency sample count is dynamic

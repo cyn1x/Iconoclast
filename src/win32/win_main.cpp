@@ -18,12 +18,12 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     HWND hwnd = Win32InitWindow(hInstance, hPrevInstance, pCmdLine, nCmdShow);
     HDC  hdc  = GetDC(hwnd);
 
-    platform_graphics_buffer graphicsBuffer  = {};
-    platform_sound_buffer    soundBuffer     = {};
-    platform_input           controllerInput = {};
+    platform_graphics graphics = {};
+    platform_audio    sound    = {};
+    platform_input    input    = {};
 
-    Win32InitDSound(hwnd, &soundBuffer);
-    PlatformInitAudio(&soundBuffer);
+    Win32InitDSound(hwnd, &sound);
+    PlatformInitAudio(&sound);
 
     Running                 = true;
     win32_profiler profiler = {};
@@ -40,11 +40,11 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
             DispatchMessageA(&msg);
         }
 
-        Win32UpdateInput(&controllerInput);
-        Win32UpdateAudio(&soundBuffer);
-        Win32UpdateGraphics(&graphicsBuffer);
-        PlatformUpdate(&graphicsBuffer, &soundBuffer, &controllerInput);
-        Win32UpdateSound(&soundBuffer);
+        Win32UpdateInput(&input);
+        Win32UpdateAudio(&sound);
+        Win32UpdateGraphics(&graphics);
+        PlatformUpdate(&graphics, &sound, &input);
+        Win32UpdateSound(&sound);
         Win32UpdateWindow(hwnd, hdc);
         Win32UpdateProfiler(&profiler);
     }
