@@ -2,7 +2,9 @@
 #define APP_H
 
 #include "audio.h"
+#include "game.h"
 #include "input.h"
+#include "mem.h"
 #include "renderer.h"
 
 void PlatformUpdate(struct platform_graphics *graphics,

@@ -12,8 +12,4 @@ struct platform_memory
     bool   isInitialized;
 };
 
-void PlatformInitMemory(platform_memory *memory);
-void PlatformSetMemory(platform_memory *memory, void *permanentStorage,
-                       void *transientStorage);
-
 #endif // !MEMORY_H

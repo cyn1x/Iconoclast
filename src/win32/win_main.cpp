@@ -23,10 +23,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     platform_input    input    = {};
 
     Win32InitDSound(hwnd, &sound);
-    PlatformInitMemory(&memory);
     PlatformInitAudio(&sound);
-
-    Win32AllocateStorage(&memory, &sound);
+    Win32AllocateMemory(&memory, &sound);
 
     Running                 = true;
     win32_profiler profiler = {};
@@ -37,7 +35,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
         while (PeekMessage(&msg, 0, 0, 0, PM_REMOVE)) {
             if (msg.message == WM_QUIT) {
                 Running = false;
-                Win32DeallocateStorage(&memory, &sound);
+                Win32DeallocateMemory(&memory, &sound);
 
                 ExitProcess(0);
             }
@@ -50,6 +48,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
         Win32UpdateAudio(&sound);
         Win32UpdateGraphics(&graphics);
         PlatformUpdate(&graphics, &sound, &input);
+        GameUpdate(&memory);
         Win32UpdateSound(&sound);
         Win32UpdateWindow(hwnd, hdc);
         Win32UpdateProfiler(&profiler);
