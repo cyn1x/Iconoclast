@@ -28,13 +28,16 @@ sine_wave     SineWave     = {};
 triangle_wave TriangleWave = {};
 sawtooth_wave Sawtoothave  = {};
 
-static int16  CalculateSineWave(platform_audio *audio);
-static int16  CalculateSquareWave(platform_audio *audio);
-static int16  CalculateTriangleWave(platform_audio *audio);
-static int16  CalculateSawtoothWave(platform_audio *audio);
+static int16  CalculateSineWave(game_audio *audio);
+static int16  CalculateSquareWave(game_audio *audio);
+static int16  CalculateTriangleWave(game_audio *audio);
+static int16  CalculateSawtoothWave(game_audio *audio);
 
-void          GameInitAudio(platform_audio *audio)
+void          GameInitAudio(game_audio *audio)
 {
+    audio->toneHz               = 256;
+    audio->toneVolume           = 3000;
+
     SquareWave.squareWavePeriod = audio->samplesPerSec / audio->toneHz;
     SquareWave.halfSquareWave   = SquareWave.squareWavePeriod / 2;
 
@@ -42,7 +45,7 @@ void          GameInitAudio(platform_audio *audio)
     SineWave.wavePeriod         = audio->samplesPerSec / audio->toneHz;
 }
 
-void GameUpdateSound(platform_audio *audio)
+void GameUpdateSound(game_audio *audio)
 {
     int16 *sampleOut = audio->samples;
 
@@ -57,7 +60,7 @@ void GameUpdateSound(platform_audio *audio)
     }
 }
 
-int16_t CalculateSineWave(platform_audio *audio)
+int16_t CalculateSineWave(game_audio *audio)
 {
     float sineValue   = sinf(SineWave.tSine);
     int16 sampleValue = (int16)(sineValue * audio->toneVolume);
@@ -66,7 +69,7 @@ int16_t CalculateSineWave(platform_audio *audio)
     return sampleValue;
 }
 
-int16_t CalculateSquareWave(platform_audio *audio)
+int16_t CalculateSquareWave(game_audio *audio)
 {
     int   squareWavePeriod = audio->samplesPerSec / audio->toneHz;
     int   halfSquareWave   = squareWavePeriod / 2;

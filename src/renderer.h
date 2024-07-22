@@ -1,7 +1,7 @@
 #ifndef RENDERER_H
 #define RENDERER_H
 
-struct platform_graphics
+struct game_graphics
 {
     void *buffer;
     int   width;
@@ -9,6 +9,6 @@ struct platform_graphics
     int   pitch;
 };
 
-void Render(struct platform_graphics *graphics);
+void Render(struct game_graphics *graphics);
 
 #endif // !RENDERER_H

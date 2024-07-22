@@ -10,8 +10,8 @@
 
 typedef DIRECT_SOUND_CREATE(direct_sound_create);
 
-void Win32InitDSound(HWND window, struct platform_audio *platformAudio);
-void Win32UpdateAudio(struct platform_audio *platformAudio);
-void Win32UpdateSound(struct platform_audio *platformAudio);
+void Win32InitDSound(HWND window, struct game_audio *gameAudio);
+void Win32UpdateAudio(struct game_audio *gameAudio);
+void Win32UpdateSound(struct game_audio *gameAudio);
 
 #endif // !WIN_SOUND_H

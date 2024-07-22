@@ -17,10 +17,10 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     HWND hwnd = Win32InitWindow(hInstance, hPrevInstance, pCmdLine, nCmdShow);
     HDC  hdc  = GetDC(hwnd);
 
-    platform_memory   memory   = {};
-    platform_graphics graphics = {};
-    platform_audio    sound    = {};
-    platform_input    input    = {};
+    game_memory   memory   = {};
+    game_graphics graphics = {};
+    game_audio    sound    = {};
+    game_input    input    = {};
 
     Win32InitDSound(hwnd, &sound);
     GameInitAudio(&sound);

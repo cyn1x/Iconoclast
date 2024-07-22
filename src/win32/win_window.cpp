@@ -95,12 +95,12 @@ void Win32UpdateWindow(HWND hwnd, HDC hdc)
                             dimensions.height);
 }
 
-void Win32UpdateGraphics(struct platform_graphics *platformGraphics)
+void Win32UpdateGraphics(struct game_graphics *gameGraphics)
 {
-    platformGraphics->buffer = Win32Backbuffer.memory;
-    platformGraphics->width  = Win32Backbuffer.width;
-    platformGraphics->height = Win32Backbuffer.height;
-    platformGraphics->pitch  = Win32Backbuffer.pitch;
+    gameGraphics->buffer = Win32Backbuffer.memory;
+    gameGraphics->width  = Win32Backbuffer.width;
+    gameGraphics->height = Win32Backbuffer.height;
+    gameGraphics->pitch  = Win32Backbuffer.pitch;
 }
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)

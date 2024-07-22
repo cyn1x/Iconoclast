@@ -10,8 +10,7 @@ struct game_state
 {
 };
 
-void GameUpdate(struct platform_graphics *graphics,
-                struct platform_audio *sound, struct platform_input *input,
-                platform_memory *memory);
+void GameUpdate(struct game_graphics *graphics, struct game_audio *sound,
+                struct game_input *input, game_memory *memory);
 
 #endif // !GAME_H

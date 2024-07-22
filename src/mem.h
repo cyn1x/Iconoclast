@@ -3,7 +3,7 @@
 
 #include "types.h"
 
-struct platform_memory
+struct game_memory
 {
     uint64 permanentStorageSize;
     uint64 transientStorageSize;

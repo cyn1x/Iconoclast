@@ -28,6 +28,6 @@ static bool Running;
 HWND        Win32InitWindow(HINSTANCE hInstance, HINSTANCE hPrevInstance,
                             PWSTR pCmdLine, int nCmdShow);
 void        Win32UpdateWindow(HWND hwnd, HDC hdc);
-void        Win32UpdateGraphics(struct platform_graphics *platformGraphics);
+void        Win32UpdateGraphics(struct game_graphics *gameGraphics);
 
 #endif // !WIN_WINDOW_H

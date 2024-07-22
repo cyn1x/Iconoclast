@@ -1,7 +1,7 @@
 #include "renderer.h"
 #include "types.h"
 
-void Render(platform_graphics *graphics)
+void Render(game_graphics *graphics)
 {
     uint8 *row = (uint8 *)graphics->buffer;
     for (int y = 0; y < graphics->height; ++y) {

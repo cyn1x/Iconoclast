@@ -4,7 +4,7 @@
 
 void Win32Error(bool succeeded);
 
-void Win32AllocateMemory(platform_memory *memory, platform_audio *sound)
+void Win32AllocateMemory(game_memory *memory, game_audio *sound)
 {
 #if DEBUG
     LPVOID baseAddress = (LPVOID)Terabytes((uint64)2);
@@ -35,7 +35,7 @@ void Win32AllocateMemory(platform_memory *memory, platform_audio *sound)
     memory->transientStorage = transientStorage;
 }
 
-void Win32DeallocateMemory(platform_memory *memory, platform_audio *sound)
+void Win32DeallocateMemory(game_memory *memory, game_audio *sound)
 {
     Win32Error(VirtualFree(sound->samples, 0, MEM_RELEASE));
     Win32Error(VirtualFree(memory->permanentStorage, 0, MEM_RELEASE));

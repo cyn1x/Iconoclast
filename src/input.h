@@ -1,13 +1,13 @@
 #ifndef INPUT_H
 #define INPUT_H
 
-struct platform_button_state
+struct game_button_state
 {
     int  halfTransitionCount;
     bool endedDown;
 };
 
-struct platform_controller_input
+struct game_controller_input
 {
     bool  isAnalog;
 
@@ -25,24 +25,24 @@ struct platform_controller_input
 
     union
     {
-        struct platform_button_state buttons[6];
+        struct game_button_state buttons[6];
         struct
         {
-            struct platform_button_state up;
-            struct platform_button_state down;
-            struct platform_button_state left;
-            struct platform_button_state right;
-            struct platform_button_state leftShoulder;
-            struct platform_button_state rightShoulder;
+            struct game_button_state up;
+            struct game_button_state down;
+            struct game_button_state left;
+            struct game_button_state right;
+            struct game_button_state leftShoulder;
+            struct game_button_state rightShoulder;
         };
     };
 };
 
-struct platform_input
+struct game_input
 {
-    struct platform_controller_input controllers[4];
+    struct game_controller_input controllers[4];
 };
 
-void GameHandleInput(struct platform_input *Input);
+void GameHandleInput(struct game_input *Input);
 
 #endif // !INPUT_H

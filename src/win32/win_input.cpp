@@ -10,18 +10,18 @@ X_INPUT_SET_STATE(XInputSetStateStub) { return ERROR_DEVICE_NOT_CONNECTED; }
 static x_input_get_state *XInputGetState_ = XInputGetStateStub;
 static x_input_set_state *XInputSetState_ = XInputSetStateStub;
 
-static platform_input     input[2];
-static platform_input    *nextInput = &input[0];
-static platform_input    *prevInput = &input[1];
+static game_input         input[2];
+static game_input        *nextInput = &input[0];
+static game_input        *prevInput = &input[1];
 
-void                      Win32HandleStickInput(XINPUT_GAMEPAD            *pad,
-                                                platform_controller_input *prevControllerInput,
-                                                platform_controller_input *nextControllerInput);
+void                      Win32HandleStickInput(XINPUT_GAMEPAD        *pad,
+                                                game_controller_input *prevControllerInput,
+                                                game_controller_input *nextControllerInput);
 
-void Win32ProcessXInputDigitalButton(DWORD                  xInputButtonState,
-                                     platform_button_state *prevState,
-                                     platform_button_state *nextState,
-                                     DWORD                  buttonBit);
+void Win32ProcessXInputDigitalButton(DWORD              xInputButtonState,
+                                     game_button_state *prevState,
+                                     game_button_state *nextState,
+                                     DWORD              buttonBit);
 
 void Win32LoadXInput(void)
 {
@@ -49,7 +49,7 @@ void Win32LoadXInput(void)
     }
 }
 
-void Win32UpdateInput(platform_input *input)
+void Win32UpdateInput(game_input *input)
 {
     DWORD dwResult;
     int   maxControllerCount = XUSER_MAX_COUNT;
@@ -61,9 +61,9 @@ void Win32UpdateInput(platform_input *input)
         XINPUT_STATE state;
         ZeroMemory(&state, sizeof(XINPUT_STATE));
 
-        platform_controller_input *prevControllerInput =
+        game_controller_input *prevControllerInput =
             &input->controllers[controllerIndex];
-        platform_controller_input *nextControllerInput =
+        game_controller_input *nextControllerInput =
             &input->controllers[controllerIndex];
 
         // Simply get the state of the controller from XInput.
@@ -115,9 +115,9 @@ void Win32UpdateInput(platform_input *input)
             Win32HandleStickInput(pad, prevControllerInput,
                                   nextControllerInput);
 
-            platform_input *temp = nextInput;
-            nextInput            = prevInput;
-            prevInput            = temp;
+            game_input *temp = nextInput;
+            nextInput        = prevInput;
+            prevInput        = temp;
         } else {
             // Controller is not connected
             // TODO: Add logging
@@ -125,19 +125,19 @@ void Win32UpdateInput(platform_input *input)
     }
 }
 
-void Win32ProcessXInputDigitalButton(DWORD                  xInputButtonState,
-                                     platform_button_state *prevState,
-                                     platform_button_state *nextState,
-                                     DWORD                  buttonBit)
+void Win32ProcessXInputDigitalButton(DWORD              xInputButtonState,
+                                     game_button_state *prevState,
+                                     game_button_state *nextState,
+                                     DWORD              buttonBit)
 {
     nextState->endedDown = ((xInputButtonState & buttonBit) == buttonBit);
     nextState->halfTransitionCount =
         (prevState->endedDown != nextState->endedDown) ? 1 : 0;
 }
 
-void Win32HandleStickInput(XINPUT_GAMEPAD            *pad,
-                           platform_controller_input *prevControllerInput,
-                           platform_controller_input *nextControllerInput)
+void Win32HandleStickInput(XINPUT_GAMEPAD        *pad,
+                           game_controller_input *prevControllerInput,
+                           game_controller_input *nextControllerInput)
 {
     nextControllerInput->isAnalog = true;
     nextControllerInput->startX   = prevControllerInput->endX;
