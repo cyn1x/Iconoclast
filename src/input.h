@@ -43,6 +43,6 @@ struct platform_input
     struct platform_controller_input controllers[4];
 };
 
-void HandleInput(struct platform_input *Input);
+void GameHandleInput(struct platform_input *Input);
 
 #endif // !INPUT_H

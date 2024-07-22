@@ -33,7 +33,7 @@ static int16  CalculateSquareWave(platform_audio *audio);
 static int16  CalculateTriangleWave(platform_audio *audio);
 static int16  CalculateSawtoothWave(platform_audio *audio);
 
-void          PlatformInitAudio(platform_audio *audio)
+void          GameInitAudio(platform_audio *audio)
 {
     SquareWave.squareWavePeriod = audio->samplesPerSec / audio->toneHz;
     SquareWave.halfSquareWave   = SquareWave.squareWavePeriod / 2;
@@ -42,7 +42,7 @@ void          PlatformInitAudio(platform_audio *audio)
     SineWave.wavePeriod         = audio->samplesPerSec / audio->toneHz;
 }
 
-void OutputSound(platform_audio *audio)
+void GameUpdateSound(platform_audio *audio)
 {
     int16 *sampleOut = audio->samples;
 

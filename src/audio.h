@@ -16,7 +16,7 @@ struct platform_audio
     uint32 runningSampleIndex;
 };
 
-void OutputSound(struct platform_audio *audio);
-void PlatformInitAudio(struct platform_audio *audio);
+void GameUpdateSound(struct platform_audio *audio);
+void GameInitAudio(struct platform_audio *audio);
 
 #endif // !AUDIO_H

@@ -2,7 +2,7 @@
 #define UNICODE
 #endif
 
-#include "../app.h"
+#include "../game.h"
 #include "win_input.h"
 #include "win_profiler.h"
 #include "win_sound.h"
@@ -23,7 +23,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     platform_input    input    = {};
 
     Win32InitDSound(hwnd, &sound);
-    PlatformInitAudio(&sound);
+    GameInitAudio(&sound);
     Win32AllocateMemory(&memory, &sound);
 
     Running                 = true;
@@ -47,8 +47,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
         Win32UpdateInput(&input);
         Win32UpdateAudio(&sound);
         Win32UpdateGraphics(&graphics);
-        PlatformUpdate(&graphics, &sound, &input);
-        GameUpdate(&memory);
+        GameUpdate(&graphics, &sound, &input, &memory);
         Win32UpdateSound(&sound);
         Win32UpdateWindow(hwnd, hdc);
         Win32UpdateProfiler(&profiler);
