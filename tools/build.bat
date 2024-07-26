@@ -10,7 +10,6 @@ if not defined DevEnvDir (
 rem Change directory to the project root
 popd
 
-if not exist etc mkdir etc
 if not exist obj mkdir obj
 if not exist bin mkdir bin
 
