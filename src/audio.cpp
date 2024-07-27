@@ -53,8 +53,8 @@ void GameUpdateSound(game_audio *audio)
 
         float sampleValue = CalculateSineWave(audio);
 
-        *sampleOut++      = sampleValue;
-        *sampleOut++      = sampleValue;
+        *sampleOut++      = (int16)sampleValue;
+        *sampleOut++      = (int16)sampleValue;
 
         audio->runningSampleIndex++;
     }
@@ -64,7 +64,7 @@ int16_t CalculateSineWave(game_audio *audio)
 {
     float sineValue   = sinf(SineWave.tSine);
     int16 sampleValue = (int16)(sineValue * audio->toneVolume);
-    SineWave.tSine += 2.0f * M_PI * 1.0f / (float)SineWave.wavePeriod;
+    SineWave.tSine += (float)(2.0f * M_PI * 1.0f / (float)SineWave.wavePeriod);
 
     return sampleValue;
 }

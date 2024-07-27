@@ -10,9 +10,9 @@ X_INPUT_SET_STATE(XInputSetStateStub) { return ERROR_DEVICE_NOT_CONNECTED; }
 static x_input_get_state *XInputGetState_ = XInputGetStateStub;
 static x_input_set_state *XInputSetState_ = XInputSetStateStub;
 
-static game_input         input[2];
-static game_input        *nextInput = &input[0];
-static game_input        *prevInput = &input[1];
+static game_input         input_states[2];
+static game_input        *nextInput = &input_states[0];
+static game_input        *prevInput = &input_states[1];
 
 void                      Win32HandleStickInput(XINPUT_GAMEPAD        *pad,
                                                 game_controller_input *prevControllerInput,
@@ -51,8 +51,8 @@ void Win32LoadXInput(void)
 
 void Win32UpdateInput(game_input *input)
 {
-    DWORD dwResult;
-    int   maxControllerCount = XUSER_MAX_COUNT;
+    DWORD  dwResult;
+    uint32 maxControllerCount = XUSER_MAX_COUNT;
     // TODO: Set maximum controller count to what is defined in input if
     // XUSER_MAX_COUNT exceeds what input supports.
 
@@ -163,7 +163,7 @@ void Win32HandleStickInput(XINPUT_GAMEPAD        *pad,
 
 void Win32HandleKeyInput(WPARAM wParam, LPARAM lParam)
 {
-    uint32 VKCode        = wParam;
+    WPARAM VKCode        = wParam;
     bool   wasDown       = ((lParam & (1 << 30)) != 0);
     bool   isDown        = ((lParam & (1 << 31)) == 0);
     int    altKeyWasDown = (lParam & (1 << 29));

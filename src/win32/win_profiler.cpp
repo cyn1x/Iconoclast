@@ -30,8 +30,8 @@ void Win32UpdateProfiler(win32_profiler *prof)
     prof->ElapsedMicroseconds.QuadPart /= prof->Frequency.QuadPart;
 
     char buf[256];
-    sprintf(buf, "%.2f ms/f: %.2f f/s: %.2f mc/f\n", millisecondsElapsed,
-            framesPerSecond, cyclesElapsed / (1000.0f * 1000.0f));
+    sprintf_s(buf, "%.2f ms/f: %.2f f/s: %.2f mc/f\n", millisecondsElapsed,
+              framesPerSecond, cyclesElapsed / (1000.0f * 1000.0f));
     OutputDebugStringA(buf);
 
     prof->LastCycleCount = prof->EndCycleCount;

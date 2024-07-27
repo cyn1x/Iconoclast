@@ -36,7 +36,7 @@ for /r ..\src\win32 %%F in (*.cpp) do (
     call set "srcs=%%srcs%% ..\src\win32\%%~nxF"
 )
 
-cl -DDEBUG=1 /c -Zi %srcs:~1% %incs%
+cl -W4 -DDEBUG=1 /c -Zi %srcs:~1% %incs%
 
 popd
 pushd bin
