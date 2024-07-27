@@ -51,8 +51,8 @@ void Win32LoadXInput(void)
 
 void Win32UpdateInput(game_input *input)
 {
-    DWORD  dwResult;
-    uint32 maxControllerCount = XUSER_MAX_COUNT;
+    DWORD dwResult;
+    DWORD maxControllerCount = XUSER_MAX_COUNT;
     // TODO: Set maximum controller count to what is defined in input if
     // XUSER_MAX_COUNT exceeds what input supports.
 
@@ -163,7 +163,7 @@ void Win32HandleStickInput(XINPUT_GAMEPAD        *pad,
 
 void Win32HandleKeyInput(WPARAM wParam, LPARAM lParam)
 {
-    WPARAM VKCode        = wParam;
+    uint32 VKCode        = (uint32)wParam;
     bool   wasDown       = ((lParam & (1 << 30)) != 0);
     bool   isDown        = ((lParam & (1 << 31)) == 0);
     int    altKeyWasDown = (lParam & (1 << 29));

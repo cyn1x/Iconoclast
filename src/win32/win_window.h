@@ -19,8 +19,7 @@ struct win32_window_dimensions
     int height;
 };
 
-extern struct win32_offscreen_buffer Win32Backbuffer;
-struct win32_window_dimensions       Win32GetWindowDimensions(HWND hwnd);
+static struct win32_window_dimensions Win32GetWindowDimensions(HWND hwnd);
 
 // FIX: Restrict applicable callers
 static bool Running;
