@@ -3,6 +3,7 @@
 #endif
 
 #include "../game.h"
+#include "../platform.h"
 #include "win_input.h"
 #include "win_profiler.h"
 #include "win_sound.h"
@@ -25,6 +26,12 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Win32InitDSound(hwnd, &sound);
     GameInitAudio(&sound);
     Win32AllocateMemory(&memory, &sound);
+    blob blob = PlatformReadBlob((char *)__FILE__);
+    if (blob.size > 0) {
+        PlatformWriteBlob((char *)"test.out", &blob);
+    }
+    PlatformFreeBlob(&blob);
+    blob                    = {};
 
     Running                 = true;
     win32_profiler profiler = {};
