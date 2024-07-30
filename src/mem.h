@@ -5,8 +5,8 @@
 
 struct game_memory
 {
-    uint64 permanentStorageSize;
-    uint64 transientStorageSize;
+    size_t permanentStorageSize;
+    size_t transientStorageSize;
     void  *permanentStorage;
     void  *transientStorage;
     bool   isInitialized;

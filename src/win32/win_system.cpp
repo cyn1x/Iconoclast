@@ -12,10 +12,12 @@ void Win32AllocateMemory(game_memory *memory, game_audio *sound)
     LPVOID baseAddress = 0;
 #endif
 
+    // TODO: Dynamically determine 32-bit mode and obtain less than 4 GB of
+    // memory
     memory->permanentStorageSize = Megabytes(64);
-    memory->transientStorageSize = Gigabytes((uint64)4);
+    memory->transientStorageSize = Gigabytes(2);
 
-    uint64 totalSize =
+    size_t totalSize =
         memory->permanentStorageSize + memory->transientStorageSize;
 
     LPVOID permanentStorage = VirtualAlloc(
