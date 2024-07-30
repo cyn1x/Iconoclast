@@ -47,18 +47,24 @@ rem Change directory to the project root
 popd
 
 if not exist obj mkdir obj
+if not exist obj\x64 mkdir obj\x64
+if not exist obj\x86 mkdir obj\x86
 if not exist bin mkdir bin
+if not exist bin\x64 mkdir bin\x64
+if not exist bin\x86 mkdir bin\x86
 
 pushd obj
 
-call :sources ..\src
-call :sources ..\src\win32
+if %target%==x64 ( pushd x64 ) else ( pushd x86 )
+
+call :sources src
+call :sources src\win32
 
 goto :compile
 
 rem Reference win32 specific source files
 :sources
-for %%F in (%1\*.cpp) do (
+for %%F in (..\..\%1\*.cpp) do (
     call set "srcs=%%srcs%% %1\%%~nxF"
 )
 
@@ -66,15 +72,24 @@ rem End of :sources subroutine call
 goto :eof
 
 :compile
-cl -MT -GR- -EHa- -Oi -WX -W4 -wd4201 -wd4100 -wd4189 -wd4505 %compilerFlags% /c -FAsc -Z7 %srcs:~1%
-
+rem pop to obj dir and pop to root dir
 popd
+popd
+
+cl /Fo"obj\\%platform%\\" -MT -GR- -EHa- -Oi -WX -W4 -wd4201 -wd4100 -wd4189 -wd4505 %compilerFlags% /c -FAsc /Fa"obj\\%target%\\" -Z7 %srcs:~1%
+
 pushd bin
 
-for /r ..\obj %%F in (*.obj) do (
-    call set "objs=%%objs%% ..\obj\%%~nxF"
+if %target%==x64 ( pushd x64 ) else ( pushd x86 )
+
+for /r ..\..\obj %%F in (%platform%\*.obj) do (
+    call set "objs=%%objs%% obj\%target%\%%~nxF"
 )
 
-LINK %linkerFlags% %objs:~1% /MAP:iconoclast.map /OUT:iconoclast.exe /SUBSYSTEM:WINDOWS,%subsysVer% user32.lib gdi32.lib
-
+rem Pop to bin dir and pop to root dir
 popd
+popd
+
+LINK %linkerFlags% %objs:~1% /MAP:bin\%target%\iconoclast_%target%.map /OUT:bin\%target%\iconoclast_%target%.exe /SUBSYSTEM:WINDOWS,%subsysVer% user32.lib gdi32.lib
+
+rem Build completed
