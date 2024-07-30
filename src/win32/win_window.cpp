@@ -1,5 +1,4 @@
 #include "win_window.h"
-#include "win_input.h"
 
 struct win32_offscreen_buffer Win32Backbuffer = {};
 
@@ -106,37 +105,30 @@ void Win32UpdateGraphics(struct game_graphics *gameGraphics)
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     switch (uMsg) {
-    case WM_SIZE:
-        break;
+        case WM_SIZE:
+            break;
 
-    case WM_DESTROY:
-        PostQuitMessage(0);
-        return 0;
+        case WM_DESTROY:
+            PostQuitMessage(0);
+            return 0;
 
-    case WM_PAINT:
-    {
-        PAINTSTRUCT             ps;
-        HDC                     hdc        = BeginPaint(hwnd, &ps);
+        case WM_PAINT:
+        {
+            PAINTSTRUCT             ps;
+            HDC                     hdc = BeginPaint(hwnd, &ps);
 
-        int                     x          = ps.rcPaint.left;
-        int                     y          = ps.rcPaint.top;
-        int                     w          = ps.rcPaint.right - ps.rcPaint.left;
-        int                     h          = ps.rcPaint.bottom - ps.rcPaint.top;
+            int                     x   = ps.rcPaint.left;
+            int                     y   = ps.rcPaint.top;
+            int                     w   = ps.rcPaint.right - ps.rcPaint.left;
+            int                     h   = ps.rcPaint.bottom - ps.rcPaint.top;
 
-        win32_window_dimensions dimensions = Win32GetWindowDimensions(hwnd);
-        Win32CopyBufferToWindow(&Win32Backbuffer, hdc, dimensions.width,
-                                dimensions.height);
+            win32_window_dimensions dimensions = Win32GetWindowDimensions(hwnd);
+            Win32CopyBufferToWindow(&Win32Backbuffer, hdc, dimensions.width,
+                                    dimensions.height);
 
-        EndPaint(hwnd, &ps);
-    }
-        return 0;
-
-    case WM_SYSKEYUP:
-    case WM_SYSKEYDOWN:
-    case WM_KEYDOWN:
-    case WM_KEYUP:
-        Win32HandleKeyInput(wParam, lParam);
-        break;
+            EndPaint(hwnd, &ps);
+        }
+            return 0;
     }
 
     return DefWindowProc(hwnd, uMsg, wParam, lParam);

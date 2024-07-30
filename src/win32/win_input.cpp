@@ -10,18 +10,26 @@ X_INPUT_SET_STATE(XInputSetStateStub) { return ERROR_DEVICE_NOT_CONNECTED; }
 static x_input_get_state *XInputGetState_ = XInputGetStateStub;
 static x_input_set_state *XInputSetState_ = XInputSetStateStub;
 
-static game_input         input_states[2];
-static game_input        *nextInput = &input_states[0];
-static game_input        *prevInput = &input_states[1];
+struct input_state_manager
+{
+    game_input             input_states[2];
+    game_input            *nextInput = &input_states[0];
+    game_input            *prevInput = &input_states[1];
 
-void                      Win32HandleStickInput(XINPUT_GAMEPAD        *pad,
-                                                game_controller_input *prevControllerInput,
-                                                game_controller_input *nextControllerInput);
+    game_controller_input *prevControllerInput;
+    game_controller_input *nextControllerInput;
+};
 
+static input_state_manager inputStateManager = {};
+
+void Win32ProcessKeyboardMessage(game_button_state *nextState, bool isDown);
 void Win32ProcessXInputDigitalButton(DWORD              xInputButtonState,
                                      game_button_state *prevState,
                                      game_button_state *nextState,
                                      DWORD              buttonBit);
+void Win32HandleStickInput(XINPUT_GAMEPAD        *pad,
+                           game_controller_input *prevControllerInput,
+                           game_controller_input *nextControllerInput);
 
 void Win32LoadXInput(void)
 {
@@ -61,9 +69,9 @@ void Win32UpdateInput(game_input *input)
         XINPUT_STATE state;
         ZeroMemory(&state, sizeof(XINPUT_STATE));
 
-        game_controller_input *prevControllerInput =
+        inputStateManager.prevControllerInput =
             &input->controllers[controllerIndex];
-        game_controller_input *nextControllerInput =
+        inputStateManager.nextControllerInput =
             &input->controllers[controllerIndex];
 
         // Simply get the state of the controller from XInput.
@@ -92,37 +100,44 @@ void Win32UpdateInput(game_input *input)
             int16 stick_y  = pad->sThumbLY;
 
             Win32ProcessXInputDigitalButton(
-                pad->wButtons, &prevControllerInput->down,
-                &nextControllerInput->down, XINPUT_GAMEPAD_A);
+                pad->wButtons, &inputStateManager.prevControllerInput->down,
+                &inputStateManager.nextControllerInput->down, XINPUT_GAMEPAD_A);
             Win32ProcessXInputDigitalButton(
-                pad->wButtons, &prevControllerInput->right,
-                &nextControllerInput->right, XINPUT_GAMEPAD_B);
+                pad->wButtons, &inputStateManager.prevControllerInput->right,
+                &inputStateManager.nextControllerInput->right,
+                XINPUT_GAMEPAD_B);
             Win32ProcessXInputDigitalButton(
-                pad->wButtons, &prevControllerInput->left,
-                &nextControllerInput->left, XINPUT_GAMEPAD_X);
+                pad->wButtons, &inputStateManager.prevControllerInput->left,
+                &inputStateManager.nextControllerInput->left, XINPUT_GAMEPAD_X);
             Win32ProcessXInputDigitalButton(
-                pad->wButtons, &prevControllerInput->up,
-                &nextControllerInput->up, XINPUT_GAMEPAD_Y);
-            Win32ProcessXInputDigitalButton(pad->wButtons,
-                                            &prevControllerInput->up,
-                                            &nextControllerInput->rightShoulder,
-                                            XINPUT_GAMEPAD_RIGHT_SHOULDER);
-            Win32ProcessXInputDigitalButton(pad->wButtons,
-                                            &prevControllerInput->up,
-                                            &nextControllerInput->leftShoulder,
-                                            XINPUT_GAMEPAD_LEFT_SHOULDER);
+                pad->wButtons, &inputStateManager.prevControllerInput->up,
+                &inputStateManager.nextControllerInput->up, XINPUT_GAMEPAD_Y);
+            Win32ProcessXInputDigitalButton(
+                pad->wButtons, &inputStateManager.prevControllerInput->up,
+                &inputStateManager.nextControllerInput->rightShoulder,
+                XINPUT_GAMEPAD_RIGHT_SHOULDER);
+            Win32ProcessXInputDigitalButton(
+                pad->wButtons, &inputStateManager.prevControllerInput->up,
+                &inputStateManager.nextControllerInput->leftShoulder,
+                XINPUT_GAMEPAD_LEFT_SHOULDER);
 
-            Win32HandleStickInput(pad, prevControllerInput,
-                                  nextControllerInput);
+            Win32HandleStickInput(pad, inputStateManager.prevControllerInput,
+                                  inputStateManager.nextControllerInput);
 
-            game_input *temp = nextInput;
-            nextInput        = prevInput;
-            prevInput        = temp;
+            game_input *temp            = inputStateManager.nextInput;
+            inputStateManager.nextInput = inputStateManager.prevInput;
+            inputStateManager.prevInput = temp;
         } else {
             // Controller is not connected
             // TODO: Add logging
         }
     }
+}
+
+void Win32ProcessKeyboardMessage(game_button_state *nextState, bool isDown)
+{
+    nextState->endedDown = isDown;
+    ++nextState->halfTransitionCount;
 }
 
 void Win32ProcessXInputDigitalButton(DWORD              xInputButtonState,
@@ -161,59 +176,72 @@ void Win32HandleStickInput(XINPUT_GAMEPAD        *pad,
         nextControllerInput->endY = y;
 }
 
-void Win32HandleKeyInput(WPARAM wParam, LPARAM lParam)
+void Win32HandleKeyInput(MSG message)
 {
-    uint32 VKCode        = (uint32)wParam;
-    bool   wasDown       = ((lParam & (1 << 30)) != 0);
-    bool   isDown        = ((lParam & (1 << 31)) == 0);
-    int    altKeyWasDown = (lParam & (1 << 29));
+    uint32                 VKCode        = (uint32)message.wParam;
+    bool                   wasDown       = ((message.lParam & (1 << 30)) != 0);
+    bool                   isDown        = ((message.lParam & (1 << 31)) == 0);
+    int                    altKeyWasDown = (message.lParam & (1 << 29));
+
+    game_controller_input *keyboardController =
+        &inputStateManager.nextInput->controllers[0];
+    game_controller_input zeroController = {};
+    *keyboardController                  = zeroController;
 
     if (wasDown != isDown) {
         switch (VKCode) {
-        case 'W':
-            OutputDebugStringA("W\n");
-            break;
-        case 'A':
-            OutputDebugStringA("A\n");
-            break;
-        case 'S':
-            OutputDebugStringA("S\n");
-            break;
-        case 'D':
-            OutputDebugStringA("D\n");
-            break;
-        case 'Q':
-            break;
-        case 'E':
-            break;
-        case VK_UP:
-            break;
-        case VK_DOWN:
-            break;
-        case VK_LEFT:
-            break;
-        case VK_RIGHT:
-            break;
-        case VK_ESCAPE:
-        {
-            OutputDebugStringA("ESCAPE: ");
-            if (isDown) {
-                OutputDebugStringA("IsDown ");
+            case 'W':
+                OutputDebugStringA("W\n");
+                break;
+            case 'A':
+                OutputDebugStringA("A\n");
+                break;
+            case 'S':
+                OutputDebugStringA("S\n");
+                break;
+            case 'D':
+                OutputDebugStringA("D\n");
+                break;
+            case 'Q':
+                Win32ProcessKeyboardMessage(&keyboardController->leftShoulder,
+                                            isDown);
+                break;
+            case 'E':
+                Win32ProcessKeyboardMessage(&keyboardController->rightShoulder,
+                                            isDown);
+                break;
+            case VK_UP:
+                Win32ProcessKeyboardMessage(&keyboardController->up, isDown);
+                break;
+            case VK_DOWN:
+                Win32ProcessKeyboardMessage(&keyboardController->down, isDown);
+                break;
+            case VK_LEFT:
+                Win32ProcessKeyboardMessage(&keyboardController->left, isDown);
+                break;
+            case VK_RIGHT:
+                Win32ProcessKeyboardMessage(&keyboardController->right, isDown);
+                break;
+            case VK_ESCAPE:
+            {
+                OutputDebugStringA("ESCAPE: ");
+                if (isDown) {
+                    OutputDebugStringA("IsDown ");
+                }
+                if (wasDown) {
+                    OutputDebugStringA("WasDown");
+                }
+                OutputDebugStringA("\n");
+                break;
             }
-            if (wasDown) {
-                OutputDebugStringA("WasDown");
-            }
-            OutputDebugStringA("\n");
-            break;
-        }
-        case VK_SPACE:
-            break;
+            case VK_SPACE:
+                break;
 
-        case VK_F4:
-            if (altKeyWasDown) {
-                Running = false;
-            }
-            break;
+            case VK_F4:
+                if (altKeyWasDown) {
+                    Running = false;
+                }
+                break;
         }
     }
 }

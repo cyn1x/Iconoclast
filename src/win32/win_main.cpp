@@ -10,6 +10,8 @@
 #include "win_system.h"
 #include "win_window.h"
 
+void       Win32ProcessPendingMessages();
+
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
                     PWSTR pCmdLine, int nCmdShow)
 {
@@ -20,12 +22,12 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
     game_memory   memory   = {};
     game_graphics graphics = {};
-    game_audio    sound    = {};
+    game_audio    audio    = {};
     game_input    input    = {};
 
-    Win32InitDSound(hwnd, &sound);
-    GameInitAudio(&sound);
-    Win32AllocateMemory(&memory, &sound);
+    Win32InitDSound(hwnd, &audio);
+    GameInitAudio(&audio);
+    Win32AllocateMemory(&memory, &audio);
     blob blob = PlatformReadBlob((char *)__FILE__);
     if (blob.size > 0) {
         PlatformWriteBlob((char *)"test.out", &blob);
@@ -36,27 +38,45 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Running                 = true;
     win32_profiler profiler = {};
     Win32StartProfiler(&profiler);
+
     while (Running) {
-        MSG msg = {0};
 
-        while (PeekMessage(&msg, 0, 0, 0, PM_REMOVE)) {
-            if (msg.message == WM_QUIT) {
-                Running = false;
-                Win32DeallocateMemory(&memory, &sound);
+        Win32ProcessPendingMessages();
+        if (!Running) {
+            // TODO: Handle cleanup process before exiting
+            Win32DeallocateMemory(&memory, &audio);
 
-                ExitProcess(0);
-            }
-
-            TranslateMessage(&msg);
-            DispatchMessageA(&msg);
+            ExitProcess(0);
         }
 
         Win32UpdateInput(&input);
-        Win32UpdateAudio(&sound);
+        Win32UpdateAudio(&audio);
         Win32UpdateGraphics(&graphics);
-        GameUpdate(&graphics, &sound, &input, &memory);
-        Win32UpdateSound(&sound);
+        GameUpdate(&graphics, &audio, &input, &memory);
+        Win32UpdateSound(&audio);
         Win32UpdateWindow(hwnd, hdc);
         Win32UpdateProfiler(&profiler);
+    }
+}
+
+void Win32ProcessPendingMessages()
+{
+    MSG msg = {0};
+    while (PeekMessage(&msg, 0, 0, 0, PM_REMOVE)) {
+
+        switch (msg.message) {
+            case WM_QUIT:
+                Running = false;
+
+            case WM_SYSKEYUP:
+            case WM_SYSKEYDOWN:
+            case WM_KEYDOWN:
+            case WM_KEYUP:
+                Win32HandleKeyInput(msg);
+                break;
+        }
+
+        TranslateMessage(&msg);
+        DispatchMessageA(&msg);
     }
 }
