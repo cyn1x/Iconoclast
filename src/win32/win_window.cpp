@@ -1,4 +1,5 @@
 #include "win_window.h"
+#include "../defs.h"
 
 struct win32_offscreen_buffer Win32Backbuffer = {};
 
@@ -111,6 +112,14 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         case WM_DESTROY:
             PostQuitMessage(0);
             return 0;
+
+        case WM_SYSKEYDOWN:
+        case WM_SYSKEYUP:
+        case WM_KEYDOWN:
+        case WM_KEYUP:
+        {
+            Assert(!"Keyboard input detected through a non-dispatch message!");
+        } break;
 
         case WM_PAINT:
         {

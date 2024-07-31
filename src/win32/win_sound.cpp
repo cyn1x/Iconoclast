@@ -112,7 +112,7 @@ void Win32InitDSound(HWND window, game_audio *gameAudio)
     SoundBuffer->Play(0, 0, DSBPLAY_LOOPING);
 }
 
-void Win32UpdateAudio(game_audio *gameAudio)
+void Win32UpdateGameAudio(game_audio *gameAudio)
 {
     if (!SoundBuffer) {
         // SoundBuffer is null
@@ -150,7 +150,7 @@ void Win32UpdateAudio(game_audio *gameAudio)
     Win32SoundOutput.bytesToWrite = bytesToWrite;
 }
 
-void Win32UpdateSound(game_audio *gameAudio)
+void Win32UpdateDSound(game_audio *gameAudio)
 {
     VOID *regionOne;
     DWORD regionOneSize;

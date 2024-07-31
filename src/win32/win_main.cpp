@@ -15,8 +15,6 @@ void       Win32ProcessPendingMessages();
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
                     PWSTR pCmdLine, int nCmdShow)
 {
-    Win32LoadXInput();
-
     HWND hwnd = Win32InitWindow(hInstance, hPrevInstance, pCmdLine, nCmdShow);
     HDC  hdc  = GetDC(hwnd);
 
@@ -25,9 +23,12 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     game_audio    audio    = {};
     game_input    input    = {};
 
+    Win32InitXInput();
     Win32InitDSound(hwnd, &audio);
     GameInitAudio(&audio);
     Win32AllocateMemory(&memory, &audio);
+
+    // TODO: Abstract to a basic persistent data handler
     blob blob = PlatformReadBlob((char *)__FILE__);
     if (blob.size > 0) {
         PlatformWriteBlob((char *)"test.out", &blob);
@@ -49,11 +50,11 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
             ExitProcess(0);
         }
 
-        Win32UpdateInput(&input);
-        Win32UpdateAudio(&audio);
+        Win32UpdateXInput(&input);
+        Win32UpdateGameAudio(&audio);
         Win32UpdateGraphics(&graphics);
         GameUpdate(&graphics, &audio, &input, &memory);
-        Win32UpdateSound(&audio);
+        Win32UpdateDSound(&audio);
         Win32UpdateWindow(hwnd, hdc);
         Win32UpdateProfiler(&profiler);
     }
@@ -72,11 +73,11 @@ void Win32ProcessPendingMessages()
             case WM_SYSKEYDOWN:
             case WM_KEYDOWN:
             case WM_KEYUP:
-                Win32HandleKeyInput(msg);
+                Win32HandleKeyInput(&msg);
                 break;
+            default:
+                TranslateMessage(&msg);
+                DispatchMessageA(&msg);
         }
-
-        TranslateMessage(&msg);
-        DispatchMessageA(&msg);
     }
 }

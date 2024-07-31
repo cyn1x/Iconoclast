@@ -17,8 +17,8 @@
 typedef X_INPUT_GET_STATE(x_input_get_state);
 typedef X_INPUT_SET_STATE(x_input_set_state);
 
-void Win32LoadXInput(void);
-void Win32HandleKeyInput(MSG message);
-void Win32UpdateInput(struct game_input *Input);
+void Win32InitXInput(void);
+void Win32UpdateXInput(struct game_input *Input);
+void Win32HandleKeyInput(MSG *message);
 
 #endif // !WIN_INPUT_H

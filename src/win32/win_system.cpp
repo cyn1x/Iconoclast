@@ -43,6 +43,7 @@ void Win32DeallocateMemory(game_memory *memory, game_audio *sound)
     Win32Error(VirtualFree(memory->permanentStorage, 0, MEM_RELEASE));
 }
 
+// TODO: Abstract into win_error.cpp for other translation units
 void Win32Error(bool succeeded)
 {
     if (!succeeded) {
