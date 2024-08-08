@@ -90,6 +90,6 @@ rem Pop to bin dir and pop to root dir
 popd
 popd
 
-LINK %linkerFlags% %objs:~1% /MAP:bin\%target%\iconoclast_%target%.map /OUT:bin\%target%\iconoclast_%target%.exe /SUBSYSTEM:WINDOWS,%subsysVer% user32.lib gdi32.lib
+LINK %linkerFlags% %objs:~1% /MAP:bin\%target%\iconoclast_%target%.map /OUT:bin\%target%\iconoclast_%target%.exe /SUBSYSTEM:WINDOWS,%subsysVer% user32.lib gdi32.lib winmm.lib
 
 rem Build completed

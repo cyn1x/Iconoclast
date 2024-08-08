@@ -1,39 +1,49 @@
 #include "win_profiler.h"
 #include <stdio.h>
 
-void Win32StartProfiler(win32_profiler *prof)
+void Win32StartProfiler(win32_profiler *profiler)
 {
-    QueryPerformanceFrequency(&prof->Frequency);
-    QueryPerformanceCounter(&prof->StartingTime);
-    prof->LastCycleCount = __rdtsc();
+    QueryPerformanceFrequency(&profiler->Frequency);
+    QueryPerformanceCounter(&profiler->StartingTime);
+    profiler->LastCycleCount = __rdtsc();
 }
 
-void Win32UpdateProfiler(win32_profiler *prof)
+void Win32UpdateProfiler(win32_profiler *profiler)
 {
     // Calculates the elapsed miliseconds per frame, the frames per second and
     // the megacycles per frame.
-    prof->EndCycleCount = __rdtsc();
-    QueryPerformanceCounter(&prof->EndingTime);
+    profiler->EndCycleCount = __rdtsc();
+    QueryPerformanceCounter(&profiler->EndingTime);
 
-    prof->ElapsedMicroseconds.QuadPart =
-        prof->EndingTime.QuadPart - prof->StartingTime.QuadPart;
+    profiler->ElapsedMicroseconds.QuadPart =
+        profiler->EndingTime.QuadPart - profiler->StartingTime.QuadPart;
 
     float millisecondsElapsed = 1000.0f *
-                                (float)prof->ElapsedMicroseconds.QuadPart /
-                                (float)prof->Frequency.QuadPart;
+                                (float)profiler->ElapsedMicroseconds.QuadPart /
+                                (float)profiler->Frequency.QuadPart;
+    float secondsElapsed = millisecondsElapsed / 1000.0f;
     float cyclesElapsed =
-        (float)prof->EndCycleCount - (float)prof->LastCycleCount;
-    float framesPerSecond = (float)prof->Frequency.QuadPart /
-                            (float)prof->ElapsedMicroseconds.QuadPart;
+        (float)profiler->EndCycleCount - (float)profiler->LastCycleCount;
+    float framesPerSecond = (float)profiler->Frequency.QuadPart /
+                            (float)profiler->ElapsedMicroseconds.QuadPart;
 
-    prof->ElapsedMicroseconds.QuadPart *= 1000;
-    prof->ElapsedMicroseconds.QuadPart /= prof->Frequency.QuadPart;
+    profiler->ElapsedMicroseconds.QuadPart *= 100000;
+    profiler->ElapsedMicroseconds.QuadPart /= profiler->Frequency.QuadPart;
+    profiler->ElapsedMilliseconds = millisecondsElapsed;
+    profiler->ElapsedSeconds      = secondsElapsed;
 
     char buf[256];
     sprintf_s(buf, "%.2f ms/f: %.2f f/s: %.2f mc/f\n", millisecondsElapsed,
               framesPerSecond, cyclesElapsed / (1000.0f * 1000.0f));
     OutputDebugStringA(buf);
 
-    prof->LastCycleCount = prof->EndCycleCount;
-    prof->StartingTime   = prof->EndingTime;
+    profiler->LastCycleCount = profiler->EndCycleCount;
+    profiler->StartingTime   = profiler->EndingTime;
+}
+
+double Win32GetCurrentTime(win32_profiler *profiler)
+{
+    LARGE_INTEGER result;
+    QueryPerformanceCounter(&result);
+    return result.QuadPart / (double)profiler->Frequency.QuadPart * 1000.0f;
 }

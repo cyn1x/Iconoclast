@@ -4,6 +4,7 @@
 
 #include "../game.h"
 #include "../platform.h"
+#include "../renderer.h"
 #include "win_input.h"
 #include "win_profiler.h"
 #include "win_sound.h"
@@ -40,7 +41,11 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     win32_profiler profiler = {};
     Win32StartProfiler(&profiler);
 
+    int   hz = 60;
+    float ms = 1000.0f / (float)hz;
+
     while (Running) {
+        double start = Win32GetCurrentTime(&profiler);
 
         Win32ProcessPendingMessages();
         if (!Running) {
@@ -53,9 +58,21 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
         Win32UpdateXInput(&input);
         Win32UpdateGameAudio(&audio);
         Win32UpdateGraphics(&graphics);
-        GameUpdate(&graphics, &audio, &input, &memory);
+        Update(&audio, &input, &memory);
+        Render(&graphics);
         Win32UpdateDSound(&audio);
         Win32UpdateWindow(hwnd, hdc);
+
+        // Lock ms per frame to sync with monitor refresh rate
+        double end     = Win32GetCurrentTime(&profiler);
+        float  elapsed = (float)(start + ms - end);
+        if (elapsed > 0) {
+            // Set scheduler granularity to 1 ms
+            if (timeBeginPeriod(1) == TIMERR_NOERROR) {
+                Sleep((DWORD)(elapsed));
+            }
+        }
+
         Win32UpdateProfiler(&profiler);
     }
 }

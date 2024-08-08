@@ -95,6 +95,13 @@ void Win32UpdateWindow(HWND hwnd, HDC hdc)
                             dimensions.height);
 }
 
+void Win32GetMonitorProperties(HWND hwnd)
+{
+    int   monitorHz          = 60;
+    int   updateHz           = monitorHz / 2;
+    float secElapsedPerFrame = 1000.0f / (float)monitorHz;
+}
+
 void Win32UpdateGraphics(struct game_graphics *gameGraphics)
 {
     gameGraphics->buffer = Win32Backbuffer.memory;
