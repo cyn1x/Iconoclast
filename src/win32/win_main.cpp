@@ -70,6 +70,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
             // Set scheduler granularity to 1 ms
             if (timeBeginPeriod(1) == TIMERR_NOERROR) {
                 Sleep((DWORD)(elapsed));
+            } else {
+                // TODO: Add logging
             }
         }
 
