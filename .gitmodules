@@ -1,0 +1,6 @@
+[submodule "lib/logc"]
+	path = lib/logc
+	url = git@github.com:cyn1x/logc.git
+[submodule "lib/libcspd"]
+	path = lib/libcspd
+	url = git@github.com:cyn1x/libcspd.git
