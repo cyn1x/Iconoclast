@@ -56,12 +56,10 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
         }
 
         Win32UpdateXInput(&input);
-        Win32UpdateGameAudio(&audio);
-        Win32UpdateGraphics(&graphics);
-        Update(&audio, &input, &memory);
-        Render(&graphics);
         Win32UpdateDSound(&audio);
+        Win32UpdateGraphics(&graphics);
         Win32UpdateWindow(hwnd, hdc);
+        Update(&audio, &input, &memory);
 
         // Lock ms per frame to sync with monitor refresh rate
         double end     = Win32GetCurrentTime(&profiler);
@@ -75,6 +73,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
             }
         }
 
+        Win32FillSoundBuffer(&audio);
+        Render(&graphics);
         Win32UpdateProfiler(&profiler);
     }
 }

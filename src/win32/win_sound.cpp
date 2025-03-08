@@ -8,6 +8,8 @@ struct win32_sound_output
     int    bytesPerSample;
     int    secondaryBufferSize;
     int    latencySampleCount;
+    float  audioLatencySeconds;
+    DWORD  audioLatencyBytes;
     DWORD  byteToLock;
     DWORD  bytesToWrite;
 };
@@ -27,11 +29,14 @@ void                Win32InitSoundData(game_audio *gameAudio)
     Win32SoundOutput.secondaryBufferSize = gameAudio->bufferSize =
         Win32SoundOutput.samplesPerSec * Win32SoundOutput.bytesPerSample;
     // FIX: Dynamically determine latency to avoid any output skipping
-    Win32SoundOutput.latencySampleCount = Win32SoundOutput.samplesPerSec / 15;
+    Win32SoundOutput.latencySampleCount  = Win32SoundOutput.samplesPerSec / 60;
+    Win32SoundOutput.audioLatencyBytes   = 0;
+    Win32SoundOutput.audioLatencySeconds = 0;
 }
 
 void Win32InitDSound(HWND window, game_audio *gameAudio)
 {
+    // TODO: Update to XAudio2
     Win32InitSoundData(gameAudio);
 
     HMODULE dSoundLibrary = LoadLibraryA("dsound.dll");
@@ -112,7 +117,7 @@ void Win32InitDSound(HWND window, game_audio *gameAudio)
     SoundBuffer->Play(0, 0, DSBPLAY_LOOPING);
 }
 
-void Win32UpdateGameAudio(game_audio *gameAudio)
+void Win32UpdateDSound(game_audio *gameAudio)
 {
     if (!SoundBuffer) {
         // SoundBuffer is null
@@ -130,7 +135,13 @@ void Win32UpdateGameAudio(game_audio *gameAudio)
         return;
     }
 
-    DWORD byteToLock = Win32SoundOutput.runningSampleIndex *
+    DWORD unwrappedWriteCursor = writeCursor;
+    if (unwrappedWriteCursor < playCursor) {
+        unwrappedWriteCursor += Win32SoundOutput.secondaryBufferSize;
+    }
+    Win32SoundOutput.audioLatencyBytes = unwrappedWriteCursor - playCursor;
+
+    DWORD byteToLock                   = Win32SoundOutput.runningSampleIndex *
                        Win32SoundOutput.bytesPerSample %
                        Win32SoundOutput.secondaryBufferSize;
     DWORD targetCursor = ((playCursor + (Win32SoundOutput.latencySampleCount *
@@ -144,13 +155,26 @@ void Win32UpdateGameAudio(game_audio *gameAudio)
         bytesToWrite = targetCursor - byteToLock;
     }
 
-    gameAudio->sampleCount = bytesToWrite / Win32SoundOutput.bytesPerSample;
+    Win32SoundOutput.audioLatencySeconds =
+        (((float)Win32SoundOutput.audioLatencyBytes /
+          (float)gameAudio->bytesPerSample) /
+         (float)gameAudio->samplesPerSec);
+
+    /*char textBuffer[256];
+    _snprintf_s(textBuffer, sizeof(textBuffer),
+                "LPC:%u BTL:%u TC:%u BTW:%u - PC:%u WC:%u DELTA:%u (%fs)\n",
+                playCursor, byteToLock, targetCursor, bytesToWrite, playCursor,
+                writeCursor, Win32SoundOutput.audioLatencyBytes,
+                Win32SoundOutput.audioLatencySeconds);
+    OutputDebugStringA(textBuffer);*/
 
     Win32SoundOutput.byteToLock   = byteToLock;
     Win32SoundOutput.bytesToWrite = bytesToWrite;
+
+    gameAudio->sampleCount = bytesToWrite / Win32SoundOutput.bytesPerSample;
 }
 
-void Win32UpdateDSound(game_audio *gameAudio)
+void Win32FillSoundBuffer(game_audio *gameAudio)
 {
     VOID *regionOne;
     DWORD regionOneSize;
