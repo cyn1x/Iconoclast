@@ -27,6 +27,9 @@ void Win32UpdateProfiler(win32_profiler *profiler)
     float framesPerSecond = (float)profiler->Frequency.QuadPart /
                             (float)profiler->ElapsedMicroseconds.QuadPart;
 
+    profiler->LastCycleCount = profiler->EndCycleCount;
+    profiler->StartingTime   = profiler->EndingTime;
+
     profiler->ElapsedMicroseconds.QuadPart *= 100000;
     profiler->ElapsedMicroseconds.QuadPart /= profiler->Frequency.QuadPart;
     profiler->ElapsedMilliseconds = millisecondsElapsed;
@@ -36,9 +39,6 @@ void Win32UpdateProfiler(win32_profiler *profiler)
     sprintf_s(buf, "%.2f ms/f: %.2f f/s: %.2f mc/f\n", millisecondsElapsed,
               framesPerSecond, cyclesElapsed / (1000.0f * 1000.0f));
     OutputDebugStringA(buf);
-
-    profiler->LastCycleCount = profiler->EndCycleCount;
-    profiler->StartingTime   = profiler->EndingTime;
 }
 
 double Win32GetCurrentTime(win32_profiler *profiler)
