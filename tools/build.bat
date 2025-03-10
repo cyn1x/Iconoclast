@@ -33,8 +33,10 @@ rem End of entry point procedure
 goto :main
 
 :clean
-del /S /Q obj\*.* > nul
-del /S /Q bin\*.* > nul
+del /S /Q Iconoclast\obj\*.* > nul
+del /S /Q Iconoclast\bin\*.* > nul
+del /S /Q Sandbox\obj\*.* > nul
+del /S /Q Sandbox\bin\*.* > nul
 
 rem End of :clean subroutine call
 goto :eof
@@ -59,19 +61,30 @@ if not defined DevEnvDir (
 
 echo | set /p clear="" > %flags%
 
-rem Change directory to the project root and then Iconoclast project dir
+rem Change directory to the project root
 popd
-pushd Iconoclast
 
+rem Make required directories for core engine and sandbox environment
+call :mkdirs Iconoclast
+call :mkdirs Sandbox
+
+goto :build
+
+:mkdirs
 rem Make required directories for engine compilation
-if not exist obj mkdir obj
-if not exist obj\%config%_x64 mkdir obj\%config%_x64
-if not exist obj\%config%_x86 mkdir obj\%config%_x86
-if not exist bin mkdir bin
-if not exist bin\%config%_x64 mkdir bin\%config%_x64
-if not exist bin\%config%_x86 mkdir bin\%config%_x86
+if not exist %1\obj mkdir %1\obj
+if not exist %1\obj\%config%_x64 mkdir %1\obj\%config%_x64
+if not exist %1\obj\%config%_x86 mkdir %1\obj\%config%_x86
+if not exist %1\bin mkdir %1\bin
+if not exist %1\bin\%config%_x64 mkdir %1\bin\%config%_x64
+if not exist %1\bin\%config%_x86 mkdir %1\bin\%config%_x86
 
-rem Make required directories for sandbox test environment
+goto :eof
+
+:build
+
+rem Change dir to Iconoclast project dir
+pushd Iconoclast
 
 call :include
 
@@ -119,7 +132,6 @@ rem End of :sources subroutine call
 goto :eof
 
 :compile
-echo %cd%
 cl /EHsc /c /LD /std:c++20 /Fo"..\..\obj\\%config%_%platform%\\" -MD -GR- -EHa- -Oi -WX -W4 -wd4201 -wd4100 -wd4189 -wd4505 %incs% %compilerFlags% -FAsc /Fa"..\..\obj\\%config%_%target%\\" -Z7 %srcs:~1%
 
 rem Pop to bin dir and pop to project dir
