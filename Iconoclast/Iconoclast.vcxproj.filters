@@ -20,16 +20,16 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\Iconoclast.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Core.h">
+    <ClInclude Include="include\Iconoclast\win\EntryPoint.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Iconoclast\Application.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Iconoclast\win\EntryPoint.h">
+    <ClInclude Include="include\Core.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Iconoclast.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

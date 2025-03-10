@@ -1,6 +1,6 @@
 -I
-./include/
+./Iconoclast/include/
 -I
-./include/Iconoclast/
+./Iconoclast/include/Iconoclast/
 -I
-./include/Iconoclast/win/
+./Iconoclast/include/Iconoclast/win/

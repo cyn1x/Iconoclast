@@ -59,8 +59,9 @@ if not defined DevEnvDir (
 
 echo | set /p clear="" > %flags%
 
-rem Change directory to the project root
+rem Change directory to the project root and then Iconoclast project dir
 popd
+pushd Iconoclast
 
 rem Make required directories for engine compilation
 if not exist obj mkdir obj
@@ -74,12 +75,12 @@ rem Make required directories for sandbox test environment
 
 call :include
 
+rem Change directory to intermediate dir
 pushd obj
 
 if %target%==x64 ( pushd %config%_x64 ) else ( pushd %config%_x86 )
 
 call :sources
-
 goto :compile
 
 rem Set all relative include directory paths
@@ -92,12 +93,12 @@ for /r include %%F in (*.h) do (
 
     rem Prevent duplicate include directories
     if !prev! neq !relpath! (
-        call set "incs=%%incs%% -I..\..!relpath:~0,-1!"
+        call set "incs=%%incs%% -I..\..\..!relpath:~0,-1!"
 
         rem Invert slashes for include paths to be compatible with the LSP
         set cpath=!relpath:\=/!
-        echo -I>> %flags%
-        echo .!cpath!>> %flags%
+        echo -I>> ..\%flags%
+        echo .!cpath!>> ..\%flags%
 
         set "prev=!relpath!"
     )
@@ -111,17 +112,17 @@ rem Recursively set all relative file paths of *.cpp source files
 for /r ..\..\src %%F in (*.cpp) do (
     set "abspath=%%F"
     set "relpath=!abspath:%cmp%=!"
-    call set "srcs=%%srcs%% ..\..!relpath!"
+    call set "srcs=%%srcs%% ..\..\..!relpath!"
 )
 
 rem End of :sources subroutine call
 goto :eof
 
 :compile
-
+echo %cd%
 cl /EHsc /c /LD /std:c++20 /Fo"..\..\obj\\%config%_%platform%\\" -MD -GR- -EHa- -Oi -WX -W4 -wd4201 -wd4100 -wd4189 -wd4505 %incs% %compilerFlags% -FAsc /Fa"..\..\obj\\%config%_%target%\\" -Z7 %srcs:~1%
 
-rem pop to obj dir and pop to root dir
+rem Pop to bin dir and pop to project dir
 popd
 popd
 
@@ -140,9 +141,12 @@ popd
 
 LINK /nologo %linkerFlags% %objs:~1% /MAP:bin\%config%_%target%\iconoclast_%target%.map /DLL /OUT:bin\%config%_%target%\iconoclast_%target%.dll
 
-rem Copy DLL to where the test executable will be built
-copy bin\%config%_%target%\%dll% Sandbox\bin\%config%_%target%\%dll% > nul
+popd
 
+rem Copy DLL to where the test executable will be built
+copy Iconoclast\bin\%config%_%target%\%dll% Sandbox\bin\%config%_%target%\%dll% > nul
+
+rem Change directory to Sandbox project dir and intermediate dir
 pushd Sandbox
 pushd obj
 
@@ -154,15 +158,16 @@ rem Store all Sandbox *.cpp source files in a variable
 for /r ..\..\src %%F in (*.cpp) do (
     set "abspath=%%F"
     set "relpath=!abspath:%cmp%=!"
-    call set "exesrcs=%%exesrcs%% ..!relpath!"
+    call set "exesrcs=%%exesrcs%% ..\..!relpath!"
 )
 
-popd
-
 rem Compile *.cpp files
-cl /EHsc /nologo /Fo"..\obj\\%config%_%platform%\\" /Fd"..\obj\\%config%_%platform%\\" /c /MD -Zi -W4 -Wall /std:c++20 %exesrcs% %incs%
+cl /EHsc /nologo /Fo"..\..\obj\\%config%_%platform%\\" /Fd"..\..\obj\\%config%_%platform%\\" /c /MD -Zi -W4 -Wall /std:c++20 %exesrcs% %incs%
 
 rem Compile Sandbox program and link DLL
+
+rem Pop to obj dir and then project dir
+popd
 popd
 
 rem Store all *.obj file names only for the linker
@@ -171,6 +176,6 @@ for /r obj %%F in (*.obj) do (
 )
 
 rem Link *.test.obj object files
-LINK /DEBUG %exeobjs:~1% /OUT:bin\%config%_%target%\%exe% ..\bin\%config%_%target%\iconoclast_%target%.lib 
+LINK /DEBUG %exeobjs:~1% /OUT:bin\%config%_%target%\%exe% ..\Iconoclast\bin\%config%_%target%\iconoclast_%target%.lib 
 
 rem Build completed
