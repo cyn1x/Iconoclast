@@ -132,7 +132,7 @@ rem End of :sources subroutine call
 goto :eof
 
 :compile
-cl /EHsc /c /LD /std:c++20 /Fo"..\..\obj\\%config%_%platform%\\" -MD -GR- -EHa- -Oi -WX -W4 -wd4201 -wd4100 -wd4189 -wd4505 %incs% %compilerFlags% -FAsc /Fa"..\..\obj\\%config%_%target%\\" -Z7 %srcs:~1%
+cl /EHsc /c /LD -MD -Z7 -GR- -EHa- -Oi -WX -W4 -wd4201 -wd4100 -wd4189 -wd4505 -FAsc /std:c++20 /Fo"..\..\obj\\%config%_%platform%\\" %incs% %compilerFlags% /Fa"..\..\obj\\%config%_%target%\\" %srcs:~1%
 
 rem Pop to bin dir and pop to project dir
 popd
@@ -151,7 +151,7 @@ rem Pop to bin dir and pop to root dir
 popd
 popd
 
-LINK /nologo %linkerFlags% %objs:~1% /MAP:bin\%config%_%target%\iconoclast_%target%.map /DLL /OUT:bin\%config%_%target%\iconoclast_%target%.dll
+LINK /nologo %linkerFlags% %objs:~1% /MAP:bin\%config%_%target%\iconoclast_%target%.map /DLL /OUT:bin\%config%_%target%\iconoclast_%target%.dll user32.lib gdi32.lib
 
 popd
 
@@ -174,7 +174,7 @@ for /r ..\..\src %%F in (*.cpp) do (
 )
 
 rem Compile *.cpp files
-cl /EHsc /nologo /Fo"..\..\obj\\%config%_%platform%\\" /Fd"..\..\obj\\%config%_%platform%\\" /c /MD -Zi -W4 -Wall /std:c++20 %exesrcs% %incs%
+cl /nologo /EHsc /c /MD /Zi /W4 /Wall /std:c++20 /Fo"..\..\obj\\%config%_%platform%\\" /Fd"..\..\obj\\%config%_%platform%\\" %exesrcs% %incs%
 
 rem Compile Sandbox program and link DLL
 
@@ -187,7 +187,7 @@ for /r obj %%F in (*.obj) do (
     call set "exeobjs=%%exeobjs%% obj\%config%_%target%\%%~nxF"
 )
 
-rem Link *.test.obj object files
-LINK /DEBUG %exeobjs:~1% /OUT:bin\%config%_%target%\%exe% ..\Iconoclast\bin\%config%_%target%\iconoclast_%target%.lib 
+rem Link *.obj object files
+LINK /DEBUG /ENTRY:_DllMainCRTStartup /SUBSYSTEM:WINDOWS,%subsysVer% %exeobjs:~1% /OUT:bin\%config%_%target%\%exe% ..\Iconoclast\bin\%config%_%target%\iconoclast_%target%.lib
 
 rem Build completed

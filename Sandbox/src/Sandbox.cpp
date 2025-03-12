@@ -12,7 +12,8 @@ public:
     }
 };
 
-Iconoclast::Application *Iconoclast::CreateApplication()
+// Explicitly export CreateApplication from the EXE
+extern "C" __declspec(dllexport) Iconoclast::Application *CreateApplication()
 {
     return new Sandbox;
 }

@@ -1,3 +1,3 @@
 #pragma once
 
-#include "EntryPoint.h" // IWYU pragma: export
+#include "Application.h" // IWYU pragma: export
