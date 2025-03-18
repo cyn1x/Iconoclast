@@ -2,3 +2,5 @@
 ./Iconoclast/include/
 -I
 ./Iconoclast/include/Iconoclast/
+-I
+./Iconoclast/include/Iconoclast/Platform/Windows/

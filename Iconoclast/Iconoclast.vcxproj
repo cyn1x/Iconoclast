@@ -96,7 +96,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>.\include; .\include\Iconoclast; .\include\Iconoclast\Win</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\include; .\include\Iconoclast; .\include\Iconoclast\Platform; .\include\Iconoclast\Platform\Windows; .\include\Iconoclast\Events</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>NotSet</SubSystem>
@@ -133,7 +133,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>.\include; .\include\Iconoclast; .\include\Iconoclast\Win</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\include; .\include\Iconoclast; .\include\Iconoclast\Platform; .\include\Iconoclast\Platform\Windows; .\include\Iconoclast\Events</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>NotSet</SubSystem>
@@ -166,12 +166,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Application.cpp" />
-    <ClCompile Include="src\win\EntryPoint.cpp" />
+    <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Core.h" />
     <ClInclude Include="include\Iconoclast.h" />
     <ClInclude Include="include\Iconoclast\Application.h" />
+    <ClInclude Include="include\Iconoclast\EntryPoint.h" />
+    <ClInclude Include="include\Iconoclast\Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
