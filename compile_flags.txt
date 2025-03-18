@@ -3,4 +3,6 @@
 -I
 ./Iconoclast/include/Iconoclast/
 -I
+./Iconoclast/include/Iconoclast/Events/
+-I
 ./Iconoclast/include/Iconoclast/Platform/Windows/

@@ -173,6 +173,11 @@
     <ClInclude Include="include\Iconoclast.h" />
     <ClInclude Include="include\Iconoclast\Application.h" />
     <ClInclude Include="include\Iconoclast\EntryPoint.h" />
+    <ClInclude Include="include\Iconoclast\Events\ApplicationEvent.h" />
+    <ClInclude Include="include\Iconoclast\Events\Event.h" />
+    <ClInclude Include="include\Iconoclast\Events\KeyEvent.h" />
+    <ClInclude Include="include\Iconoclast\Events\MouseEvent.h" />
+    <ClInclude Include="include\Iconoclast\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="include\Iconoclast\Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

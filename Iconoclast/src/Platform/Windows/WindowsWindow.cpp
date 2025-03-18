@@ -2,6 +2,7 @@
 #define ICONOCLAST_EXPORTS
 
 #include "Window.h"
+#include "ApplicationEvent.h"
 #include "WindowsWindow.h"
 
 namespace Iconoclast {
@@ -104,6 +105,8 @@ namespace Iconoclast {
         MSG msg = {};
         while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE) > 0) {
             if (msg.message == WM_QUIT) {
+                WindowCloseEvent event;
+                m_Data.EventCallback(event);
             }
             TranslateMessage(&msg);
             DispatchMessage(&msg);

@@ -32,6 +32,18 @@
     <ClInclude Include="include\Iconoclast.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\Iconoclast\Events\ApplicationEvent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Iconoclast\Events\Event.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Iconoclast\Events\KeyEvent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Iconoclast\Events\MouseEvent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="include\Iconoclast\Platform\Windows\WindowsWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
