@@ -9,7 +9,6 @@ for %%x in (%*) do (
 )
 
 set target=x64
-set subsysVer=6.02
 set compilerFlags=-DDEBUG=1
 set config=Debug
 set linkerFlags=/DEBUG
@@ -25,7 +24,6 @@ for /L %%i in (1,1,%argCount%) do (
     )
     if !arg! EQU x86 (
         set target=x86
-        set subsysVer=5.01
     )
 )
 
@@ -44,7 +42,7 @@ goto :eof
 :main
 
 set dll=iconoclast_%target%.dll
-set exe=sandbox.exe
+set exe=Sandbox.exe
 set flags=compile_flags.txt
 
 rem/||(
@@ -188,6 +186,6 @@ for /r obj %%F in (*.obj) do (
 )
 
 rem Link *.obj object files
-LINK /DEBUG /ENTRY:_DllMainCRTStartup /SUBSYSTEM:WINDOWS,%subsysVer% %exeobjs:~1% /OUT:bin\%config%_%target%\%exe% ..\Iconoclast\bin\%config%_%target%\iconoclast_%target%.lib
+LINK /DEBUG %exeobjs:~1% /OUT:bin\%config%_%target%\%exe% ..\Iconoclast\bin\%config%_%target%\iconoclast_%target%.lib
 
 rem Build completed

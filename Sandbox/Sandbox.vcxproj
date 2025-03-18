@@ -103,9 +103,10 @@
       <AdditionalIncludeDirectories>..\Iconoclast\include; ..\Iconoclast\include\Iconoclast; ..\Iconoclast\include\Iconoclast\Win</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>NotSet</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <EntryPointSymbol>_DllMainCRTStartup</EntryPointSymbol>
+      <EntryPointSymbol>
+      </EntryPointSymbol>
       <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ProjectReference>
@@ -142,9 +143,10 @@
       <AdditionalIncludeDirectories>..\Iconoclast\include; ..\Iconoclast\include\Iconoclast; ..\Iconoclast\include\Iconoclast\Win</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>NotSet</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <EntryPointSymbol>_DllMainCRTStartup</EntryPointSymbol>
+      <EntryPointSymbol>
+      </EntryPointSymbol>
       <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ProjectReference>

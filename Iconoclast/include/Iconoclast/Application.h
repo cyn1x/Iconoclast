@@ -12,5 +12,6 @@ public:
 
     virtual void Run();
 };
+    Application *CreateApplication();
 
 } // namespace Iconoclast
