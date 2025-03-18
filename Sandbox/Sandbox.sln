@@ -3,10 +3,10 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35303.130
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{911E67C6-3D85-4FCE-B560-20A9C3E3FF48}") = "Sandbox", "bin\Debug_x64\sandbox.exe", "{1C743FBA-C381-4798-88A5-AF16AFA67901}"
+Project("{911E67C6-3D85-4FCE-B560-20A9C3E3FF48}") = "Sandbox", "bin\Debug_x64\Sandbox.exe", "{1C743FBA-C381-4798-88A5-AF16AFA67901}"
 	ProjectSection(DebuggerProjectSystem) = preProject
 		PortSupplier = 00000000-0000-0000-0000-000000000000
-		Executable = bin\Debug_x64\sandbox.exe
+		Executable = bin\Debug_x64\Sandbox.exe
 		RemoteMachine = 
 		StartingDirectory = ..\Crucible
 		Environment = Default
