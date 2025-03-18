@@ -18,9 +18,9 @@ namespace Iconoclast {
         ICONOCLAST_API Application();
         ICONOCLAST_API virtual ~Application();
 
-        ICONOCLAST_API virtual void Run();
+        ICONOCLAST_API void Run();
 
-        void                        OnEvent(Event &e);
+        void                OnEvent(Event &e);
 
     private:
         bool                    OnWindowClose(WindowCloseEvent &e);
