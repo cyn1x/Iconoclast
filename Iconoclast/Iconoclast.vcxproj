@@ -56,7 +56,8 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <AdditionalIncludeDirectories>include;include\Iconoclast;include\Iconoclast\Platform;include\Iconoclast\Platform\Windows;include\Iconoclast\Events;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
@@ -76,7 +77,8 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <AdditionalIncludeDirectories>include;include\Iconoclast;include\Iconoclast\Platform;include\Iconoclast\Platform\Windows;include\Iconoclast\Events;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
@@ -109,10 +111,14 @@
     <ClInclude Include="include\Iconoclast\Events\MouseEvent.h" />
     <ClInclude Include="include\Iconoclast\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="include\Iconoclast\Window.h" />
+    <ClInclude Include="include\precompiled.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
+    <ClCompile Include="src\precompiled.cpp">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

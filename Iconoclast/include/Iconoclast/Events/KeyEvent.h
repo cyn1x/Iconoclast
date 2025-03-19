@@ -3,8 +3,6 @@
 #include "Core.h"
 #include "Event.h"
 
-#include <sstream>
-
 namespace Iconoclast {
 
     class ICONOCLAST_API KeyEvent : public Event
@@ -28,7 +26,8 @@ namespace Iconoclast {
     class ICONOCLAST_API KeyPressedEvent : public KeyEvent
     {
     public:
-        KeyPressedEvent(int keycode, int repeatCount) : KeyEvent(keycode), m_RepeatCount(repeatCount)
+        KeyPressedEvent(int keycode, int repeatCount)
+            : KeyEvent(keycode), m_RepeatCount(repeatCount)
         {
         }
 

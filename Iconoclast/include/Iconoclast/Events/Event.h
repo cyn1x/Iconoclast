@@ -1,9 +1,8 @@
 #pragma once
 
-#include "Core.h"
+#include "precompiled.h"
 
-#include <functional>
-#include <string>
+#include "Core.h"
 
 static_assert(true, "");
 #pragma warning(push)

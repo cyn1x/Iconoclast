@@ -17,6 +17,9 @@ project "Iconoclast"
     targetdir ("%{prj.name}" .. "/bin/" .. outputdir)
     objdir ("%{prj.name}" .. "/obj/" .. outputdir)
 
+    pchheader "precompiled.h"
+    pchsource "Iconoclast/src/precompiled.cpp"
+
     files 
     {
         "%{prj.name}/include/**.h",

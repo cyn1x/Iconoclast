@@ -2,7 +2,6 @@
 
 #include "Core.h"
 #include "Event.h"
-#include <sstream>
 
 namespace Iconoclast {
 

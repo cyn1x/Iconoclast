@@ -1,8 +1,9 @@
+#include "precompiled.h"
 
 #define ICONOCLAST_EXPORTS
 
-#include "Window.h"
 #include "ApplicationEvent.h"
+#include "Window.h"
 #include "WindowsWindow.h"
 
 namespace Iconoclast {

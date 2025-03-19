@@ -3,8 +3,6 @@
 #include "Core.h"
 #include "Event.h"
 
-#include <sstream>
-
 static_assert(true, "");
 #pragma warning(push)
 #pragma warning(disable : 4514)
@@ -14,7 +12,8 @@ namespace Iconoclast {
     class ICONOCLAST_API WindowResizeEvent : public Event
     {
     public:
-        WindowResizeEvent(unsigned int width, unsigned int height) : m_Width(width), m_Height(height)
+        WindowResizeEvent(unsigned int width, unsigned int height)
+            : m_Width(width), m_Height(height)
         {
         }
 

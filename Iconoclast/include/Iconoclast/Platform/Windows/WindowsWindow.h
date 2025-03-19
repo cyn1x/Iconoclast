@@ -1,11 +1,6 @@
 #pragma once
 
-#ifndef UNICODE
-#define UNICODE
-#endif
-
 #include "Window.h"
-#include <windows.h>
 
 namespace Iconoclast {
 

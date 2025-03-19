@@ -2,7 +2,6 @@
 
 #include "Core.h"
 #include "Event.h"
-#include <string>
 
 static_assert(true, "");
 #pragma warning(push)

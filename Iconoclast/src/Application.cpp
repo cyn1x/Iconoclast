@@ -1,8 +1,8 @@
+#include "precompiled.h"
+
 #define ICONOCLAST_EXPORTS
 
 #include "Application.h"
-#include <memory>
-#include <windows.h>
 
 namespace Iconoclast {
 

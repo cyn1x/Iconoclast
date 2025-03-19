@@ -39,12 +39,18 @@
     <ClInclude Include="include\Iconoclast\Window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\precompiled.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Application.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\precompiled.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

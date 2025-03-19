@@ -4,7 +4,6 @@
 #include "Core.h"
 #include "Event.h"
 #include "Window.h"
-#include <memory>
 
 static_assert(true, "");
 #pragma warning(push)
