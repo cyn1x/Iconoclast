@@ -16,6 +16,7 @@ Iconoclast is currently only supported on Windows though I hope to add support s
 
 - Microsoft Visual Studio 2022
   - Desktop Development for C++
+  - Game Development with C++
   - C++ Clang Compiler for Windows (17.0.3)
 - Microsoft Visual Studio 2022 Build Tools
 
