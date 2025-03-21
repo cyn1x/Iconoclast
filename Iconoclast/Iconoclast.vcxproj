@@ -57,12 +57,13 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>IconoclastPCH.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>include;include\Iconoclast;include\Iconoclast\Platform;include\Iconoclast\Platform\Windows;include\Iconoclast\Events;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;include\Iconoclast;include\Iconoclast\Platform;include\Iconoclast\Platform\DirectX;include\Iconoclast\Renderer;include\Iconoclast\Platform\Windows;include\Iconoclast\Events;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <AdditionalOptions>/MDd %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
@@ -78,15 +79,16 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>IconoclastPCH.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>include;include\Iconoclast;include\Iconoclast\Platform;include\Iconoclast\Platform\Windows;include\Iconoclast\Events;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;include\Iconoclast;include\Iconoclast\Platform;include\Iconoclast\Platform\DirectX;include\Iconoclast\Renderer;include\Iconoclast\Platform\Windows;include\Iconoclast\Events;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalOptions>/MD %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
@@ -109,16 +111,19 @@
     <ClInclude Include="include\Iconoclast\Events\Event.h" />
     <ClInclude Include="include\Iconoclast\Events\KeyEvent.h" />
     <ClInclude Include="include\Iconoclast\Events\MouseEvent.h" />
+    <ClInclude Include="include\Iconoclast\Platform\DirectX\DirectXContext.h" />
     <ClInclude Include="include\Iconoclast\Platform\Windows\WindowsWindow.h" />
+    <ClInclude Include="include\Iconoclast\Renderer\GraphicsContext.h" />
     <ClInclude Include="include\Iconoclast\Window.h" />
-    <ClInclude Include="include\precompiled.h" />
+    <ClInclude Include="include\IconoclastPCH.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Application.cpp" />
-    <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
-    <ClCompile Include="src\precompiled.cpp">
+    <ClCompile Include="src\IconoclastPCH.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\Platform\DirectX\DirectXContext.cpp" />
+    <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

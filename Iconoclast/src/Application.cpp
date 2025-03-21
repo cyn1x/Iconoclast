@@ -1,4 +1,4 @@
-#include "precompiled.h"
+#include "IconoclastPCH.h"
 
 #define ICONOCLAST_EXPORTS
 

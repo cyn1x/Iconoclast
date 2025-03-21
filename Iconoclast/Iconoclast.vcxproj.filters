@@ -33,13 +33,19 @@
     <ClInclude Include="include\Iconoclast\Events\MouseEvent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\Iconoclast\Platform\DirectX\DirectXContext.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="include\Iconoclast\Platform\Windows\WindowsWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Iconoclast\Renderer\GraphicsContext.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Iconoclast\Window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\precompiled.h">
+    <ClInclude Include="include\IconoclastPCH.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -47,10 +53,13 @@
     <ClCompile Include="src\Application.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
+    <ClCompile Include="src\IconoclastPCH.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\precompiled.cpp">
+    <ClCompile Include="src\Platform\DirectX\DirectXContext.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

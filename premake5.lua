@@ -17,8 +17,8 @@ project "Iconoclast"
     targetdir ("%{prj.name}" .. "/bin/" .. outputdir)
     objdir ("%{prj.name}" .. "/obj/" .. outputdir)
 
-    pchheader "precompiled.h"
-    pchsource "Iconoclast/src/precompiled.cpp"
+    pchheader "IconoclastPCH.h"
+    pchsource "Iconoclast/src/IconoclastPCH.cpp"
 
     files 
     {
@@ -38,13 +38,15 @@ project "Iconoclast"
         "%{prj.name}/include",
         "%{prj.name}/include/Iconoclast",
         "%{prj.name}/include/Iconoclast/Platform",
+        "%{prj.name}/include/Iconoclast/Platform/DirectX",
+        "%{prj.name}/include/Iconoclast/Renderer",
         "%{prj.name}/include/Iconoclast/Platform/Windows",
         "%{prj.name}/include/Iconoclast/Events"
     }
 
     filter "system:windows"
-        cppdialect "C++20"
-        staticruntime "On"
+        cppdialect "c++20"
+        staticruntime "on"
         systemversion "latest"
 
         defines
@@ -57,10 +59,12 @@ project "Iconoclast"
         }
 
     filter "configurations:Debug"
-        symbols "On"
+        buildoptions "/MDd"
+        symbols "on"
 
     filter "configurations:Release"
-        optimize "On"
+        buildoptions "/MD"
+        optimize "on"
 
 project "Sandbox"
     location "Sandbox"
@@ -87,8 +91,9 @@ project "Sandbox"
     {
         "Iconoclast/include",
         "Iconoclast/include/Iconoclast",
-        "Iconoclast/include/Iconoclast/Platform",
+        "Iconoclast/include/Iconoclast/Platform/DirectX",
         "Iconoclast/include/Iconoclast/Platform/Windows",
+        "Iconoclast/include/Iconoclast/Renderer",
         "Iconoclast/include/Iconoclast/Events"
     }
 
@@ -98,12 +103,14 @@ project "Sandbox"
     }
 
     filter "system:windows"
-        cppdialect "C++20"
-        staticruntime "On"
+        cppdialect "c++20"
+        staticruntime "on"
         systemversion "latest"
 
     filter "configurations:Debug"
-        symbols "On"
+        buildoptions "/MDd"
+        symbols "on"
 
     filter "configurations:Release"
-        optimize "On"
+        buildoptions "/MD"
+        optimize "on"

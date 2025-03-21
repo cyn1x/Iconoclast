@@ -58,10 +58,11 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>..\Iconoclast\include;..\Iconoclast\include\Iconoclast;..\Iconoclast\include\Iconoclast\Platform;..\Iconoclast\include\Iconoclast\Platform\Windows;..\Iconoclast\include\Iconoclast\Events;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Iconoclast\include;..\Iconoclast\include\Iconoclast;..\Iconoclast\include\Iconoclast\Platform\DirectX;..\Iconoclast\include\Iconoclast\Platform\Windows;..\Iconoclast\include\Iconoclast\Renderer;..\Iconoclast\include\Iconoclast\Events;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <AdditionalOptions>/MDd %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
@@ -74,13 +75,14 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>..\Iconoclast\include;..\Iconoclast\include\Iconoclast;..\Iconoclast\include\Iconoclast\Platform;..\Iconoclast\include\Iconoclast\Platform\Windows;..\Iconoclast\include\Iconoclast\Events;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Iconoclast\include;..\Iconoclast\include\Iconoclast;..\Iconoclast\include\Iconoclast\Platform\DirectX;..\Iconoclast\include\Iconoclast\Platform\Windows;..\Iconoclast\include\Iconoclast\Renderer;..\Iconoclast\include\Iconoclast\Events;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalOptions>/MD %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>

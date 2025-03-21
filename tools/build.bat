@@ -131,7 +131,7 @@ rem End of :sources subroutine call
 goto :eof
 
 :compile
-cl /EHsc /c /LD -MD -Z7 /Yu"precompiled.h" /Yc"precompiled.h" -GR- -EHa- -Oi -WX -W4 -wd4201 -wd4100 -wd4189 -wd4505 -FAsc /std:c++20 /Fo"..\..\..\obj\\Windows\\%config%_%platform%\\" %incs% %compilerFlags% /Fa"..\..\..\obj\\Windows\\%config%_%target%\\" %srcs:~1%
+cl /EHsc /c /LD -MD -Z7 /Yu"IconoclastPCH.h" /Yc"IconoclastPCH.h" -GR- -EHa- -Oi -WX -W4 -wd4201 -wd4100 -wd4189 -wd4505 -FAsc /std:c++20 /Fo"..\..\..\obj\\Windows\\%config%_%platform%\\" %incs% %compilerFlags% /Fa"..\..\..\obj\\Windows\\%config%_%target%\\" %srcs:~1%
 
 rem Pop to platform dir, bin dir, and project dir
 popd
