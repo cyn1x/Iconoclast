@@ -5,4 +5,8 @@
 -I
 ./Iconoclast/include/Iconoclast/Events/
 -I
+./Iconoclast/include/Iconoclast/Platform/DirectX/
+-I
 ./Iconoclast/include/Iconoclast/Platform/Windows/
+-I
+./Iconoclast/include/Iconoclast/Renderer/

@@ -3,38 +3,11 @@
 #define ICONOCLAST_EXPORTS
 
 #include "ApplicationEvent.h"
+#include "DirectXContext.h"
 #include "Window.h"
 #include "WindowsWindow.h"
 
 namespace Iconoclast {
-    LRESULT CALLBACK WindowsWindow::WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
-    {
-        switch (uMsg) {
-            case WM_DESTROY:
-                PostQuitMessage(0);
-                return 0;
-
-            case WM_PAINT:
-            {
-                PAINTSTRUCT ps;
-                HDC         hdc = BeginPaint(hwnd, &ps);
-
-                // All painting occurs here, between BeginPaint and EndPaint.
-
-                FillRect(hdc, &ps.rcPaint, (HBRUSH)(COLOR_WINDOW + 1));
-
-                EndPaint(hwnd, &ps);
-            }
-                return 0;
-        }
-        return DefWindowProc(hwnd, uMsg, wParam, lParam);
-    }
-
-    Window *Window::Create(const WindowProps &props)
-    {
-        return new WindowsWindow(props);
-    }
-
     WindowsWindow::WindowsWindow(const WindowProps &props)
     {
         Init(props);
@@ -77,7 +50,7 @@ namespace Iconoclast {
                                    WS_OVERLAPPEDWINDOW,         // Window style
 
                                    // Size and position
-                                   CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,
+                                   CW_USEDEFAULT, CW_USEDEFAULT, m_Data.Width, m_Data.Height,
 
                                    NULL,      // Parent window
                                    NULL,      // Menu
@@ -92,7 +65,16 @@ namespace Iconoclast {
 
         ShowWindow(hwnd, 1);
 
+        // Initialize graphics context
+        m_Context = new DirectXContext(hwnd);
+        m_Context->Init();
+
         return 0;
+    }
+
+    Window *Window::Create(const WindowProps &props)
+    {
+        return new WindowsWindow(props);
     }
 
     void WindowsWindow::Shutdown()
@@ -112,6 +94,32 @@ namespace Iconoclast {
             TranslateMessage(&msg);
             DispatchMessage(&msg);
         }
+    }
+
+    LRESULT CALLBACK WindowsWindow::WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+    {
+        switch (uMsg) {
+            case WM_DESTROY:
+                PostQuitMessage(0);
+                return 0;
+
+            case WM_PAINT:
+            {
+                PAINTSTRUCT ps;
+                HDC         hdc = BeginPaint(hwnd, &ps);
+
+                // All painting occurs here, between BeginPaint and EndPaint.
+                const COLORREF crBkgnd  = RGB(51, 77, 77);
+                const HBRUSH   hbrBkgnd = CreateSolidBrush(crBkgnd);
+
+                // FillRect(hdc, &ps.rcPaint, (HBRUSH)(COLOR_WINDOW + 1));
+                FillRect(hdc, &ps.rcPaint, hbrBkgnd);
+
+                EndPaint(hwnd, &ps);
+            }
+                return 0;
+        }
+        return DefWindowProc(hwnd, uMsg, wParam, lParam);
     }
 
     void WindowsWindow::SetVSync(bool enabled)

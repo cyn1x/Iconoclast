@@ -1,5 +1,6 @@
 #pragma once
 
+#include "GraphicsContext.h"
 #include "Window.h"
 
 namespace Iconoclast {
@@ -44,7 +45,8 @@ namespace Iconoclast {
             EventCallbackFn EventCallback;
         };
 
-        WindowData m_Data;
+        WindowData       m_Data;
+        GraphicsContext *m_Context;
     };
 
 } // namespace Iconoclast
