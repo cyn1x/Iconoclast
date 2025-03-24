@@ -49,6 +49,12 @@ project "Iconoclast"
         staticruntime "on"
         systemversion "latest"
 
+        links
+        {
+            "dxgi.lib",
+            "d3d11.lib"
+        }
+
         defines
         {
         }
