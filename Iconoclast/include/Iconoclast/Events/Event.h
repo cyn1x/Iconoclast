@@ -2,8 +2,6 @@
 
 #include "IconoclastPCH.h"
 
-#include "Core.h"
-
 static_assert(true, "");
 #pragma warning(push)
 #pragma warning(disable : 4514)
@@ -56,7 +54,7 @@ namespace Iconoclast {
         return category;                                                                           \
     }
 
-    class ICONOCLAST_API Event
+    class Event
     {
         friend class EventDispatcher;
 

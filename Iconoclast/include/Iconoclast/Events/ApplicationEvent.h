@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Core.h"
 #include "Event.h"
 
 static_assert(true, "");
@@ -9,7 +8,7 @@ static_assert(true, "");
 
 namespace Iconoclast {
 
-    class ICONOCLAST_API WindowResizeEvent : public Event
+    class WindowResizeEvent : public Event
     {
     public:
         WindowResizeEvent(unsigned int width, unsigned int height)
@@ -44,7 +43,7 @@ namespace Iconoclast {
         unsigned int m_Width, m_Height;
     };
 
-    class ICONOCLAST_API WindowMoveEvent : public Event
+    class WindowMoveEvent : public Event
     {
     public:
         WindowMoveEvent()
@@ -59,7 +58,7 @@ namespace Iconoclast {
         EVENT_CLASS_CATEGORY(EventCategoryApplication)
     };
 
-    class ICONOCLAST_API WindowCloseEvent : public Event
+    class WindowCloseEvent : public Event
     {
     public:
         WindowCloseEvent()
@@ -74,7 +73,7 @@ namespace Iconoclast {
         EVENT_CLASS_CATEGORY(EventCategoryApplication)
     };
 
-    class ICONOCLAST_API WindowFocusEvent : public Event
+    class WindowFocusEvent : public Event
     {
     public:
         WindowFocusEvent()
@@ -89,7 +88,7 @@ namespace Iconoclast {
         EVENT_CLASS_CATEGORY(EventCategoryApplication)
     };
 
-    class ICONOCLAST_API WindowLostFocusEvent : public Event
+    class WindowLostFocusEvent : public Event
     {
     public:
         WindowLostFocusEvent()
