@@ -2,6 +2,8 @@
 
 setlocal enabledelayedexpansion
 
+set err=
+
 set argCount=0
 for %%x in (%*) do (
     set /A argCount+=1
@@ -132,6 +134,7 @@ goto :eof
 
 :compile
 cl /EHsc /c /LD -MD -Z7 /Yu"IconoclastPCH.h" /Yc"IconoclastPCH.h" -GR- -EHa- -Oi -WX -W4 -wd4201 -wd4100 -wd4189 -wd4505 -FAsc /std:c++20 /Fo"..\..\..\obj\\Windows\\%config%_%platform%\\" %incs% %compilerFlags% /Fa"..\..\..\obj\\Windows\\%config%_%target%\\" %srcs:~1%
+if %errorlevel% neq 0 goto :error
 
 rem Pop to platform dir, bin dir, and project dir
 popd
@@ -153,7 +156,8 @@ popd
 popd
 popd
 
-LINK /nologo %linkerFlags% %objs:~1% /MAP:bin\Windows\%config%_%target%\iconoclast_%target%.map /DLL /OUT:bin\Windows\%config%_%target%\iconoclast_%target%.dll user32.lib gdi32.lib
+LINK /nologo /SUBSYSTEM:WINDOWS %linkerFlags% %objs:~1% /MAP:bin\Windows\%config%_%target%\iconoclast_%target%.map /DLL /OUT:bin\Windows\%config%_%target%\iconoclast_%target%.dll user32.lib gdi32.lib dxgi.lib d3d11.lib
+if %errorlevel% neq 0 goto :error
 
 popd
 
@@ -178,6 +182,7 @@ for /r ..\..\..\src %%F in (*.cpp) do (
 
 rem Compile *.cpp files
 cl /nologo /EHsc /c /MD /Zi /W4 /Wall /std:c++20 /Fo"..\..\..\obj\\Windows\\%config%_%platform%\\" /Fd"..\..\..\obj\\Windows\\%config%_%platform%\\" %exesrcs% %incs%
+if %errorlevel% neq 0 goto :error
 
 rem Compile Sandbox program and link DLL
 
@@ -192,6 +197,18 @@ for /r obj %%F in (*.obj) do (
 )
 
 rem Link *.obj object files
-LINK /DEBUG %exeobjs:~1% /OUT:bin\Windows\%config%_%target%\%exe% ..\Iconoclast\bin\Windows\%config%_%target%\iconoclast_%target%.lib
+LINK /DEBUG %exeobjs:~1% /SUBSYSTEM:CONSOLE /OUT:bin\Windows\%config%_%target%\%exe% ..\Iconoclast\bin\Windows\%config%_%target%\iconoclast_%target%.lib
+if %errorlevel% neq 0 goto :error
 
-rem Build completed
+rem Build completed successfully
+
+echo Build completed
+goto :eof
+
+rem Error function to call when a build error is encountered
+:error
+set err=%errorlevel%
+echo. 
+echo Build failed
+echo Exited with error code: %errorlevel%
+exit /b %errorlevel%
