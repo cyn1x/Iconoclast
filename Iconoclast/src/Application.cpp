@@ -3,6 +3,7 @@
 #define ICONOCLAST_EXPORTS
 
 #include "Application.h"
+#include "GraphicsContext.h"
 
 namespace Iconoclast {
 
@@ -12,10 +13,13 @@ namespace Iconoclast {
     {
         m_Window = std::shared_ptr<Window>(Window::Create());
         m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
+
+        m_Context = std::shared_ptr<GraphicsContext>(GraphicsContext::Create());
     }
 
     Application::~Application()
     {
+        m_Context->ShutDown();
     }
 
     void Application::Run()

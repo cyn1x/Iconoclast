@@ -2,12 +2,21 @@
 
 #ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN
+
 #ifndef UNICODE
 #define UNICODE
 #endif
+
 #pragma warning(push)
 #pragma warning(disable : 5039)
 #include <windows.h>
+
+#pragma warning(disable : 4061)
+#pragma warning(disable : 4365)
+#pragma warning(disable : 4668)
+#pragma warning(disable : 4820)
+#include <d3d11.h>
+#include <directxmath.h>
 #pragma warning(pop)
 #endif
 

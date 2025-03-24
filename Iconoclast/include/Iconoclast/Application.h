@@ -3,6 +3,7 @@
 #include "ApplicationEvent.h"
 #include "Core.h"
 #include "Event.h"
+#include "GraphicsContext.h"
 #include "Window.h"
 
 static_assert(true, "");
@@ -22,9 +23,10 @@ namespace Iconoclast {
         void                OnEvent(Event &e);
 
     private:
-        bool                    OnWindowClose(WindowCloseEvent &e);
-        std::shared_ptr<Window> m_Window;
-        bool                    m_Running = true;
+        std::shared_ptr<Window>          m_Window;
+        std::shared_ptr<GraphicsContext> m_Context;
+        bool                             m_Running = true;
+        bool                             OnWindowClose(WindowCloseEvent &e);
     };
 
     Application *CreateApplication();

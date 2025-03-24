@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Core.h"
 #include "Event.h"
 
 static_assert(true, "");
@@ -23,7 +22,7 @@ namespace Iconoclast {
     };
 
     // Interface representing a desktop system based window
-    class ICONOCLAST_API Window
+    class Window
     {
     public:
         using EventCallbackFn = std::function<void(Event &)>;

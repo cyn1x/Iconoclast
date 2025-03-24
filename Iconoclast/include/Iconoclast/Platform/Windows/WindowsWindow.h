@@ -1,6 +1,5 @@
 #pragma once
 
-#include "GraphicsContext.h"
 #include "Window.h"
 
 namespace Iconoclast {
@@ -26,6 +25,7 @@ namespace Iconoclast {
         {
             m_Data.EventCallback = callback;
         }
+
         void SetVSync(bool enabled) override;
         bool IsVSync() const override;
 
@@ -45,8 +45,7 @@ namespace Iconoclast {
             EventCallbackFn EventCallback;
         };
 
-        WindowData       m_Data;
-        GraphicsContext *m_Context;
+        WindowData m_Data;
     };
 
 } // namespace Iconoclast

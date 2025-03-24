@@ -3,7 +3,6 @@
 #define ICONOCLAST_EXPORTS
 
 #include "ApplicationEvent.h"
-#include "DirectXContext.h"
 #include "Window.h"
 #include "WindowsWindow.h"
 
@@ -15,6 +14,11 @@ namespace Iconoclast {
 
     WindowsWindow::~WindowsWindow()
     {
+    }
+
+    Window *Window::Create(const WindowProps &props)
+    {
+        return new WindowsWindow(props);
     }
 
     DWORD WindowsWindow::Init(const WindowProps &props)
@@ -65,20 +69,7 @@ namespace Iconoclast {
 
         ShowWindow(hwnd, 1);
 
-        // Initialize graphics context
-        m_Context = new DirectXContext(hwnd);
-        m_Context->Init();
-
         return 0;
-    }
-
-    Window *Window::Create(const WindowProps &props)
-    {
-        return new WindowsWindow(props);
-    }
-
-    void WindowsWindow::Shutdown()
-    {
     }
 
     void WindowsWindow::OnUpdate()
@@ -94,6 +85,10 @@ namespace Iconoclast {
             TranslateMessage(&msg);
             DispatchMessage(&msg);
         }
+    }
+
+    void WindowsWindow::Shutdown()
+    {
     }
 
     LRESULT CALLBACK WindowsWindow::WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
