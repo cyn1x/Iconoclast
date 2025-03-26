@@ -8,18 +8,30 @@ namespace Iconoclast {
 
     using namespace DirectX;
 
-    class DirectXContext : public GraphicsContext
+    class D3DContext : public GraphicsContext
     {
     public:
-        DirectXContext(const ContextProps &props);
-        virtual ~DirectXContext();
+        D3DContext(const ContextProps &props);
+        ~D3DContext();
 
-        virtual void SwapBuffers() override;
-        virtual void ShutDown() override;
+        void BeginScene() override;
+        void EndScene() override;
+        void SwapBuffers() override;
+        void ShutDown() override;
+
+    public:
+        ID3D11Device        *GetDevice();
+        ID3D11DeviceContext *GetDeviceContext();
+
+        void                 Init(const ContextProps &props);
+        void                 GetProjectionMatrix(XMMATRIX &projectionMatrix);
+        void                 GetWorldMatrix(XMMATRIX &worldMatrix);
+        void                 GetOrthoMatrix(XMMATRIX &orthoMatrix);
+        void                 GetVideoCardInfo(char *cardName, int &memory);
+        void                 SetBackBufferRenderTarget();
+        void                 ResetViewport();
 
     private:
-        void                     Init(const ContextProps &props);
-
         float                    m_ScreenDepth = 1000.0f;
         float                    m_ScreenNear  = 0.3f;
 

@@ -1,26 +1,25 @@
 #include "IconoclastPCH.h" // IWYU pragma: keep
 
-#include "DirectXContext.h"
-#include "GraphicsContext.h"
+#include "D3DContext.h"
 
 namespace Iconoclast
 
 {
     GraphicsContext *GraphicsContext::Create(const ContextProps &props)
     {
-        return new DirectXContext(props);
+        return new D3DContext(props);
     }
 
-    DirectXContext::DirectXContext(const ContextProps &props)
+    D3DContext::D3DContext(const ContextProps &props)
     {
         Init(props);
     }
 
-    DirectXContext::~DirectXContext()
+    D3DContext::~D3DContext()
     {
     }
 
-    void DirectXContext::Init(const ContextProps &props)
+    void D3DContext::Init(const ContextProps &props)
     {
         unsigned int                  width, height;
         HRESULT                       result;
@@ -336,7 +335,7 @@ namespace Iconoclast
             XMMatrixOrthographicLH((float)width, (float)height, m_ScreenNear, m_ScreenDepth);
     }
 
-    void DirectXContext::ShutDown()
+    void D3DContext::ShutDown()
     {
         // Before shutting down set to windowed mode or when you release the swap chain it will
         // throw an exception.
@@ -385,8 +384,84 @@ namespace Iconoclast
         }
     }
 
-    void DirectXContext::SwapBuffers()
+    void D3DContext::BeginScene()
     {
+        // Setup the color to clear the buffer to.
+        float color[4] = {0.1f, 0.3f, 0.3f, 1.0f};
+
+        // Clear the back buffer.
+        m_DeviceContext->ClearRenderTargetView(m_RenderTargetView, color);
+
+        // Clear the depth buffer.
+        m_DeviceContext->ClearDepthStencilView(m_DepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
+    }
+
+    void D3DContext::EndScene()
+    {
+        SwapBuffers();
+    }
+
+    void D3DContext::SwapBuffers()
+    {
+        // Present the back buffer to the screen since rendering is complete.
+        if (m_VSync) {
+            // Lock to screen refresh rate.
+            m_SwapChain->Present(1, 0);
+        } else {
+            // Present as fast as possible.
+            m_SwapChain->Present(0, 0);
+        }
+    }
+
+    ID3D11Device *D3DContext::GetDevice()
+    {
+        return m_Device;
+    }
+
+    ID3D11DeviceContext *D3DContext::GetDeviceContext()
+    {
+        return m_DeviceContext;
+    }
+
+    void D3DContext::GetProjectionMatrix(XMMATRIX &projectionMatrix)
+    {
+        projectionMatrix = m_ProjectionMatrix;
+        return;
+    }
+
+    void D3DContext::GetWorldMatrix(XMMATRIX &worldMatrix)
+    {
+        worldMatrix = m_WorldMatrix;
+        return;
+    }
+
+    void D3DContext::GetOrthoMatrix(XMMATRIX &orthoMatrix)
+    {
+        orthoMatrix = m_OrthoMatrix;
+        return;
+    }
+
+    void D3DContext::GetVideoCardInfo(char *cardName, int &memory)
+    {
+        strcpy_s(cardName, 128, m_VideoCardDescription);
+        memory = m_VideoCardMemory;
+        return;
+    }
+
+    void D3DContext::SetBackBufferRenderTarget()
+    {
+        // Bind the render target view and depth stencil buffer to the output render pipeline.
+        m_DeviceContext->OMSetRenderTargets(1, &m_RenderTargetView, m_DepthStencilView);
+
+        return;
+    }
+
+    void D3DContext::ResetViewport()
+    {
+        // Set the viewport.
+        m_DeviceContext->RSSetViewports(1, &m_Viewport);
+
+        return;
     }
 
 } // namespace Iconoclast
