@@ -52,7 +52,8 @@ project "Iconoclast"
         links
         {
             "dxgi.lib",
-            "d3d11.lib"
+            "d3d11.lib",
+            "d3dcompiler.lib"
         }
 
         defines
