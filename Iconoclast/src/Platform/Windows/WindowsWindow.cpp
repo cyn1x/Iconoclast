@@ -94,24 +94,9 @@ namespace Iconoclast {
     LRESULT CALLBACK WindowsWindow::WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     {
         switch (uMsg) {
+
             case WM_DESTROY:
                 PostQuitMessage(0);
-                return 0;
-
-            case WM_PAINT:
-            {
-                PAINTSTRUCT ps;
-                HDC         hdc = BeginPaint(hwnd, &ps);
-
-                // All painting occurs here, between BeginPaint and EndPaint.
-                const COLORREF crBkgnd  = RGB(51, 77, 77);
-                const HBRUSH   hbrBkgnd = CreateSolidBrush(crBkgnd);
-
-                // FillRect(hdc, &ps.rcPaint, (HBRUSH)(COLOR_WINDOW + 1));
-                FillRect(hdc, &ps.rcPaint, hbrBkgnd);
-
-                EndPaint(hwnd, &ps);
-            }
                 return 0;
         }
         return DefWindowProc(hwnd, uMsg, wParam, lParam);

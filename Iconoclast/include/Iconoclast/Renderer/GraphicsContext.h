@@ -25,6 +25,8 @@ namespace Iconoclast {
         {
         }
 
+        virtual void            BeginScene()  = 0;
+        virtual void            EndScene()    = 0;
         virtual void            SwapBuffers() = 0;
         virtual void            ShutDown()    = 0;
 

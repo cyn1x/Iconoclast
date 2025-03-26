@@ -3,6 +3,7 @@
 #define ICONOCLAST_EXPORTS
 
 #include "Application.h"
+#include "D3DContext.h"
 #include "GraphicsContext.h"
 
 namespace Iconoclast {
@@ -25,6 +26,8 @@ namespace Iconoclast {
     void Application::Run()
     {
         while (m_Running) {
+            m_Context->BeginScene();
+            m_Context->EndScene();
             m_Window->OnUpdate();
         }
     }
