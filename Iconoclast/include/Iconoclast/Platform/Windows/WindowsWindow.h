@@ -8,7 +8,7 @@ namespace Iconoclast {
     {
     public:
         WindowsWindow(const WindowProps &props);
-        virtual ~WindowsWindow();
+        ~WindowsWindow();
 
         void                OnUpdate() override;
 
@@ -32,8 +32,8 @@ namespace Iconoclast {
     private:
         static LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
-        virtual DWORD           Init(const WindowProps &props);
-        virtual void            Shutdown();
+        DWORD                   Init(const WindowProps &props);
+        void                    Shutdown();
 
     private:
         struct WindowData
