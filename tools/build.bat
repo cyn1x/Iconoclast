@@ -83,6 +83,9 @@ goto :eof
 
 :build
 
+set libs=user32.lib gdi32.lib dxgi.lib d3d11.lib d3dcompiler.lib
+set objDir=..\..\..\obj\\Windows\\%config%_%platform%\\
+
 rem Change dir to Iconoclast project dir
 pushd Iconoclast
 
@@ -133,7 +136,7 @@ rem End of :sources subroutine call
 goto :eof
 
 :compile
-cl /EHsc /c /LD -MD -Z7 /Yu"IconoclastPCH.h" /Yc"IconoclastPCH.h" -GR- -EHa- -Oi -WX -W4 -wd4201 -wd4100 -wd4189 -wd4505 -FAsc /std:c++20 /Fo"..\..\..\obj\\Windows\\%config%_%platform%\\" %incs% %compilerFlags% /Fa"..\..\..\obj\\Windows\\%config%_%target%\\" %srcs:~1%
+cl /EHsc /c /std:c++20 /LD /MD /FAsc /Zi /Oi /Yu"IconoclastPCH.h" /Yc"IconoclastPCH.h" /WX /W4 -wd4201 -wd4100 -wd4189 -wd4505 /Fo"%objDir%" %incs% %compilerFlags% /Fa"%objDir%" %srcs:~1%
 if %errorlevel% neq 0 goto :error
 
 rem Pop to platform dir, bin dir, and project dir
@@ -156,7 +159,7 @@ popd
 popd
 popd
 
-LINK /nologo /SUBSYSTEM:WINDOWS %linkerFlags% %objs:~1% /MAP:bin\Windows\%config%_%target%\iconoclast_%target%.map /DLL /OUT:bin\Windows\%config%_%target%\iconoclast_%target%.dll user32.lib gdi32.lib dxgi.lib d3d11.lib
+LINK /nologo /SUBSYSTEM:WINDOWS %linkerFlags% %objs:~1% /MAP:bin\Windows\%config%_%target%\iconoclast_%target%.map /DLL /OUT:bin\Windows\%config%_%target%\iconoclast_%target%.dll %libs%
 if %errorlevel% neq 0 goto :error
 
 popd
@@ -181,7 +184,7 @@ for /r ..\..\..\src %%F in (*.cpp) do (
 )
 
 rem Compile *.cpp files
-cl /nologo /EHsc /c /MD /Zi /W4 /Wall /std:c++20 /Fo"..\..\..\obj\\Windows\\%config%_%platform%\\" /Fd"..\..\..\obj\\Windows\\%config%_%platform%\\" %exesrcs% %incs%
+cl /nologo /EHsc /c /std:c++20 /MD /Zi /W4 /Wall /Fo"%objDir%" /Fd"%objDir%" %exesrcs% %incs%
 if %errorlevel% neq 0 goto :error
 
 rem Compile Sandbox program and link DLL
