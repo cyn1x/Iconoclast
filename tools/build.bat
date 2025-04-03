@@ -118,6 +118,7 @@ for /r include %%F in (*.h) do (
         echo .!cpath!>> ..\%flags%
 
         set "prev=!relpath!"
+
     )
 )
 
@@ -127,16 +128,22 @@ goto :eof
 rem Recursively set all relative file paths of *.cpp source files
 :sources
 for /r ..\..\..\src %%F in (*.cpp) do (
-    set "abspath=%%F"
-    set "relpath=!abspath:%cmp%=!"
-    call set "srcs=%%srcs%% ..\..\..\..!relpath!"
+
+    if %%~nF neq IconoclastPCH (
+        set "abspath=%%F"
+        set "relpath=!abspath:%cmp%=!"
+        call set "srcs=%%srcs%% ..\..\..\..!relpath!"
+    )
 )
 
 rem End of :sources subroutine call
 goto :eof
 
 :compile
-cl /EHsc /c /std:c++20 /LD /MD /FAsc /Zi /Oi /Yu"IconoclastPCH.h" /Yc"IconoclastPCH.h" /WX /W4 -wd4201 -wd4100 -wd4189 -wd4505 /Fo"%objDir%" %incs% %compilerFlags% /Fa"%objDir%" %srcs:~1%
+cl /EHsc /c /std:c++20 /MD /FAsc /Zi /WX /W4 /Yc"IconoclastPCH.h" %incs% ..\..\..\..\Iconoclast\src\IconoclastPCH.cpp
+if %errorlevel% neq 0 goto :error
+
+cl /nologo /EHsc /c /std:c++20 /LD /MD /FAsc /Zi /Yu"IconoclastPCH.h" /Fp"IconoclastPCH.pch" /WX /W4 -wd4201 -wd4100 -wd4189 -wd4505 /Fo"%objDir%" %incs% %compilerFlags% /Fa"%objDir%" %srcs:~1%
 if %errorlevel% neq 0 goto :error
 
 rem Pop to platform dir, bin dir, and project dir
