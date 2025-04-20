@@ -1,7 +1,6 @@
 #pragma once
 
 #include "ApplicationEvent.h"
-#include "Core.h"
 #include "Event.h"
 #include "GraphicsContext.h"
 #include "Window.h"
@@ -15,10 +14,10 @@ namespace Iconoclast {
     class Application
     {
     public:
-        ICONOCLAST_API Application();
-        ICONOCLAST_API virtual ~Application();
+        Application();
+        virtual ~Application();
 
-        ICONOCLAST_API void Run();
+        void         Run();
 
         void                OnEvent(Event &e);
 
