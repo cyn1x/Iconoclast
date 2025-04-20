@@ -9,9 +9,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\Core.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\Iconoclast.h">
       <Filter>Header Files</Filter>
     </ClInclude>

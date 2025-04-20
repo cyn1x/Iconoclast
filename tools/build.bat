@@ -140,10 +140,10 @@ rem End of :sources subroutine call
 goto :eof
 
 :compile
-cl /EHsc /c /std:c++20 /MD /FAsc /Zi /WX /W4 /Yc"IconoclastPCH.h" %incs% ..\..\..\..\Iconoclast\src\IconoclastPCH.cpp
+cl /EHsc /c /std:c++20 /MDd /FAsc /Zi /WX /W4 /Yc"IconoclastPCH.h" %incs% ..\..\..\..\Iconoclast\src\IconoclastPCH.cpp
 if %errorlevel% neq 0 goto :error
 
-cl /nologo /EHsc /c /std:c++20 /LD /MD /FAsc /Zi /Yu"IconoclastPCH.h" /Fp"IconoclastPCH.pch" /WX /W4 -wd4201 -wd4100 -wd4189 -wd4505 /Fo"%objDir%" %incs% %compilerFlags% /Fa"%objDir%" %srcs:~1%
+cl /nologo /EHsc /c /std:c++20 /MDd /FAsc /Zi /Yu"IconoclastPCH.h" /Fp"IconoclastPCH.pch" /WX /W4 -wd4201 -wd4100 -wd4189 -wd4505 /Fo"%objDir%" %incs% %compilerFlags% /Fa"%objDir%" %srcs:~1%
 if %errorlevel% neq 0 goto :error
 
 rem Pop to platform dir, bin dir, and project dir
@@ -166,9 +166,8 @@ popd
 popd
 popd
 
-LINK /nologo /SUBSYSTEM:WINDOWS %linkerFlags% %objs:~1% /MAP:bin\Windows\%config%_%target%\iconoclast_%target%.map /DLL /OUT:bin\Windows\%config%_%target%\iconoclast_%target%.dll %libs%
+LIB /nologo /SUBSYSTEM:WINDOWS %objs:~1% /OUT:bin\Windows\%config%_%target%\iconoclast_%target%.lib
 if %errorlevel% neq 0 goto :error
-
 popd
 
 rem Copy DLL to where the test executable will be built
@@ -191,7 +190,7 @@ for /r ..\..\..\src %%F in (*.cpp) do (
 )
 
 rem Compile *.cpp files
-cl /nologo /EHsc /c /std:c++20 /MD /Zi /W4 /Wall /Fo"%objDir%" /Fd"%objDir%" %exesrcs% %incs%
+cl /nologo /EHsc /c /std:c++20 /MDd /Zi /W4 /Wall /Fo"%objDir%" /Fd"%objDir%" %exesrcs% %incs%
 if %errorlevel% neq 0 goto :error
 
 rem Compile Sandbox program and link DLL
@@ -207,7 +206,7 @@ for /r obj %%F in (*.obj) do (
 )
 
 rem Link *.obj object files
-LINK /DEBUG %exeobjs:~1% /SUBSYSTEM:CONSOLE /OUT:bin\Windows\%config%_%target%\%exe% ..\Iconoclast\bin\Windows\%config%_%target%\iconoclast_%target%.lib
+LINK /DEBUG %exeobjs:~1% /SUBSYSTEM:CONSOLE /OUT:bin\Windows\%config%_%target%\%exe% %libs% ..\Iconoclast\bin\Windows\%config%_%target%\iconoclast_%target%.lib
 if %errorlevel% neq 0 goto :error
 
 rem Build completed successfully

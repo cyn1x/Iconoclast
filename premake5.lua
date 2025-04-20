@@ -11,8 +11,9 @@ outputdir = "%{cfg.system}/%{cfg.buildcfg}_%{cfg.architecture}"
 
 project "Iconoclast"
     location "Iconoclast"
-    kind "SharedLib"
+    kind "StaticLib"
     language "C++"
+    staticruntime "on"
     
     targetdir ("%{prj.name}" .. "/bin/" .. outputdir)
     objdir ("%{prj.name}" .. "/obj/" .. outputdir)
@@ -49,34 +50,23 @@ project "Iconoclast"
         staticruntime "on"
         systemversion "latest"
 
-        links
-        {
-            "dxgi.lib",
-            "d3d11.lib",
-            "d3dcompiler.lib"
-        }
-
         defines
         {
         }
 
-        postbuildcommands
-        {
-            ("{COPY} %{cfg.buildtarget.relpath} ../Sandbox/bin/" .. outputdir)
-        }
-
     filter "configurations:Debug"
-        buildoptions "/MDd"
+        buildoptions "/MTd"
         symbols "on"
 
     filter "configurations:Release"
-        buildoptions "/MD"
+        buildoptions "/MT"
         optimize "on"
 
 project "Sandbox"
     location "Sandbox"
     kind "ConsoleApp"
     language "C++"
+    staticruntime "on"
 
     targetdir ("%{prj.name}" .. "/bin/" .. outputdir)
     objdir ("%{prj.name}" .. "/obj/" .. outputdir)
@@ -106,7 +96,10 @@ project "Sandbox"
 
     links
     {
-        "Iconoclast"
+        "Iconoclast",
+        "dxgi.lib",
+        "d3d11.lib",
+        "d3dcompiler.lib"
     }
 
     filter "system:windows"
@@ -115,9 +108,9 @@ project "Sandbox"
         systemversion "latest"
 
     filter "configurations:Debug"
-        buildoptions "/MDd"
+        buildoptions "/MTd"
         symbols "on"
 
     filter "configurations:Release"
-        buildoptions "/MD"
+        buildoptions "/MT"
         optimize "on"
