@@ -145,6 +145,7 @@ if %errorlevel% neq 0 goto :error
 
 cl /nologo /EHsc /c /std:c++20 /MDd /FAsc /Zi /Yu"IconoclastPCH.h" /Fp"IconoclastPCH.pch" /WX /W4 -wd4201 -wd4100 -wd4189 -wd4505 /Fo"%objDir%" %incs% %compilerFlags% /Fa"%objDir%" %srcs:~1%
 if %errorlevel% neq 0 goto :error
+echo Engine Code Compiled Successfully & echo.
 
 rem Pop to platform dir, bin dir, and project dir
 popd
@@ -166,12 +167,12 @@ popd
 popd
 popd
 
-LIB /nologo /SUBSYSTEM:WINDOWS %objs:~1% /OUT:bin\Windows\%config%_%target%\iconoclast_%target%.lib
+echo Creating Library...
+LIB /SUBSYSTEM:WINDOWS %objs:~1% /OUT:bin\Windows\%config%_%target%\iconoclast_%target%.lib
 if %errorlevel% neq 0 goto :error
-popd
+echo Engine Library Created Successfully & echo.
 
-rem Copy DLL to where the test executable will be built
-copy Iconoclast\bin\Windows\%config%_%target%\%dll% Sandbox\bin\Windows\%config%_%target%\%dll% > nul
+popd
 
 rem Change directory to Sandbox project dir and intermediate dir
 pushd Sandbox
@@ -190,8 +191,10 @@ for /r ..\..\..\src %%F in (*.cpp) do (
 )
 
 rem Compile *.cpp files
-cl /nologo /EHsc /c /std:c++20 /MDd /Zi /W4 /Wall /Fo"%objDir%" /Fd"%objDir%" %exesrcs% %incs%
+echo Compiling Application Code...
+cl /EHsc /c /std:c++20 /MDd /Zi /W4 /Wall /Fo"%objDir%" /Fd"%objDir%" %exesrcs% %incs%
 if %errorlevel% neq 0 goto :error
+echo Application Code Compiled Successfully & echo.
 
 rem Compile Sandbox program and link DLL
 
@@ -206,8 +209,10 @@ for /r obj %%F in (*.obj) do (
 )
 
 rem Link *.obj object files
+echo Generating Executable...
 LINK /DEBUG %exeobjs:~1% /SUBSYSTEM:CONSOLE /OUT:bin\Windows\%config%_%target%\%exe% %libs% ..\Iconoclast\bin\Windows\%config%_%target%\iconoclast_%target%.lib
 if %errorlevel% neq 0 goto :error
+echo Application Exectuable Created Successfully & echo.
 
 rem Build completed successfully
 
