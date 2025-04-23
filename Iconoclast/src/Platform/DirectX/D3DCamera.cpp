@@ -4,11 +4,6 @@
 
 namespace Iconoclast {
 
-    Camera *Camera::Create()
-    {
-        return new D3DCamera();
-    }
-
     D3DCamera::D3DCamera()
     {
         m_PositionX = 0.0f;

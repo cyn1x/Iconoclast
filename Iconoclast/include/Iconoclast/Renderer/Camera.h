@@ -11,11 +11,11 @@ namespace Iconoclast {
         {
         }
 
-        virtual void   SetPosition(float, float, float) = 0;
-        virtual void   SetRotation(float, float, float) = 0;
-        virtual void   Render(SceneData *)              = 0;
+        virtual void                     SetPosition(float, float, float) = 0;
+        virtual void                     SetRotation(float, float, float) = 0;
+        virtual void                     Render(SceneData *)              = 0;
 
-        static Camera *Create();
+        static std::function<Camera *()> Create;
 
     protected:
         float m_PositionX, m_PositionY, m_PositionZ;
