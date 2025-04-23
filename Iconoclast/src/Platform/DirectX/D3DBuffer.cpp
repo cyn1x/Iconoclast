@@ -141,6 +141,13 @@ namespace Iconoclast {
 
     void D3DVertexBuffer::Unbind(GraphicsContext &context) const
     {
+        ID3D11Buffer *nullBuffer = nullptr;
+        unsigned int  stride     = 0;
+        unsigned int  offset     = 0;
+
+        D3DContext   *ctx        = static_cast<D3DContext *>(&context);
+
+        ctx->GetDeviceContext()->IASetVertexBuffers(0, 1, &nullBuffer, &stride, &offset);
     }
 
     void D3DIndexBuffer::Bind(GraphicsContext &context) const
@@ -157,6 +164,8 @@ namespace Iconoclast {
 
     void D3DIndexBuffer::Unbind(GraphicsContext &context) const
     {
+        D3DContext *ctx = static_cast<D3DContext *>(&context);
+        ctx->GetDeviceContext()->IASetIndexBuffer(nullptr, DXGI_FORMAT_UNKNOWN, 0);
     }
 
     void D3DVertexBuffer::Shutdown()
