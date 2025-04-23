@@ -45,7 +45,7 @@ namespace Iconoclast {
         }
 
     private:
-        void          Initialize(ID3D11Device *, uint32_t *);
+        void          Initialize(ID3D11Device *, uint32_t *, uint32_t);
         void          Shutdown();
 
         ID3D11Buffer *m_IndexBuffer;

@@ -22,7 +22,7 @@ namespace Iconoclast {
     {
         m_IndexBuffer = 0;
 
-        Initialize(device, indices);
+        Initialize(device, indices, count);
     }
 
     D3DIndexBuffer::~D3DIndexBuffer()
@@ -47,14 +47,10 @@ namespace Iconoclast {
         }
 
         // Load the vertex array with data.
-        vertices[0].position = XMFLOAT3(data[0].x, data[0].y, data[0].z); // Bottom left.
-        vertices[0].color    = XMFLOAT4(1.0f, 0.5f, 0.2f, 1.0f);
-
-        vertices[1].position = XMFLOAT3(data[1].x, data[1].y, data[1].z); // Top middle.
-        vertices[1].color    = XMFLOAT4(1.0f, 0.5f, 0.2f, 1.0f);
-
-        vertices[2].position = XMFLOAT3(data[2].x, data[2].y, data[2].z); // Bottom right.
-        vertices[2].color    = XMFLOAT4(1.0f, 0.5f, 0.2f, 1.0f);
+        for (uint32_t i = 0; i < m_VertexCount; ++i) {
+            vertices[i].position = XMFLOAT3(data[i].x, data[i].y, data[i].z); // Bottom left.
+            vertices[i].color    = XMFLOAT4(1.0f, 0.5f, 0.2f, 1.0f);
+        }
 
         // Set up the description of the static vertex buffer.
         vertexBufferDesc.Usage               = D3D11_USAGE_DEFAULT;
@@ -80,7 +76,7 @@ namespace Iconoclast {
         vertices = 0;
     }
 
-    void D3DIndexBuffer::Initialize(ID3D11Device *device, uint32_t *data)
+    void D3DIndexBuffer::Initialize(ID3D11Device *device, uint32_t *data, uint32_t count)
     {
         unsigned long         *indices;
         D3D11_BUFFER_DESC      indexBufferDesc;
@@ -88,7 +84,7 @@ namespace Iconoclast {
         HRESULT                result;
 
         // Set the number of indices in the index array.
-        m_IndexCount = 3;
+        m_IndexCount = count;
 
         // Create the index array.
         indices = new unsigned long[m_IndexCount];
@@ -97,9 +93,9 @@ namespace Iconoclast {
         }
 
         // Load the index array with data.
-        indices[0] = data[0]; // Bottom left.
-        indices[1] = data[1]; // Top middle.
-        indices[2] = data[2]; // Bottom right.
+        for (uint32_t i = 0; i < m_IndexCount; ++i) {
+            indices[i] = data[i]; // Bottom left.
+        }
 
         // Set up the description of the static index buffer.
         indexBufferDesc.Usage               = D3D11_USAGE_DEFAULT;

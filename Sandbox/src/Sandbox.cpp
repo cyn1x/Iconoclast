@@ -9,19 +9,20 @@ public:
         m_Camera = Iconoclast::Camera::Create();
         m_Camera->SetPosition(0.0f, 0.0f, -5.0f);
 
-        m_Mesh                        = Iconoclast::Mesh::Create(*m_Context);
+        m_Mesh                                = Iconoclast::Mesh::Create(*m_Context);
 
-        Iconoclast::Vertex vertices[] = {
-            {-1.0f, -1.0f, 0.0f},
-            {0.0f,  1.0f,  0.0f},
-            {1.0f,  -1.0f, 0.0f}
+        Iconoclast::Vertex triangleVertices[] = {
+            {-1.0f, -1.0f, 0.0f}, // Bottom left
+            {0.0f,  1.0f,  0.0f}, // Top middle
+            {1.0f,  -1.0f, 0.0f}  // Bottom right
         };
-        uint32_t vertexCount = 3;
 
-        uint32_t indicies[]  = {0, 1, 2};
-        uint32_t indexCount  = 3;
+        uint32_t vertexCount = sizeof(triangleVertices) / sizeof(Iconoclast::Vertex);
 
-        m_Mesh->CreateVertexBuffer(vertices, vertexCount);
+        uint32_t indicies[]  = {0, 1, 2, 0, 2, 3};
+        uint32_t indexCount  = sizeof(indicies) / sizeof(uint32_t);
+
+        m_Mesh->CreateVertexBuffer(triangleVertices, vertexCount);
         m_Mesh->CreateIndexBuffer(indicies, indexCount);
         m_Mesh->CreateShader("Assets/Shaders/VertexShader.hlsl", "Assets/Shaders/PixelShader.hlsl");
     }
