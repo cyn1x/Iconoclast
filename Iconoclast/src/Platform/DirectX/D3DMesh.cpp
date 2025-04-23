@@ -8,9 +8,8 @@
 
 namespace Iconoclast {
 
-    D3DMesh::D3DMesh(GraphicsContext &context)
+    D3DMesh::D3DMesh(GraphicsContext &context) : Mesh(context)
     {
-        m_Context      = &context;
         m_VertexBuffer = 0;
         m_IndexBuffer  = 0;
     }
@@ -27,11 +26,11 @@ namespace Iconoclast {
 
     void D3DMesh::CreateIndexBuffer(uint32_t *data, uint32_t count)
     {
-        D3DContext *ctx = dynamic_cast<D3DContext *>(m_Context);
+        D3DContext *ctx = static_cast<D3DContext *>(m_Context);
         m_IndexBuffer   = std::make_unique<D3DIndexBuffer>(ctx->GetDevice(), data, count);
     }
 
-    void D3DMesh::CreateShader(std::string src, std::string dst)
+    void D3DMesh::CreateShader(const std::string src, const std::string dst)
     {
         D3DContext *ctx = static_cast<D3DContext *>(m_Context);
         m_Shader        = std::make_unique<D3DShader>(*m_Context, src, dst);
@@ -49,7 +48,7 @@ namespace Iconoclast {
         indexBuffer->Bind(*m_Context);
         shader->Bind(*m_Context, *Scene::GetSceneData());
 
-        // Render the triangle.
+        // Render the shape.
         ctx->GetDeviceContext()->DrawIndexed(m_IndexBuffer->GetCount(), 0, 0);
     }
 

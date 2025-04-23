@@ -4,6 +4,10 @@
 #include "GraphicsContext.h"
 #include "Shader.h"
 
+static_assert(true, "");
+#pragma warning(push)
+#pragma warning(disable : 4514)
+
 namespace Iconoclast {
 
     class Mesh
@@ -13,18 +17,22 @@ namespace Iconoclast {
         {
             m_Context = nullptr;
         }
-        Mesh()                                                                  = default;
-        Mesh(const Mesh &)                                                      = delete;
-        Mesh                                           &operator=(const Mesh &) = delete;
+        Mesh()                                                          = delete;
+        Mesh(const Mesh &)                                              = delete;
+        Mesh        &operator=(const Mesh &)                            = delete;
 
-        virtual void                                    CreateVertexBuffer(Vertex *, uint32_t)  = 0;
-        virtual void                                    CreateIndexBuffer(uint32_t *, uint32_t) = 0;
-        virtual void                                    CreateShader(std::string, std::string)  = 0;
-        virtual void                                    Render()                                = 0;
+        virtual void CreateVertexBuffer(Vertex *, uint32_t)             = 0;
+        virtual void CreateIndexBuffer(uint32_t *, uint32_t)            = 0;
+        virtual void CreateShader(std::string const, std::string const) = 0;
+        virtual void Render()                                           = 0;
 
         static std::function<Mesh *(GraphicsContext &)> Create;
 
     protected:
+        explicit Mesh(GraphicsContext &context) : m_Context(&context)
+        {
+        }
+
         GraphicsContext              *m_Context;
         std::unique_ptr<VertexBuffer> m_VertexBuffer;
         std::unique_ptr<IndexBuffer>  m_IndexBuffer;
@@ -32,3 +40,5 @@ namespace Iconoclast {
     };
 
 } // namespace Iconoclast
+
+#pragma warning(pop)
