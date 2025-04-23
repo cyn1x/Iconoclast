@@ -143,7 +143,7 @@ goto :eof
 cl /EHsc /c /std:c++20 /MDd /FAsc /Zi /WX /W4 /Yc"IconoclastPCH.h" %incs% ..\..\..\..\Iconoclast\src\IconoclastPCH.cpp
 if %errorlevel% neq 0 goto :error
 
-cl /nologo /EHsc /c /std:c++20 /MDd /FAsc /Zi /Yu"IconoclastPCH.h" /Fp"IconoclastPCH.pch" /WX /W4 -wd4201 -wd4100 -wd4189 -wd4505 /Fo"%objDir%" %incs% %compilerFlags% /Fa"%objDir%" %srcs:~1%
+cl /nologo /EHsc /c /std:c++20 /JMC /MDd /FAsc /Zi /Yu"IconoclastPCH.h" /Fp"IconoclastPCH.pch" /WX /W4 -wd4201 -wd4100 -wd4189 -wd4505 /Fo"%objDir%" %incs% %compilerFlags% /Fa"%objDir%" %srcs:~1%
 if %errorlevel% neq 0 goto :error
 echo Engine Code Compiled Successfully & echo.
 
@@ -192,7 +192,7 @@ for /r ..\..\..\src %%F in (*.cpp) do (
 
 rem Compile *.cpp files
 echo Compiling Application Code...
-cl /EHsc /c /std:c++20 /MDd /Zi /W4 /Wall /Fo"%objDir%" /Fd"%objDir%" %exesrcs% %incs%
+cl /EHsc /c /std:c++20 /JMC /MDd /Zi /W4 /Wall /Fo"%objDir%" /Fd"%objDir%" %exesrcs% %incs%
 if %errorlevel% neq 0 goto :error
 echo Application Code Compiled Successfully & echo.
 
