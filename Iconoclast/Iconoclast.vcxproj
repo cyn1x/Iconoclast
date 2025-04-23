@@ -103,15 +103,17 @@
     <ClInclude Include="include\Iconoclast\Platform\DirectX\D3DBuffer.h" />
     <ClInclude Include="include\Iconoclast\Platform\DirectX\D3DCamera.h" />
     <ClInclude Include="include\Iconoclast\Platform\DirectX\D3DContext.h" />
-    <ClInclude Include="include\Iconoclast\Platform\DirectX\D3DModel.h" />
+    <ClInclude Include="include\Iconoclast\Platform\DirectX\D3DMesh.h" />
     <ClInclude Include="include\Iconoclast\Platform\DirectX\D3DRendererAPI.h" />
     <ClInclude Include="include\Iconoclast\Platform\DirectX\D3DShader.h" />
     <ClInclude Include="include\Iconoclast\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="include\Iconoclast\Renderer\Buffer.h" />
     <ClInclude Include="include\Iconoclast\Renderer\Camera.h" />
     <ClInclude Include="include\Iconoclast\Renderer\GraphicsContext.h" />
-    <ClInclude Include="include\Iconoclast\Renderer\Model.h" />
+    <ClInclude Include="include\Iconoclast\Renderer\Mesh.h" />
+    <ClInclude Include="include\Iconoclast\Renderer\Renderer.h" />
     <ClInclude Include="include\Iconoclast\Renderer\RendererAPI.h" />
+    <ClInclude Include="include\Iconoclast\Renderer\Scene.h" />
     <ClInclude Include="include\Iconoclast\Renderer\Shader.h" />
     <ClInclude Include="include\Iconoclast\Window.h" />
     <ClInclude Include="include\IconoclastPCH.h" />
@@ -124,10 +126,14 @@
     <ClCompile Include="src\Platform\DirectX\D3DBuffer.cpp" />
     <ClCompile Include="src\Platform\DirectX\D3DCamera.cpp" />
     <ClCompile Include="src\Platform\DirectX\D3DContext.cpp" />
-    <ClCompile Include="src\Platform\DirectX\D3DModel.cpp" />
+    <ClCompile Include="src\Platform\DirectX\D3DMesh.cpp" />
     <ClCompile Include="src\Platform\DirectX\D3DRendererAPI.cpp" />
     <ClCompile Include="src\Platform\DirectX\D3DShader.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
+    <ClCompile Include="src\Renderer\Mesh.cpp" />
+    <ClCompile Include="src\Renderer\Renderer.cpp" />
+    <ClCompile Include="src\Renderer\RendererAPI.cpp" />
+    <ClCompile Include="src\Renderer\Scene.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

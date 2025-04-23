@@ -67,6 +67,8 @@ namespace Iconoclast {
             return 0;
         }
 
+        m_WindowHandle = hwnd;
+
         ShowWindow(hwnd, 1);
 
         return 0;

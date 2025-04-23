@@ -39,7 +39,7 @@
     <ClInclude Include="include\Iconoclast\Platform\DirectX\D3DContext.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Iconoclast\Platform\DirectX\D3DModel.h">
+    <ClInclude Include="include\Iconoclast\Platform\DirectX\D3DMesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Iconoclast\Platform\DirectX\D3DRendererAPI.h">
@@ -60,10 +60,16 @@
     <ClInclude Include="include\Iconoclast\Renderer\GraphicsContext.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Iconoclast\Renderer\Model.h">
+    <ClInclude Include="include\Iconoclast\Renderer\Mesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Iconoclast\Renderer\Renderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Iconoclast\Renderer\RendererAPI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Iconoclast\Renderer\Scene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Iconoclast\Renderer\Shader.h">
@@ -92,7 +98,7 @@
     <ClCompile Include="src\Platform\DirectX\D3DContext.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Platform\DirectX\D3DModel.cpp">
+    <ClCompile Include="src\Platform\DirectX\D3DMesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\DirectX\D3DRendererAPI.cpp">
@@ -102,6 +108,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Renderer\Mesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Renderer\Renderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Renderer\RendererAPI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Renderer\Scene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

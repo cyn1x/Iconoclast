@@ -28,6 +28,10 @@ namespace Iconoclast {
 
         void SetVSync(bool enabled) override;
         bool IsVSync() const override;
+        HWND GetWindowHandle()
+        {
+            return m_WindowHandle;
+        };
 
     private:
         static LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
@@ -46,6 +50,7 @@ namespace Iconoclast {
         };
 
         WindowData m_Data;
+        HWND       m_WindowHandle;
     };
 
 } // namespace Iconoclast

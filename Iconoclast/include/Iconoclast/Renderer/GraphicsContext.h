@@ -25,10 +25,12 @@ namespace Iconoclast {
         {
         }
 
-        virtual void            BeginScene()  = 0;
-        virtual void            EndScene()    = 0;
-        virtual void            SwapBuffers() = 0;
-        virtual void            ShutDown()    = 0;
+        virtual void            Initialize(const ContextProps &) = 0;
+        virtual void            SwapBuffers()                    = 0;
+        virtual void            ShutDown()                       = 0;
+
+        virtual unsigned int    GetWidth() const                 = 0;
+        virtual unsigned int    GetHeight() const                = 0;
 
         static GraphicsContext *Create(const ContextProps &props = ContextProps());
 

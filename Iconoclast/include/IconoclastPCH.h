@@ -16,6 +16,7 @@
 #pragma warning(disable : 4668)
 #pragma warning(disable : 4820)
 #include <d3d11.h>
+#include <d3dcompiler.h>
 #include <directxmath.h>
 #pragma warning(pop)
 #endif
@@ -26,6 +27,9 @@
 #include <memory>     // IWYU pragma: export
 #include <utility>    // IWYU pragma: export
 
+#include <cstdint>       // IWYU pragma: export
+#include <filesystem>    // IWYU pragma: export
+#include <fstream>       // IWYU pragma: export
 #include <sstream>       // IWYU pragma: export
 #include <string>        // IWYU pragma: export
 #include <unordered_map> // IWYU pragma: export

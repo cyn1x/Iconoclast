@@ -18,14 +18,17 @@ namespace Iconoclast {
         virtual ~Application();
 
         void         Run();
+        virtual void OnEvent(Event &e);
 
-        void                OnEvent(Event &e);
+        virtual void OnUpdate() = 0;
+
+    protected:
+        std::shared_ptr<GraphicsContext> m_Context;
 
     private:
-        std::shared_ptr<Window>          m_Window;
-        std::shared_ptr<GraphicsContext> m_Context;
-        bool                             m_Running = true;
-        bool                             OnWindowClose(WindowCloseEvent &e);
+        std::shared_ptr<Window> m_Window;
+        bool                    m_Running = true;
+        bool                    OnWindowClose(WindowCloseEvent &e);
     };
 
     Application *CreateApplication();
