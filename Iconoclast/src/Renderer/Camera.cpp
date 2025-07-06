@@ -2,6 +2,7 @@
 
 #include "Camera.h"
 #include "D3DCamera.h"
+#include "OpenGLCamera.h"
 
 namespace Iconoclast {
 
@@ -16,8 +17,17 @@ namespace Iconoclast {
         return new D3DCamera;
     }
 
-    // TODO: Bind once on init for corresponding graphics platform
+    Camera *CreateOpenGLCamera()
+    {
+        return new OpenGLCamera;
+    }
+
+    /*
+     * TODO: Bind once on init for corresponding graphics platform
+     */
+
     // std::function<Mesh *(GraphicsContext &)> Mesh::Create = CreateStub;
-    std::function<Camera *()> Camera::Create = CreateD3DCamera;
+    // std::function<Camera *()> Camera::Create = CreateD3DCamera;
+    std::function<Camera *()> Camera::Create = CreateOpenGLCamera;
 
 } // namespace Iconoclast

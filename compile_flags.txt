@@ -7,6 +7,8 @@
 -I
 ./Iconoclast/include/Iconoclast/Platform/DirectX/
 -I
+./Iconoclast/include/Iconoclast/Platform/OpenGL/
+-I
 ./Iconoclast/include/Iconoclast/Platform/Windows/
 -I
 ./Iconoclast/include/Iconoclast/Renderer/

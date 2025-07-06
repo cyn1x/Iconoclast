@@ -5,7 +5,12 @@
 
 namespace Iconoclast {
 
-    RendererAPI::API RendererAPI::s_API = API::DirectX;
+    /*
+     * TODO: Dynamic renderer platform enumerator selection
+     */
+
+    // RendererAPI::API RendererAPI::s_API = API::DirectX;
+    RendererAPI::API RendererAPI::s_API = API::OpenGL;
 
     GraphicsContext *GraphicsContext::Create(const ContextProps &props)
     {
@@ -13,6 +18,8 @@ namespace Iconoclast {
 
         switch (API) {
             case RendererAPI::API::DirectX:
+                return new D3DContext(props);
+            case RendererAPI::API::OpenGL:
                 return new D3DContext(props);
             case RendererAPI::API::None:
                 break;

@@ -16,7 +16,8 @@ namespace Iconoclast {
         enum API
         {
             None    = 0,
-            DirectX = 1
+            DirectX = 1,
+            OpenGL  = 2
         };
 
     public:

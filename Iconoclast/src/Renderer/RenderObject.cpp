@@ -17,11 +17,19 @@ namespace Iconoclast {
         return new D3DRenderObject(context);
     }
 
+    RenderObject *CreateOpenGLRenderObject(GraphicsContext &context)
+    {
+        return new D3DRenderObject(context);
+    }
+
     /*
      * TODO: Bind once on init for corresponding graphics platform
      */
 
     // std::function<RenderObject *(GraphicsContext &)> RenderObject::Create = CreateStub;
-    std::function<RenderObject *(GraphicsContext &)> RenderObject::Create = CreateD3DRenderObject;
+    // std::function<RenderObject *(GraphicsContext &)> RenderObject::Create =
+    // CreateD3DRenderObject;
+    std::function<RenderObject *(GraphicsContext &)> RenderObject::Create =
+        CreateOpenGLRenderObject;
 
 } // namespace Iconoclast
