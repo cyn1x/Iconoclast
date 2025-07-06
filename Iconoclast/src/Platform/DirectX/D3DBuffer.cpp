@@ -49,7 +49,8 @@ namespace Iconoclast {
         // Load the vertex array with data.
         for (uint32_t i = 0; i < m_VertexCount; ++i) {
             vertices[i].position = XMFLOAT3(data[i].x, data[i].y, data[i].z); // Bottom left.
-            vertices[i].color    = XMFLOAT4(1.0f, 0.5f, 0.2f, 1.0f);
+            vertices[i].color =
+                XMFLOAT4(data[i].color.r, data[i].color.g, data[i].color.b, data[i].color.a);
         }
 
         // Set up the description of the static vertex buffer.

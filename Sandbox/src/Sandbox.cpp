@@ -11,10 +11,11 @@ public:
 
         m_Mesh                                = Iconoclast::Mesh::Create(*m_Context);
 
+        // Set position of vertices and their respective colors
         Iconoclast::Vertex triangleVertices[] = {
-            {-1.0f, -1.0f, 0.0f}, // Bottom left
-            {0.0f,  1.0f,  0.0f}, // Top middle
-            {1.0f,  -1.0f, 0.0f}  // Bottom right
+            {-1.0f, -1.0f, 0.0f, {0.0f, 1.0f, 0.0f, 1.0f}}, // Bottom left
+            {0.0f,  1.0f,  0.0f, {1.0f, 0.0f, 0.0f, 1.0f}}, // Top middle
+            {1.0f,  -1.0f, 0.0f, {0.0f, 0.0f, 1.0f, 1.0f}}  // Bottom right
         };
 
         uint32_t vertexCount = sizeof(triangleVertices) / sizeof(Iconoclast::Vertex);
@@ -25,6 +26,13 @@ public:
         m_Mesh->CreateVertexBuffer(triangleVertices, vertexCount);
         m_Mesh->CreateIndexBuffer(indicies, indexCount);
         m_Mesh->CreateShader("Assets/Shaders/VertexShader.hlsl", "Assets/Shaders/PixelShader.hlsl");
+
+        Iconoclast::Vertex quadVertices[] = {
+            {-1.0f, -1.0f, 0.0f}, // Bottom left
+            {-1.0f, 1.0f,  0.0f}, // Top left
+            {1.0f,  1.0f,  0.0f}, // Top Right
+            {1.0f,  -1.0f, 0.0f}  // Bottom right
+        };
     }
 
     ~Sandbox()

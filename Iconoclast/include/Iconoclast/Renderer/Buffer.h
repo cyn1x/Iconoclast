@@ -6,9 +6,20 @@
 
 namespace Iconoclast {
 
+    struct Color
+    {
+        float r, g, b, a;
+
+        Color(float r = 0.5f, float g = 0.5f, float b = 0.5f, float a = 1.0f)
+            : r(r), g(g), b(b), a(a)
+        {
+        }
+    };
+
     struct Vertex
     {
         float x, y, z;
+        Color color;
     };
 
     class VertexBuffer
