@@ -1,12 +1,12 @@
 #pragma once
 
-#include "Mesh.h"
+#include "RenderObject.h"
 
 namespace Iconoclast {
 
     using namespace DirectX;
 
-    class D3DMesh : public Mesh
+    class D3DRenderObject : public RenderObject
     {
     private:
         struct VertexType
@@ -16,8 +16,8 @@ namespace Iconoclast {
         };
 
     public:
-        D3DMesh(GraphicsContext &context);
-        ~D3DMesh();
+        D3DRenderObject(GraphicsContext &context);
+        ~D3DRenderObject();
 
         void CreateVertexBuffer(Vertex *, uint32_t) override;
         void CreateIndexBuffer(uint32_t *, uint32_t) override;

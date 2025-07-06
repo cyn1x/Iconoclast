@@ -1,3 +1,4 @@
+#include "RenderObject.h"
 #include <Iconoclast.h>
 
 class Sandbox : public Iconoclast::Application
@@ -9,7 +10,7 @@ public:
         m_Camera = Iconoclast::Camera::Create();
         m_Camera->SetPosition(0.0f, 0.0f, -5.0f);
 
-        m_Mesh                                = Iconoclast::Mesh::Create(*m_Context);
+        m_RenderObject = Iconoclast::RenderObject::Create(*m_Context);
 
         // Set position of vertices and their respective colors
         Iconoclast::Vertex triangleVertices[] = {
@@ -23,9 +24,10 @@ public:
         uint32_t indicies[]  = {0, 1, 2, 0, 2, 3};
         uint32_t indexCount  = sizeof(indicies) / sizeof(uint32_t);
 
-        m_Mesh->CreateVertexBuffer(triangleVertices, vertexCount);
-        m_Mesh->CreateIndexBuffer(indicies, indexCount);
-        m_Mesh->CreateShader("Assets/Shaders/VertexShader.hlsl", "Assets/Shaders/PixelShader.hlsl");
+        m_RenderObject->CreateVertexBuffer(triangleVertices, vertexCount);
+        m_RenderObject->CreateIndexBuffer(indicies, indexCount);
+        m_RenderObject->CreateShader("Assets/Shaders/VertexShader.hlsl",
+                                     "Assets/Shaders/PixelShader.hlsl");
 
         Iconoclast::Vertex quadVertices[] = {
             {-1.0f, -1.0f, 0.0f}, // Bottom left
@@ -37,7 +39,7 @@ public:
 
     ~Sandbox()
     {
-        delete m_Mesh;
+        delete m_RenderObject;
         delete m_Camera;
     }
 
@@ -45,7 +47,7 @@ public:
     {
         // Clear the buffers to begin the scene.
         Iconoclast::Renderer::BeginScene(m_Camera);
-        m_Mesh->Render();
+        m_RenderObject->Render();
         Iconoclast::Renderer::EndScene();
     }
 
@@ -55,8 +57,8 @@ public:
     }
 
 private:
-    Iconoclast::Camera *m_Camera;
-    Iconoclast::Mesh   *m_Mesh;
+    Iconoclast::Camera       *m_Camera;
+    Iconoclast::RenderObject *m_RenderObject;
 };
 
 Iconoclast::Application *Iconoclast::CreateApplication()
