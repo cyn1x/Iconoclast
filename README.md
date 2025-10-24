@@ -1,6 +1,6 @@
 # Overview
 
-Iconoclast is a game engine written in C++.
+Iconoclast is a game engine currently being written in C++.
 
 ## Installation
 
@@ -12,7 +12,9 @@ Opening the Project Solution `(.sln)` file in Visual Studio will automatically c
 
 Iconoclast is currently only supported on Windows though I hope to add support some time in the future when I would like to take a break from graphics programming.
 
-### Custom
+### Neovim
+
+The project is mainly developed using Neovim with the following dependencies.
 
 - Microsoft Visual Studio 2022
   - Desktop Development for C++
@@ -36,3 +38,31 @@ devenv bin/iconoclast.exe
 ```
 
 Press `F11` to **Step Into** the program entry point, which shows the code being executed for debugging purposes.
+
+## Roadmap
+
+The following serves as a rough outline of the key milestones to indicate the trajectory of the project.
+
+- [x] Software rendering
+- [x] Event system
+- [ ] Keyboard and mouse input
+- [ ] Multi-Graphics API runtime support
+- [ ] OpenGL renderer
+- [ ] DirectX11 renderer
+- [ ] XInput gamepad controls
+- [ ] XAudio2 audio layer
+- [ ] SIMD mathematics library
+- [ ] Memory management system
+- [ ] Performance profiling
+- [ ] Hot reloading
+- [ ] Desktop GUI
+
+# Mentions
+
+Resources that have helped me, and have continued to help me work on this project.
+
+[TheCherno](https://www.thecherno.com/)
+[HandmadeHero](https://mollyrocket.com/)
+[Learn OpenGL](https://learnopengl.com/)
+[RasterTek](https://www.rastertek.com/)
+
