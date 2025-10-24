@@ -40,6 +40,7 @@ project "Iconoclast"
         "%{prj.name}/include/Iconoclast",
         "%{prj.name}/include/Iconoclast/Platform",
         "%{prj.name}/include/Iconoclast/Platform/DirectX",
+        "%{prj.name}/include/Iconoclast/Platform/OpenGL",
         "%{prj.name}/include/Iconoclast/Renderer",
         "%{prj.name}/include/Iconoclast/Platform/Windows",
         "%{prj.name}/include/Iconoclast/Events"
@@ -89,6 +90,7 @@ project "Sandbox"
         "Iconoclast/include",
         "Iconoclast/include/Iconoclast",
         "Iconoclast/include/Iconoclast/Platform/DirectX",
+        "Iconoclast/include/Iconoclast/Platform/OpenGL",
         "Iconoclast/include/Iconoclast/Platform/Windows",
         "Iconoclast/include/Iconoclast/Renderer",
         "Iconoclast/include/Iconoclast/Events"
