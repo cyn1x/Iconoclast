@@ -61,8 +61,8 @@ The following serves as a rough outline of the key milestones to indicate the tr
 
 Resources that have helped me, and have continued to help me work on this project.
 
-[TheCherno](https://www.thecherno.com/)
-[HandmadeHero](https://mollyrocket.com/)
-[Learn OpenGL](https://learnopengl.com/)
-[RasterTek](https://www.rastertek.com/)
+[TheCherno](https://www.thecherno.com/)<br/>
+[HandmadeHero](https://mollyrocket.com/)<br/>
+[Learn OpenGL](https://learnopengl.com/)<br/>
+[RasterTek](https://www.rastertek.com/)<br/>
 
