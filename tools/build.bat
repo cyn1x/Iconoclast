@@ -15,6 +15,9 @@ set compilerFlags=-DDEBUG=1
 set config=Debug
 set linkerFlags=/DEBUG
 
+set root=%~dp0..
+for %%I in ("%ROOT%") do set "ROOT=%%~fI"
+
 for /L %%i in (1,1,%argCount%) do (
     set arg=!argVec[%%i]!
 
@@ -43,26 +46,18 @@ goto :eof
 
 :main
 
-set dll=iconoclast_%target%.dll
-set exe=Sandbox.exe
-set flags=compile_flags.txt
-
-rem/||(
-Store the absolute ^path of the project root directory in a variable 
-followed by a slash to stay consistent with `~dp0` when using 
-functions ^for splitting strings and ^set the comparator variable. ^)
-)
-set root=%cd%\
-set cmp=!root:~0,-1!
-
 if not defined DevEnvDir (
     call "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvarsall.bat" %target%
 )
 
-echo | set /p clear="" > %flags%
+set dll=iconoclast_%target%.dll
+set exe=Sandbox.exe
+set flags=compile_flags.txt
 
-rem Change directory to the project root
-popd
+set libs=user32.lib gdi32.lib dxgi.lib d3d11.lib d3dcompiler.lib opengl32.lib
+
+rem Clear `compile_flags.txt` file
+echo | set /p clear="" > %flags%
 
 rem Make required directories for core engine and sandbox environment
 call :mkdirs Iconoclast
@@ -83,39 +78,31 @@ goto :eof
 
 :build
 
-set libs=user32.lib gdi32.lib dxgi.lib d3d11.lib d3dcompiler.lib
-set objDir=..\..\..\obj\\Windows\\%config%_%platform%\\
+rem Build Sandbox project
 
-rem Change dir to Iconoclast project dir
-pushd Iconoclast
+rem Set obj directory for the Iconoclast project
+set objdir=%root%\Iconoclast\obj\Windows\%config%_%platform%\
 
 call :include
-
-rem Change directory to intermediate dir
-pushd obj
-pushd Windows
-
-if %target%==x64 ( pushd %config%_x64 ) else ( pushd %config%_x86 )
-
 call :sources
 goto :compile
 
 rem Set all relative include directory paths
 :include
 rem Reference the absolute and relative paths of the header file
-for /r include %%F in (*.h) do (
+for /r %root%\Iconoclast\include %%F in (*.h) do (
 
     set "abspath=%%~dpF"
-    set "relpath=!abspath:%cmp%=!"
+    set "relpath=!abspath:%root%=!"
 
     rem Prevent duplicate include directories
     if !prev! neq !relpath! (
-        call set "incs=%%incs%% -I..\..\..\..!relpath:~0,-1!"
+        call set "incs=%%incs%% -I%root%!relpath:~0,-1!"
 
         rem Invert slashes for include paths to be compatible with the LSP
         set cpath=!relpath:\=/!
-        echo -I>> ..\%flags%
-        echo .!cpath!>> ..\%flags%
+        echo -I>> %root%\%flags%
+        echo .!cpath!>> %root%\%flags%
 
         set "prev=!relpath!"
 
@@ -127,12 +114,12 @@ goto :eof
 
 rem Recursively set all relative file paths of *.cpp source files
 :sources
-for /r ..\..\..\src %%F in (*.cpp) do (
+for /r %root%\Iconoclast\src %%F in (*.cpp) do (
 
     if %%~nF neq IconoclastPCH (
         set "abspath=%%F"
-        set "relpath=!abspath:%cmp%=!"
-        call set "srcs=%%srcs%% ..\..\..\..!relpath!"
+        set "relpath=!abspath:%root%=!"
+        call set "srcs=%%srcs%% %root%\!relpath!"
     )
 )
 
@@ -140,79 +127,53 @@ rem End of :sources subroutine call
 goto :eof
 
 :compile
-cl /EHsc /c /std:c++20 /MDd /FAsc /Zi /WX /W4 /Yc"IconoclastPCH.h" %incs% ..\..\..\..\Iconoclast\src\IconoclastPCH.cpp
+cl /EHsc /c /std:c++20 /MDd /FAsc /Zi /WX /W4 /Yc"IconoclastPCH.h" %incs% %root%\Iconoclast\src\IconoclastPCH.cpp /Fo%objdir% /Fp"%objdir%\IconoclastPCH.pch" /Fd"%objdir%\vc140.pdb" /Fa"%objdir%\IconoclastPCH.asm"
 if %errorlevel% neq 0 goto :error
 
-cl /nologo /EHsc /c /std:c++20 /JMC /MDd /FAsc /Zi /Yu"IconoclastPCH.h" /Fp"IconoclastPCH.pch" /WX /W4 -wd4201 -wd4100 -wd4189 -wd4505 /Fo"%objDir%" %incs% %compilerFlags% /Fa"%objDir%" %srcs:~1%
+cl /nologo /EHsc /c /std:c++20 /JMC /MDd /FAsc /Zi /Yu"IconoclastPCH.h" /Fp"%objdir%IconoclastPCH.pch" /WX /W4 -wd4201 -wd4100 -wd4189 -wd4505 /Fo%objdir% %incs% %compilerFlags% /Fd"%objdir%\vc140.pdb" /Fa%objdir% %srcs:~1%
 if %errorlevel% neq 0 goto :error
-echo Engine Code Compiled Successfully & echo.
-
-rem Pop to platform dir, bin dir, and project dir
-popd
-popd
-popd
-
-pushd bin
-pushd Windows
-
-if %target%==x64 ( pushd %config%_x64 ) else ( pushd %config%_x86 )
+echo Engine code compiled successfully & echo.
 
 rem Store all *.obj file names only for the linker
-for /r ..\..\..\obj %%F in (%config%_%platform%\*.obj) do (
-    call set "objs=%%objs%% obj\Windows\%config%_%target%\%%~nxF"
+for /r %root%\Iconoclast\obj\Windows\%config%_%target% %%F in (*.obj) do (
+    call set "objs=%%objs%% %objdir%\%%~nxF"
 )
 
-rem Pop to platform dir, bin dir, and root dir
-popd
-popd
-popd
-
-echo Creating Library...
-LIB /SUBSYSTEM:WINDOWS %objs:~1% /OUT:bin\Windows\%config%_%target%\iconoclast_%target%.lib
+echo Creating library...
+LIB /SUBSYSTEM:WINDOWS %objs:~1% /OUT:%root%\Iconoclast\bin\Windows\%config%_%target%\iconoclast_%target%.lib
 if %errorlevel% neq 0 goto :error
-echo Engine Library Created Successfully & echo.
+echo Engine library file `iconoclast_%target%.lib` created successfully & echo.
 
-popd
+rem Build Sandbox project
 
-rem Change directory to Sandbox project dir and intermediate dir
-pushd Sandbox
-pushd obj
-pushd Windows
-
-if %target%==x64 ( pushd %config%_x64 ) else ( pushd %config%_x86 )
-
-set cmp=!root:~0!Sandbox
+rem Set obj directory for the Sandbox project
+set objdir=%root%\Sandbox\obj\Windows\%config%_%platform%\
 
 rem Store all Sandbox *.cpp source files in a variable
-for /r ..\..\..\src %%F in (*.cpp) do (
+for /r %root%\Sandbox\src %%F in (*.cpp) do (
     set "abspath=%%F"
-    set "relpath=!abspath:%cmp%=!"
-    call set "exesrcs=%%exesrcs%% ..\..\..!relpath!"
+    set "relpath=!abspath:%root%=!"
+    call set "exesrcs=%%exesrcs%% %root%\!relpath!"
 )
 
 rem Compile *.cpp files
-echo Compiling Application Code...
-cl /EHsc /c /std:c++20 /JMC /MDd /Zi /W4 /Wall /Fo"%objDir%" /Fd"%objDir%" %exesrcs% %incs%
+echo Compiling application code...
+cl /EHsc /c /std:c++20 /JMC /MDd /Zi /W4 /Wall /Fo%objdir% %incs% /Fd%objDir% %exesrcs% 
 if %errorlevel% neq 0 goto :error
-echo Application Code Compiled Successfully & echo.
+echo Application code compiled successfully & echo.
 
 rem Compile Sandbox program and link DLL
 
-rem Pop to obj dir and then project dir
-popd
-popd
-popd
-
 rem Store all *.obj file names only for the linker
-for /r obj %%F in (*.obj) do (
-    call set "exeobjs=%%exeobjs%% obj\Windows\%config%_%target%\%%~nxF"
+for /r %root%\Sandbox\obj\Windows\%config%_%target% %%F in (*.obj) do (
+    call set "exeobjs=%%exeobjs%% %root%\Sandbox\obj\Windows\%config%_%platform%\%%~nxF"
 )
 
 rem Link *.obj object files
 echo Generating Executable...
-LINK /DEBUG %exeobjs:~1% /SUBSYSTEM:CONSOLE /OUT:bin\Windows\%config%_%target%\%exe% %libs% ..\Iconoclast\bin\Windows\%config%_%target%\iconoclast_%target%.lib
+LINK /DEBUG %exeobjs:~1% /SUBSYSTEM:CONSOLE /OUT:%root%\Sandbox\bin\Windows\%config%_%target%\%exe% %libs% %root%\Iconoclast\bin\Windows\%config%_%target%\iconoclast_%target%.lib
 if %errorlevel% neq 0 goto :error
-echo Application Exectuable Created Successfully & echo.
+echo Application exectuable `%exe%` created successfully & echo.
 
 rem Build completed successfully
 
