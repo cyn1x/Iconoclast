@@ -9,6 +9,12 @@ workspace "Iconoclast"
 
 outputdir = "%{cfg.system}/%{cfg.buildcfg}_%{cfg.architecture}"
 
+-- Include directories relative to the root directory (solution directory)
+includeDir = {}
+includeDir["Glad"] = "Iconoclast/vendor/glad/include"
+
+include "Iconoclast/vendor/glad"
+
 project "Iconoclast"
     location "Iconoclast"
     kind "StaticLib"
@@ -43,7 +49,17 @@ project "Iconoclast"
         "%{prj.name}/include/Iconoclast/Platform/OpenGL",
         "%{prj.name}/include/Iconoclast/Renderer",
         "%{prj.name}/include/Iconoclast/Platform/Windows",
-        "%{prj.name}/include/Iconoclast/Events"
+        "%{prj.name}/include/Iconoclast/Events",
+        "%{includeDir.Glad}"
+    }
+
+    links
+    {
+        "Glad",
+        "dxgi.lib",
+        "d3d11.lib",
+        "d3dcompiler.lib",
+        "opengl32.lib"
     }
 
     filter "system:windows"
@@ -99,9 +115,6 @@ project "Sandbox"
     links
     {
         "Iconoclast",
-        "dxgi.lib",
-        "d3d11.lib",
-        "d3dcompiler.lib"
     }
 
     filter "system:windows"

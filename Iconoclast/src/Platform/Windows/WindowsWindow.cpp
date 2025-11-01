@@ -36,7 +36,7 @@ namespace Iconoclast {
         HINSTANCE hInstance = GetModuleHandleA(dll);
 
         // Register the window class.
-        const wchar_t CLASS_NAME[] = L"Sample Window Class";
+        const wchar_t CLASS_NAME[] = L"Window Class";
 
         WNDCLASS      wc           = {};
 
@@ -48,10 +48,10 @@ namespace Iconoclast {
 
         // Create the window.
 
-        HWND hwnd = CreateWindowEx(0,                           // Optional window styles.
-                                   CLASS_NAME,                  // Window class
-                                   L"Learn to Program Windows", // Window text
-                                   WS_OVERLAPPEDWINDOW,         // Window style
+        HWND hwnd = CreateWindowEx(0,                    // Optional window styles.
+                                   CLASS_NAME,           // Window class
+                                   L"Iconoclast Engine", // Window text
+                                   WS_OVERLAPPEDWINDOW,  // Window style
 
                                    // Size and position
                                    CW_USEDEFAULT, CW_USEDEFAULT, m_Data.Width, m_Data.Height,

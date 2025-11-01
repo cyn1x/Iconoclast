@@ -2,6 +2,8 @@
 
 #include "IconoclastPCH.h"
 
+#include <glad/glad.h>
+
 #include "GraphicsContext.h"
 
 namespace Iconoclast {

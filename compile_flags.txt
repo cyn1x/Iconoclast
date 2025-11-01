@@ -12,3 +12,5 @@
 ./Iconoclast/include/Iconoclast/Platform/Windows/
 -I
 ./Iconoclast/include/Iconoclast/Renderer/
+-I
+./Iconoclast/vendor/glad/include

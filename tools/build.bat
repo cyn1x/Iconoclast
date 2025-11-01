@@ -92,7 +92,9 @@ rem Builds the entire solution
 :build
 
 call :library
+if %errorlevel% neq 0 goto :eof
 call :executable
+if %errorlevel% neq 0 goto :eof
 goto :eof
 
 rem ==========================
@@ -103,6 +105,9 @@ rem ==========================
 rem Set the `include` and `src` directories for the Iconoclast project
 set incdir=%root%\Iconoclast\include
 set srcdir=%root%\Iconoclast\src
+
+rem Set vendor `include` directories, separated by a space ` ` character
+set vendorincs=\Iconoclast\vendor\glad\include
 
 rem Set the `obj` and `bin` directories for the Iconoclast project
 set objdir=%root%\Iconoclast\obj\win\%config%_%platform%
@@ -117,6 +122,7 @@ set incs=
 set objs=
 
 call :include
+call :vendor
 call :sources
 goto :compile
 
@@ -129,18 +135,31 @@ for /r %incdir% %%F in (*.h) do (
 
     rem Prevent duplicate include directories
     if !prev! neq !relpath! (
-        call set "incs=%%incs%% -I%root%!relpath:~0,-1!"
 
-        rem Invert slashes for include paths to be compatible with the LSP
-        set cpath=!relpath:\=/!
-        echo -I>> %root%\%compileflags%
-        echo .!cpath!>> %root%\%compileflags%
+        call set "incs=%%incs%% -I%root%!relpath:~0,-1!"
+        call :addcompileflag !relpath!
 
         set "prev=!relpath!"
     )
 )
 
 rem End of `:include` subroutine call
+goto :eof
+
+rem Set all vendor include directory paths
+:vendor
+rem Adds custom vendor include directories to append to `compile_flags.txt`
+
+rem Append each directory to compiler includes, and `compile_flags.txt`
+for %%D in (%vendorincs%) do (
+    
+    set "dir=%%D"
+    
+    call set "incs=%%incs%% -I%root%!dir!"
+    call :addcompileflag !dir!
+)
+
+rem End of `:vendor` subroutine call
 goto :eof
 
 rem Recursively set all relative file paths of `*.cpp` source files
@@ -229,10 +248,19 @@ rem Build completed successfully
 echo Build succeeded.
 goto :eof
 
-rem Function to set the relative path from the given absolute path
+rem Gets the relative path from the given absolute path
 :relpath
 set "abspath=%1%"
 set "relpath=!abspath:%root%=!"
+goto :eof
+
+rem Adds a compile flag to `compile_flags.txt` for the Clang LSP.
+:addcompileflag
+set flag=%1
+rem Invert slashes for include paths to be compatible with the LSP
+set cpath=!flag:\=/!
+echo -I>> %root%\%compileflags%
+echo .!cpath!>> %root%\%compileflags%
 goto :eof
 
 rem Error function to call when a build error is encountered
