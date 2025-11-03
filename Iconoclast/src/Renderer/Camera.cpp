@@ -26,8 +26,8 @@ namespace Iconoclast {
      * TODO: Bind once on init for corresponding graphics platform
      */
 
+    // std::function<Camera *()> Camera::Create = CreateStub;
     // std::function<Camera *()> Camera::Create = CreateD3DCamera;
     std::function<Camera *()> Camera::Create = CreateOpenGLCamera;
-    // std::function<Camera *()> Camera::Create = CreateStub;
 
 } // namespace Iconoclast

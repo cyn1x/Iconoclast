@@ -8,6 +8,7 @@ namespace Iconoclast {
     D3DVertexBuffer::D3DVertexBuffer(ID3D11Device *device, Vertex *vertices, uint32_t size)
     {
         m_VertexBuffer = 0;
+        m_VertexCount  = 0;
 
         Initialize(device, vertices, size);
     }
@@ -21,6 +22,7 @@ namespace Iconoclast {
         : m_IndexCount(count)
     {
         m_IndexBuffer = 0;
+        m_IndexCount  = 0;
 
         Initialize(device, indices, count);
     }

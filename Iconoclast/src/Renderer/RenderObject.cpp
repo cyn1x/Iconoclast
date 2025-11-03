@@ -2,6 +2,7 @@
 
 #include "D3DRenderObject.h"
 #include "GraphicsContext.h"
+#include "OpenGLRenderObject.h"
 #include "RenderObject.h"
 
 namespace Iconoclast {
@@ -19,7 +20,7 @@ namespace Iconoclast {
 
     RenderObject *CreateOpenGLRenderObject(GraphicsContext &context)
     {
-        return new D3DRenderObject(context);
+        return new OpenGLRenderObject(context);
     }
 
     /*

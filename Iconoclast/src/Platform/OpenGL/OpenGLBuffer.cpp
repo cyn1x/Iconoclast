@@ -7,17 +7,35 @@ namespace Iconoclast {
 
     OpenGLVertexBuffer::OpenGLVertexBuffer(Vertex *vertices, uint32_t size)
     {
+        m_VertexBuffer = 0;
+        m_VertexCount  = 0;
+
+        Initialize(vertices, size);
     }
 
     OpenGLVertexBuffer::~OpenGLVertexBuffer()
     {
+        OpenGLVertexBuffer::Shutdown();
     }
 
-    void OpenGLVertexBuffer::Initialize(float_t *vertices, uint32_t size)
+    OpenGLIndexBuffer::OpenGLIndexBuffer(uint32_t *indices, uint32_t size)
+    {
+        m_IndexBuffer = 0;
+        m_IndexCount  = 0;
+
+        Initialize(indices, size);
+    }
+
+    OpenGLIndexBuffer::~OpenGLIndexBuffer()
+    {
+        OpenGLIndexBuffer::Shutdown();
+    }
+
+    void OpenGLVertexBuffer::Initialize(Vertex *data, uint32_t size)
     {
     }
 
-    void OpenGLVertexBuffer::Shutdown()
+    void OpenGLIndexBuffer::Initialize(uint32_t *data, uint32_t count)
     {
     }
 
@@ -29,27 +47,19 @@ namespace Iconoclast {
     {
     }
 
-    OpenGLIndexBuffer::OpenGLIndexBuffer(uint32_t *indices, uint32_t size)
-    {
-    }
-
-    OpenGLIndexBuffer::~OpenGLIndexBuffer()
-    {
-    }
-
-    void OpenGLIndexBuffer::Initialize(uint32_t *indices, uint32_t count)
-    {
-    }
-
-    void OpenGLIndexBuffer::Shutdown()
-    {
-    }
-
     void OpenGLIndexBuffer::Bind(GraphicsContext &context) const
     {
     }
 
     void OpenGLIndexBuffer::Unbind(GraphicsContext &context) const
+    {
+    }
+
+    void OpenGLVertexBuffer::Shutdown()
+    {
+    }
+
+    void OpenGLIndexBuffer::Shutdown()
     {
     }
 

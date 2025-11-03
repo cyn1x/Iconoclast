@@ -14,7 +14,7 @@ namespace Iconoclast {
         void Unbind(GraphicsContext &) const override;
 
     private:
-        void     Initialize(float_t *, uint32_t);
+        void     Initialize(Vertex *, uint32_t);
         void     Shutdown();
 
         float_t *m_VertexBuffer;

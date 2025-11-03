@@ -1,6 +1,7 @@
 #include "IconoclastPCH.h" // IWYU pragma: export
 
 #include "D3DContext.h"
+#include "OpenGLContext.h"
 #include "RendererAPI.h"
 
 namespace Iconoclast {
@@ -20,7 +21,7 @@ namespace Iconoclast {
             case RendererAPI::API::DirectX:
                 return new D3DContext(props);
             case RendererAPI::API::OpenGL:
-                return new D3DContext(props);
+                return new OpenGLContext(props);
             case RendererAPI::API::None:
                 break;
         }
