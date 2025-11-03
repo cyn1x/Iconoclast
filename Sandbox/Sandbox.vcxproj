@@ -49,8 +49,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>bin\windows\Release_x86_64\</OutDir>
-    <IntDir>obj\windows\Release_x86_64\</IntDir>
+    <OutDir>bin\win\Release_x86_64\</OutDir>
+    <IntDir>obj\win\Release_x86_64\</IntDir>
     <TargetName>Sandbox</TargetName>
     <TargetExt>.exe</TargetExt>
   </PropertyGroup>

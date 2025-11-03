@@ -47,8 +47,8 @@
     <TargetExt>.lib</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>bin\windows\Release_x86_64\</OutDir>
-    <IntDir>obj\windows\Release_x86_64\</IntDir>
+    <OutDir>bin\win\Release_x86_64\</OutDir>
+    <IntDir>obj\win\Release_x86_64\</IntDir>
     <TargetName>Iconoclast</TargetName>
     <TargetExt>.lib</TargetExt>
   </PropertyGroup>
