@@ -7,13 +7,6 @@ workspace "Iconoclast"
         "Release"
     }
 
-outputdir = "%{cfg.system}/%{cfg.buildcfg}_%{cfg.architecture}"
-
--- Include directories relative to the root directory (solution directory)
-includeDir = {}
-includeDir["Glad"] = "Iconoclast/vendor/glad/include"
-
-include "Iconoclast/vendor/glad"
 outputdir = "%{cfg.system == 'windows' and 'win' or cfg.system}/%{cfg.buildcfg}_%{cfg.architecture}"
 
 project "Iconoclast"
@@ -50,13 +43,11 @@ project "Iconoclast"
         "%{prj.name}/include/Iconoclast/Platform/OpenGL",
         "%{prj.name}/include/Iconoclast/Renderer",
         "%{prj.name}/include/Iconoclast/Platform/Windows",
-        "%{prj.name}/include/Iconoclast/Events",
-        "%{includeDir.Glad}"
+        "%{prj.name}/include/Iconoclast/Events"
     }
 
     links
     {
-        "Glad",
         "dxgi.lib",
         "d3d11.lib",
         "d3dcompiler.lib",
