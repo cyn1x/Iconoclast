@@ -26,8 +26,9 @@ public:
 
         m_RenderObject->CreateVertexBuffer(triangleVertices, vertexCount);
         m_RenderObject->CreateIndexBuffer(indicies, indexCount);
-        m_RenderObject->CreateShader("Assets/Shaders/VertexShader.hlsl",
-                                     "Assets/Shaders/PixelShader.hlsl");
+        // TODO: Abstract graphics API shader directories
+        m_RenderObject->CreateShader("Assets/Shaders/DirectX/Color.vs.hlsl",
+                                     "Assets/Shaders/DirectX/Color.ps.hlsl");
 
         Iconoclast::Vertex quadVertices[] = {
             {-1.0f, -1.0f, 0.0f}, // Bottom left
