@@ -106,6 +106,7 @@
     <ClInclude Include="include\Iconoclast\Events\Event.h" />
     <ClInclude Include="include\Iconoclast\Events\KeyEvent.h" />
     <ClInclude Include="include\Iconoclast\Events\MouseEvent.h" />
+    <ClInclude Include="include\Iconoclast\Platform.h" />
     <ClInclude Include="include\Iconoclast\Platform\DirectX\D3DBuffer.h" />
     <ClInclude Include="include\Iconoclast\Platform\DirectX\D3DCamera.h" />
     <ClInclude Include="include\Iconoclast\Platform\DirectX\D3DContext.h" />
@@ -115,6 +116,7 @@
     <ClInclude Include="include\Iconoclast\Platform\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="include\Iconoclast\Platform\OpenGL\OpenGLCamera.h" />
     <ClInclude Include="include\Iconoclast\Platform\OpenGL\OpenGLContext.h" />
+    <ClInclude Include="include\Iconoclast\Platform\OpenGL\OpenGLFunctions.h" />
     <ClInclude Include="include\Iconoclast\Platform\OpenGL\OpenGLRenderObject.h" />
     <ClInclude Include="include\Iconoclast\Platform\OpenGL\OpenGLRendererAPI.h" />
     <ClInclude Include="include\Iconoclast\Platform\OpenGL\OpenGLShader.h" />
@@ -135,6 +137,7 @@
     <ClCompile Include="src\IconoclastPCH.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\Platform.cpp" />
     <ClCompile Include="src\Platform\DirectX\D3DBuffer.cpp" />
     <ClCompile Include="src\Platform\DirectX\D3DCamera.cpp" />
     <ClCompile Include="src\Platform\DirectX\D3DContext.cpp" />
@@ -148,10 +151,6 @@
     <ClCompile Include="src\Platform\OpenGL\OpenGLRendererAPI.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLShader.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
-    <ClCompile Include="src\Renderer\Camera.cpp" />
-    <ClCompile Include="src\Renderer\RenderObject.cpp" />
-    <ClCompile Include="src\Renderer\Renderer.cpp" />
-    <ClCompile Include="src\Renderer\RendererAPI.cpp" />
     <ClCompile Include="src\Renderer\Scene.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

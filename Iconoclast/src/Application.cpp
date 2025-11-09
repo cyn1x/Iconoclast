@@ -3,7 +3,6 @@
 #define ICONOCLAST_EXPORTS
 
 #include "Application.h"
-#include "GraphicsContext.h"
 #include "Renderer.h"
 
 namespace Iconoclast {

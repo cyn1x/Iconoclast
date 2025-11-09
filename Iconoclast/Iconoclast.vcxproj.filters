@@ -30,6 +30,9 @@
     <ClInclude Include="include\Iconoclast\Events\MouseEvent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\Iconoclast\Platform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="include\Iconoclast\Platform\DirectX\D3DBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -55,6 +58,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Iconoclast\Platform\OpenGL\OpenGLContext.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Iconoclast\Platform\OpenGL\OpenGLFunctions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Iconoclast\Platform\OpenGL\OpenGLRenderObject.h">
@@ -107,6 +113,9 @@
     <ClCompile Include="src\IconoclastPCH.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Platform.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\Platform\DirectX\D3DBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -144,18 +153,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Renderer\Camera.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Renderer\RenderObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Renderer\Renderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Renderer\RendererAPI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Renderer\Scene.cpp">
