@@ -2,7 +2,6 @@
 
 #include "IconoclastPCH.h"
 
-
 #include "GraphicsContext.h"
 
 namespace Iconoclast {

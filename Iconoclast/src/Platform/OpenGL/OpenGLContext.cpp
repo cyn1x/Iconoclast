@@ -1,4 +1,4 @@
-#include "IconoclastPCH.h"
+#include "IconoclastPCH.h" // IWYU pragma: export
 
 #include "OpenGLContext.h"
 

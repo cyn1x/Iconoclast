@@ -5,8 +5,6 @@
 
 namespace Iconoclast {
 
-    using namespace DirectX;
-
     class OpenGLRendererAPI : public RendererAPI
     {
     public:
