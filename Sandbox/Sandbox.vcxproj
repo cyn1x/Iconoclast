@@ -42,15 +42,15 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>bin\win\Debug_x86_64\</OutDir>
-    <IntDir>obj\win\Debug_x86_64\</IntDir>
+    <OutDir>bin\windows\Debug_x86_64\</OutDir>
+    <IntDir>obj\windows\Debug_x86_64\</IntDir>
     <TargetName>Sandbox</TargetName>
     <TargetExt>.exe</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>bin\win\Release_x86_64\</OutDir>
-    <IntDir>obj\win\Release_x86_64\</IntDir>
+    <OutDir>bin\windows\Release_x86_64\</OutDir>
+    <IntDir>obj\windows\Release_x86_64\</IntDir>
     <TargetName>Sandbox</TargetName>
     <TargetExt>.exe</TargetExt>
   </PropertyGroup>

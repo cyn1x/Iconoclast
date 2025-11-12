@@ -7,7 +7,7 @@ workspace "Iconoclast"
         "Release"
     }
 
-outputdir = "%{cfg.system == 'windows' and 'win' or cfg.system}/%{cfg.buildcfg}_%{cfg.architecture}"
+outputdir = "%{cfg.system}/%{cfg.buildcfg}_%{cfg.architecture}"
 
 project "Iconoclast"
     location "Iconoclast"
