@@ -4,37 +4,46 @@ Iconoclast is a game engine currently being written in C++.
 
 ## Installation
 
-Build support is available for Microsoft Visual Studio 2022 and text editors using `tools\build.bat` if preferred.
+Build support is available for Microsoft Visual Studio 2026. There is also build support for text editors using `tools\build.bat` to bind to a build command.
+
+Iconoclast is currently only supported on Windows.
 
 ### IDE
 
-Opening the Project Solution `(.sln)` file in Visual Studio will automatically configure the IDE. For use with text editors, follow the instructions below to be able to make use of the `build.bat` build script.
+Opening the Project Solution `(*.slnx)` file in Visual Studio will automatically configure the IDE. For use with text editors, follow the instructions below to be able to make use of the `build.bat` build script.
 
-Iconoclast is currently only supported on Windows though I hope to add support some time in the future when I would like to take a break from graphics programming.
+- Microsoft Visual Studio 2026
+  - Workloads
+    - Desktop Development for C++
+    - Game Development with C++
 
-### Neovim
+### Text Editor
 
-The project is mainly developed using Neovim with the following dependencies.
+The project requires the following dependencies for text editors.
 
-- Microsoft Visual Studio 2022
-  - Desktop Development for C++
-  - Game Development with C++
-  - C++ Clang Compiler for Windows (17.0.3)
-- Microsoft Visual Studio 2022 Build Tools
+- Microsoft Visual Studio BuildTools 2026
+  - Workloads
+    - Desktop Development for C++
+    - Game Development with C++
+  - Individual components
+    - C++ Clang Compiler for Windows (20.1.8)
+    - MSBuild support for LLVM (clang-cl) toolset
+
+Clang acts as the Language Server Protocal (LSP), and MSBuild is required to compile the project source files.
 
 #### Configurations
 
 - Add `devenv` to the PATH to debug via the command-line interface.
-  - `C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE`
+  - `C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE`
 - Add `clang++` to the PATH 
-  - `C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\Llvm\x64\bin`
+  - `C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\Llvm\x64\bin`
 
 #### Debugging
 
-Run the command below to open the executable in Visual Studio.
+Run the command below to open the executable in Visual Studio 2026.
 
 ```cmd
-devenv bin/iconoclast.exe
+devenv bin\windows\Debug_x86_64\sandbox.exe
 ```
 
 Press `F11` to **Step Into** the program entry point, which shows the code being executed for debugging purposes.

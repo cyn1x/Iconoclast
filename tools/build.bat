@@ -53,7 +53,7 @@ rem End of :clean subroutine call
 goto :eof
 
 if not defined DevEnvDir (
-    call "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvarsall.bat" %platform%
+    call "C:\Program Files\Microsoft Visual Studio\18\Community\VC\Auxiliary\Build\vcvarsall.bat" %platform%
 )
 
 rem ==========================
