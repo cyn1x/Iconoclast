@@ -8,15 +8,11 @@ static_assert(true, "");
 
 namespace Iconoclast {
 
-    // TODO: Remove DirectX namespace using statement
-    using namespace DirectX;
-
-    // TODO: Abstract XMMATRIX through platform-independent math library
     struct SceneData
     {
-        XMMATRIX worldMatrix;
-        XMMATRIX viewMatrix;
-        XMMATRIX projectionMatrix;
+        float *worldMatrix;
+        float *viewMatrix;
+        float *projectionMatrix;
     };
 
     class Scene

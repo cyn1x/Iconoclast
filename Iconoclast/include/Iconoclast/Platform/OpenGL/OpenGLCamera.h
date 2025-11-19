@@ -1,7 +1,5 @@
 #pragma once
 
-#include "IconoclastPCH.h" // IWYU pragma: keep
-
 #include "Camera.h"
 
 namespace Iconoclast {

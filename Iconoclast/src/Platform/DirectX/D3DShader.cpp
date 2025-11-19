@@ -180,9 +180,9 @@ namespace Iconoclast {
         D3DContext              *ctx = static_cast<D3DContext *>(&context);
 
         // Transpose the matrices to prepare them for the shader.
-        XMMATRIX worldMatrix      = XMMatrixTranspose(sceneData.worldMatrix);
-        XMMATRIX viewMatrix       = XMMatrixTranspose(sceneData.viewMatrix);
-        XMMATRIX projectionMatrix = XMMatrixTranspose(sceneData.projectionMatrix);
+        // XMMATRIX worldMatrix      = XMMatrixTranspose(sceneData.worldMatrix);
+        // XMMATRIX viewMatrix       = XMMatrixTranspose(sceneData.viewMatrix);
+        // XMMATRIX projectionMatrix = XMMatrixTranspose(sceneData.projectionMatrix);
 
         // Lock the constant buffer so it can be written to.
         result = ctx->GetDeviceContext()->Map(m_MatrixBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0,
@@ -195,9 +195,9 @@ namespace Iconoclast {
         dataPtr = (MatrixBufferType *)mappedResource.pData;
 
         // Copy the matrices into the constant buffer.
-        dataPtr->world      = worldMatrix;
-        dataPtr->view       = viewMatrix;
-        dataPtr->projection = projectionMatrix;
+        // dataPtr->world      = worldMatrix;
+        // dataPtr->view       = viewMatrix;
+        // dataPtr->projection = projectionMatrix;
 
         // Unlock the constant buffer.
         ctx->GetDeviceContext()->Unmap(m_MatrixBuffer, 0);

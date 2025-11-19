@@ -93,7 +93,7 @@ namespace Iconoclast {
         // Finally create the view matrix from the three updated vectors.
         m_ViewMatrix          = XMMatrixLookAtLH(positionVector, lookAtVector, upVector);
 
-        sceneData->viewMatrix = m_ViewMatrix;
+        // sceneData->viewMatrix = m_ViewMatrix;
     }
 
     void D3DCamera::GetViewMatrix(XMMATRIX &viewMatrix)

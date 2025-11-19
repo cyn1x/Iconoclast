@@ -33,16 +33,16 @@ namespace Iconoclast {
      * Renderer
      */
 
-    RendererAPI *Renderer::s_RendererAPI = new D3DRendererAPI;
-    // RendererAPI *Renderer::s_RendererAPI = new OpenGLRendererAPI;
+    // RendererAPI *Renderer::s_RendererAPI = new D3DRendererAPI;
+    RendererAPI *Renderer::s_RendererAPI = new OpenGLRendererAPI;
     // RendererAPI *Renderer::s_RendererAPI = nullptr;
 
     /*
      * RendererAPI
      */
 
-    RendererAPI::API RendererAPI::s_API = API::DirectX;
-    // RendererAPI::API RendererAPI::s_API = API::OpenGL;
+    // RendererAPI::API RendererAPI::s_API = API::DirectX;
+    RendererAPI::API RendererAPI::s_API = API::OpenGL;
     // RendererAPI::API RendererAPI::s_API = API::None;
 
     /*
@@ -85,8 +85,8 @@ namespace Iconoclast {
         return new OpenGLCamera;
     }
 
-    std::function<Camera *()> Camera::Create = CreateD3DCamera;
-    // std::function<Camera *()> Camera::Create = CreateOpenGLCamera;
+    // std::function<Camera *()> Camera::Create = CreateD3DCamera;
+    std::function<Camera *()> Camera::Create = CreateOpenGLCamera;
     // std::function<Camera *()> Camera::Create = CreateStub;
 
     /*
@@ -109,9 +109,10 @@ namespace Iconoclast {
         return new OpenGLRenderObject(context);
     }
 
-    std::function<RenderObject *(GraphicsContext &)> RenderObject::Create = CreateD3DRenderObject;
     // std::function<RenderObject *(GraphicsContext &)> RenderObject::Create =
-    //     CreateOpenGLRenderObject;
+    //     CreateD3DRenderObject;
+    std::function<RenderObject *(GraphicsContext &)> RenderObject::Create =
+        CreateOpenGLRenderObject;
     // std::function<RenderObject *(GraphicsContext &)> RenderObject::Create = CreateStub;
 
     Platform::Platform()

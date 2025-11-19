@@ -21,7 +21,7 @@ namespace Iconoclast {
         D3D11_RASTERIZER_DESC         rasterDesc;
         float                         fieldOfView, screenAspect;
 
-        //
+        // Get the device context for this window.
         m_Context = dynamic_cast<D3DContext *>(context);
 
         // Initialize the description of the depth buffer.
@@ -175,8 +175,8 @@ namespace Iconoclast {
         // Generate the view matrix based on the camera's position.
         camera->Render(sceneData);
 
-        sceneData->worldMatrix      = m_WorldMatrix;
-        sceneData->projectionMatrix = m_ProjectionMatrix;
+        // sceneData->worldMatrix      = m_WorldMatrix;
+        // sceneData->projectionMatrix = m_ProjectionMatrix;
     }
 
     void D3DRendererAPI::EndScene()
