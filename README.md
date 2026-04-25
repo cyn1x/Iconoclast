@@ -52,19 +52,27 @@ Press `F11` to **Step Into** the program entry point, which shows the code being
 
 The following serves as a rough outline of the key milestones to indicate the trajectory of the project.
 
-- [x] Software rendering
-- [x] Event system
-- [ ] Keyboard and mouse input
-- [ ] Multi-Graphics API runtime support
-- [ ] OpenGL renderer
-- [ ] DirectX11 renderer
-- [ ] XInput gamepad controls
-- [ ] XAudio2 audio layer
-- [ ] SIMD mathematics library
-- [ ] Memory management system
-- [ ] Performance profiling
-- [ ] Hot reloading
-- [ ] Desktop GUI
+Legend:
+
+&#x2705; public &nbsp;|&nbsp; &#x1F512; private &nbsp;|&nbsp; &#x1F504; in progress &nbsp;|&nbsp; &#x23F3; planned
+
+Current features:
+
+- &#x1F512; Software renderer
+- &#x1F512; Keyboard and mouse input
+- &#x2705; <a href="https://learn.microsoft.com/en-us/windows/win32/xinput/xinput-game-controller-apis-portal" target="_blank" rel="noopener noreferrer">XInput</a> gamepad controls
+- &#x2705; Event system
+- &#x2705; Multi-Graphics API abstraction layer
+- &#x1F512; Hot reloading
+
+Future plans:
+
+- &#x1F504; <a href="https://learn.microsoft.com/en-us/windows/win32/direct3d11/atoc-dx-graphics-direct3d-11" target="_blank" rel="noopener noreferrer">DirectX 11</a> renderer
+- &#x1F504; OpenGL renderer
+- &#x1F504; <a href="https://learn.microsoft.com/en-us/windows/win32/xaudio2/xaudio2-apis-portal" target="_blank" rel="noopener noreferrer">XAudio2</a> audio layer
+- &#x23F3; SIMD Mathematics library
+- &#x23F3; Memory management system
+- &#x23F3; Performance profiling
 
 # Mentions
 
