@@ -60,7 +60,7 @@ Current features:
 
 - &#x1F512; Software renderer
 - &#x1F512; Keyboard and mouse input
-- &#x2705; <a href="https://learn.microsoft.com/en-us/windows/win32/xinput/xinput-game-controller-apis-portal" target="_blank" rel="noopener noreferrer">XInput</a> gamepad controls
+- &#x1F512; <a href="https://learn.microsoft.com/en-us/windows/win32/xinput/xinput-game-controller-apis-portal" target="_blank" rel="noopener noreferrer">XInput</a> gamepad controls
 - &#x2705; Event system
 - &#x2705; Multi-Graphics API abstraction layer
 - &#x1F512; Hot reloading
