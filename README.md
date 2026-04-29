@@ -69,10 +69,16 @@ Future plans:
 
 - &#x1F504; <a href="https://learn.microsoft.com/en-us/windows/win32/direct3d11/atoc-dx-graphics-direct3d-11" target="_blank" rel="noopener noreferrer">DirectX 11</a> renderer
 - &#x1F504; OpenGL renderer
-- &#x1F504; <a href="https://learn.microsoft.com/en-us/windows/win32/xaudio2/xaudio2-apis-portal" target="_blank" rel="noopener noreferrer">XAudio2</a> audio layer
+- &#x23F3; <a href="https://learn.microsoft.com/en-us/windows/win32/xaudio2/xaudio2-apis-portal" target="_blank" rel="noopener noreferrer">XAudio2</a> audio layer
 - &#x23F3; SIMD Mathematics library
 - &#x23F3; Memory management system
 - &#x23F3; Performance profiling
+
+### Notes
+
+This project changed from C to C++ at SHA `62338d2`, and a fork was created at SHA `41f06e7` to continue development in C. There are currently no plans to port locked features from the forked C project to C++ except for input controls.
+
+The forked C project uses <a href="https://learn.microsoft.com/en-us/previous-versions/windows/desktop/bb318665(v=vs.85)">DirectSound</a> in place of XAudio2, as XAudio2 has no C implementation.
 
 # Mentions
 
